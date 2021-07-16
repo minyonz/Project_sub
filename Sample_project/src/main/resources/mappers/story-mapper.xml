@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.sample.story">
+		
+	<insert id="insertArticle">
+		insert into story(st_no, user_id, st_content)
+		values(#{st_no}, #{user_id}, #{st_content})
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
