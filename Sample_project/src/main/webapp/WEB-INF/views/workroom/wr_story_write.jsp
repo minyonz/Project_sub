@@ -5,6 +5,15 @@
 $(document).ready(function() {
 	var st_content = $("#st_content").val();
 	console.log(st_content);
+	
+// 	$("#fileDrop").on("dragenter dragover", function(e){
+// 		e.preventDefault();
+// 	});
+	
+// 	$("#fileDrop").on("drop", function(e) {
+// 		e.preventDefault();
+// 		console.log(e);
+// 	});
 });
 </script>
 <div class="container-fluid" style="background: #F5F5F5">
@@ -72,6 +81,10 @@ $(document).ready(function() {
 					 <form action="/workroom/wr_story_write_run" method="post">
                     <div class="col-lg-12 text-center">
                         <textarea placeholder="스토리를 작성해 주세요." name="st_content" id="st_content"></textarea>
+                        <div>
+                        	<p style="text-align:left; font-size:13px; margin-bottom:-10px">첨부파일을 드래그 해 주세요</p>
+                        	<div class="checkout__order" id="fileDrop"></div>
+                        </div>
                         <button type="submit" class="site-btn">작성완료</button>
                     </div>
             		</form>

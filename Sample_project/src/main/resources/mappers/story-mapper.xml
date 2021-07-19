@@ -5,10 +5,37 @@
 
 <mapper namespace="com.kh.sample.story">
 		
-	<insert id="insertArticle">
+	<!-- story write -->
+	<insert id="insertStory">
 		insert into story(st_no, user_id, st_content)
-		values(#{st_no}, #{user_id}, #{st_content})
+		values(seq_story_no.nextval, #{user_id}, #{st_content})
 	</insert>
+	
+	<!-- story list -->
+	<select id="listStory" resultType="StoryVo">
+		select * from story
+		order by st_no desc
+	</select>
+	
+	<!-- story delete -->
+	<delete id="deleteStory">
+		delete from story
+		where st_no = #{st_no}
+	</delete>
+	
+	<!-- story update -->
+	<update id="updateStory">
+		update story set
+			st_content = #{st_content},
+			st_update = sysdate
+		where st_no = #{st_no}
+	</update>
+	
+	<!-- 글조회 -->
+	<select id="selectStory" resultType="StoryVo">
+		select * from story
+		where st_no = #{st_no}
+	</select>
 	
 </mapper>
 
