@@ -27,7 +27,7 @@
 	<update id="updateStory">
 		update tbl_story set
 			st_content = #{st_content},
-			mode_date = sysdate
+			mod_date = sysdate
 		where st_no = #{st_no}
 	</update>
 	

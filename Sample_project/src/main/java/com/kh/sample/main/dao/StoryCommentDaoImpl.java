@@ -1,5 +1,7 @@
 package com.kh.sample.main.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,6 +20,12 @@ public class StoryCommentDaoImpl implements StoryCommentDao{
 	@Override
 	public void insertComment(StoryCommentVo storyCommentVo) {
 		sqlSession.insert(NAMESPACE + "insertComment", storyCommentVo);
+	}
+
+	@Override
+	public List<StoryCommentVo> listComment(int st_no) {
+		List<StoryCommentVo> list = sqlSession.selectList(NAMESPACE + "listComment");
+		return list;
 	}
 
 }

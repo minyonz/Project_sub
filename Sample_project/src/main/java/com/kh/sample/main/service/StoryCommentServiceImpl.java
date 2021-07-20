@@ -1,5 +1,7 @@
 package com.kh.sample.main.service;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
@@ -16,6 +18,12 @@ public class StoryCommentServiceImpl implements StoryCommentService{
 	@Override
 	public void writeComment(StoryCommentVo storyCommentVo) {
 		storyCommentDao.insertComment(storyCommentVo);
+	}
+
+	@Override
+	public List<StoryCommentVo> listComment(int st_no) {
+		List<StoryCommentVo> list = storyCommentDao.listComment(st_no);
+		return list;
 	}
 
 }
