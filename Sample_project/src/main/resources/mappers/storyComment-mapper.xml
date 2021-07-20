@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.sample.storyComment">
+		
+	<insert id="insertComment">
+		insert into tbl_story_comment(st_c_no, user_id, st_no, st_c_content, st_c_parent_no, st_c_order)
+		values (seq_story_c_no.nextval, #{user_id}, #{st_no}, #{st_c_content}, seq_story_c_no.nextval, seq_story_c_no.nextval)
+	</insert>
+		
+</mapper>
+
+
+
+
+
+
+

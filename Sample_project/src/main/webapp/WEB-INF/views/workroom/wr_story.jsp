@@ -5,6 +5,7 @@
 <script>
 
 </script>
+<!-- 스토리 목록 폼 -->
 <div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-2"></div>
@@ -83,7 +84,8 @@
 										<a href="/workroom/wr_story_detail?st_no=${storyVo.st_no}">
 										${storyVo.st_content}</a><br>
 										<a class="fa fa-heart-o" href="#" style="margin-right:5px"> ${storyVo.st_like_count}</a>
-										<a class="fa fa-comment-o" href="#"> ${storyVo.st_c_count}</a></p>								
+										<a class="fa fa-comment-o" href="#"> ${storyVo.st_c_count}</a>
+										</p>								
 									</div>
 									<div class="col-md-2" style="padding: 0px;">
 										<img src="/resources/img/test/duck.png" width="100px">

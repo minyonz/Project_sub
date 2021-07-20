@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 <script>
-$(document).ready(function() {	
-// 파일첨부(보류)
+$(document).ready(function() {
+// 파일첨부(보류)	
 // 	$("#fileDrop").on("dragenter dragover", function(e){
 // 		e.preventDefault();
 // 	});
@@ -14,7 +14,7 @@ $(document).ready(function() {
 // 	});
 });
 </script>
-<!-- 스토리 작성 폼 -->
+<!-- 스토리 수정 폼 -->
 <div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-2"></div>
@@ -77,9 +77,10 @@ $(document).ready(function() {
 				<!-- 글작성 폼 -->
 				<div class="col-md-9">
 					<div class="checkout__order contact-form">
-					 <form action="/workroom/wr_story_write_run" method="post">
+					 <form action="/workroom/wr_story_update_run" method="post">
                     <div class="col-lg-12 text-center">
-                        <textarea placeholder="스토리를 작성해 주세요." name="st_content" id="st_content"></textarea>
+                    <input type="hidden" name="st_no" value="${storyVo.st_no}" />
+                        <textarea placeholder="스토리를 작성해 주세요." name="st_content" id="st_content">${storyVo.st_content}</textarea>
                         <div>
                         	<p style="text-align:left; font-size:13px; margin-bottom:-10px">첨부파일을 드래그 해 주세요</p>
                         	<div class="checkout__order" id="fileDrop"></div>

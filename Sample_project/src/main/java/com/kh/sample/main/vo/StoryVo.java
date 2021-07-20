@@ -26,6 +26,7 @@ public class StoryVo {
 		this.st_like_count = st_like_count;
 		this.st_c_count = st_c_count;
 	}
+	
 	public int getSt_no() {
 		return st_no;
 	}

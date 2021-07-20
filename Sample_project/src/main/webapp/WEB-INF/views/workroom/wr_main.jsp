@@ -42,7 +42,7 @@ $(document).ready(function() {
 							<h4 class="text-center" style="display:inline;">user1</h4><a href="#" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
 							</div>
 							<p class="text-center" style="font-size:12px; margin-top:-20px">곰손</p>
-							<p class="card-text text-center">안녕하세요</p>
+							<p class="card-text text-center">베이킹</p>
 							<div style="text-align: center;">
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로워</p>
@@ -93,7 +93,7 @@ $(document).ready(function() {
 					<!-- 소개 -->
 					<div class="checkout__order">
 						<div class="workroom_box">
-							<h4>소개</h4>
+							<h4>작업실</h4>
 						</div>
 						<div class="workroom_box">
 							<hr>
@@ -148,11 +148,14 @@ $(document).ready(function() {
 						<div class="workroom_box">
 							<hr>
 							<div class="container-fluid">
-							<c:forEach begin="1" end="3" var="storyVo" items="${list}">						
+							<c:forEach begin="0" end="2" var="storyVo" items="${list}">						
 								<div class="row">
 									<div class="col-md-10" style="padding: 0px; margin: auto;" >
 										<p style="font-size: 14px; margin: 10px" class="story_detail"><a href="/workroom/wr_story_detail?st_no=${storyVo.st_no}">
-										${storyVo.st_content}</a></p>								
+										${storyVo.st_content}</a><br>
+										<a class="fa fa-heart-o" href="#" style="margin-right:5px"> ${storyVo.st_like_count}</a>
+										<a class="fa fa-comment-o" href="#"> ${storyVo.st_c_count}</a>
+										</p>								
 									</div>
 									<div class="col-md-2" style="padding: 0px;">
 										<img src="/resources/img/test/duck.png" width="100px">

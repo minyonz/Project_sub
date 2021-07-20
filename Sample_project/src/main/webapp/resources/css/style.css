@@ -2617,15 +2617,17 @@ ol {
 	margin-right: 15px;
 }
 
+/* 댓글사용, 사진크기 변경 */
 .blog__details__author__pic img {
-	height: 92px;
-	width: 92px;
+	height: 40px;
+	width: 40px;
 	border-radius: 50%;
 }
 
+/* padding-top 사용 X */
 .blog__details__author__text {
 	overflow: hidden;
-	padding-top: 30px;
+/* 	padding-top: 30px; */
 }
 
 .blog__details__author__text h6 {
@@ -2944,9 +2946,10 @@ ol {
 	color: #6f6f6f;
 }
 
+/* textarea 수정 */
 .contact-form form textarea {
-	width: 100%;
-	height: 300px;
+	width: 100%;	
+	hight: 300px
 	font-size: 16px;
 	color: #6f6f6f;
 	padding-left: 20px;

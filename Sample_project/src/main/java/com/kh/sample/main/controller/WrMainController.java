@@ -62,11 +62,13 @@ public class WrMainController {
 	// 스토리 작성
 	@RequestMapping(value="/wr_story_write_run", method=RequestMethod.POST)
 	public String wrStoryWriteRun(StoryVo storyVo) throws Exception {
+		// 세션 아이디값 받기
 		storyVo.setUser_id("hong");
 		storyService.StoryWrite(storyVo);
 		return "redirect:/workroom/wr_main";
 	}
 		
+	// 검색
 	@RequestMapping(value="/wr_search", method=RequestMethod.GET)
 	public String wrSearch(String txtStSearch, Model model) throws Exception {
 		System.out.println(txtStSearch);
@@ -74,4 +76,42 @@ public class WrMainController {
 		return "workroom/wr_search";
 	}
 	
+	// 수정폼
+	@RequestMapping(value="/wr_story_update", method=RequestMethod.GET)
+	public String wrStoryUpdate(int st_no, Model model) throws Exception {
+		StoryVo storyVo = storyService.StorySelect(st_no);
+		model.addAttribute("storyVo", storyVo);
+		System.out.println(storyVo);
+		return "workroom/wr_story_update";
+	}
+	
+	// 수정실행
+	@RequestMapping(value="/wr_story_update_run", method=RequestMethod.POST)
+	public String wrStoryUpdateRun(StoryVo storyVo) throws Exception {
+		storyVo.setUser_id("hong");
+		storyService.StoryUpdate(storyVo);
+		System.out.println(storyVo);
+		return "redirect:/workroom/wr_main";
+	}
+	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
