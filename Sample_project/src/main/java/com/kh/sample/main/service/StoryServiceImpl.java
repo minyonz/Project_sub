@@ -16,8 +16,8 @@ public class StoryServiceImpl implements StoryService{
 	StoryDao storyDao;
 	
 	@Override
-	public List<StoryVo> StoryList() {
-		List<StoryVo> list = storyDao.listStory();
+	public List<StoryVo> StoryList(String user_id) {
+		List<StoryVo> list = storyDao.listStory(user_id);
 		return list;
 	}
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kh.sample.workroom">
+		
+	<select id="listHobby" resultType="HobbyVo">
+		select * from tbl_hobby
+		where hobby_writer = #{hobby_writer}
+		order by hobby_no desc
+	</select>
+		
+</mapper>
+
+
+
+
+
+
+

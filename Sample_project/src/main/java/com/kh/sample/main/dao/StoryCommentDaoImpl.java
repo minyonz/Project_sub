@@ -24,7 +24,7 @@ public class StoryCommentDaoImpl implements StoryCommentDao{
 
 	@Override
 	public List<StoryCommentVo> listComment(int st_no) {
-		List<StoryCommentVo> list = sqlSession.selectList(NAMESPACE + "listComment");
+		List<StoryCommentVo> list = sqlSession.selectList(NAMESPACE + "listComment", st_no);
 		return list;
 	}
 

@@ -2949,7 +2949,7 @@ ol {
 /* textarea 수정 */
 .contact-form form textarea {
 	width: 100%;	
-	hight: 300px
+	height: 300px;
 	font-size: 16px;
 	color: #6f6f6f;
 	padding-left: 20px;

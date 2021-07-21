@@ -81,7 +81,7 @@
 								<div class="row">
 									<div class="col-md-10" style="padding: 0px; margin: auto;" >
 										<p style="font-size: 14px; margin: 10px" id="story_detail">
-										<a href="/workroom/wr_story_detail?st_no=${storyVo.st_no}">
+										<a href="/story/detail?st_no=${storyVo.st_no}">
 										${storyVo.st_content}</a><br>
 										<a class="fa fa-heart-o" href="#" style="margin-right:5px"> ${storyVo.st_like_count}</a>
 										<a class="fa fa-comment-o" href="#"> ${storyVo.st_c_count}</a>

@@ -14,6 +14,7 @@
 	<!-- story list -->
 	<select id="listStory" resultType="StoryVo">
 		select * from tbl_story
+		where user_id = #{user_id}
 		order by st_no desc
 	</select>
 	
@@ -36,6 +37,13 @@
 		select * from tbl_story
 		where st_no = #{st_no}
 	</select>
+	
+	<!-- 댓글 카운트 증가 -->
+	<update id="updateCommentCnt">
+		update tbl_story set
+			st_c_count = st_c_count + #{count}
+		where st_no = #{st_no}
+	</update>
 	
 </mapper>
 

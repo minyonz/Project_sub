@@ -1,6 +1,8 @@
 package com.kh.sample.main.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -23,8 +25,8 @@ public class StoryDaoImpl implements StoryDao{
 	}
 
 	@Override
-	public List<StoryVo> listStory() {
-		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "listStory");
+	public List<StoryVo> listStory(String user_id) {
+		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "listStory", user_id);
 		return list;
 	}
 
@@ -43,6 +45,15 @@ public class StoryDaoImpl implements StoryDao{
 	public StoryVo selectStory(int st_no) {
 		StoryVo storyVo = sqlSession.selectOne(NAMESPACE + "selectStory", st_no);
 		return storyVo;
+	}
+
+	@Override
+	public void updateCommentCnt(int st_no, int count) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("st_no", st_no);
+		map.put("count", count);
+		sqlSession.update(NAMESPACE + "updateCommentCnt", map);
+		
 	}
 	
 }

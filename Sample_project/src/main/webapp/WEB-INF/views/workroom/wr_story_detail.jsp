@@ -1,9 +1,34 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 <!-- 스토리 상세 폼 -->
 <script>
 $(document).ready(function() {
+	// 댓글 보이기
+	// 날짜 포맷 변경 필요
+	var url = "/st_comment/comment_list";
+	var st_no = parseInt("${storyVo.st_no}");
+	var sendData = { "st_no" : st_no }
+		$.get(url, sendData, function(rData) {
+			console.log(rData);
+			var commentHtml = "";
+			$.each(rData, function() {
+				commentHtml += "<div class='row' style='margin-top: 15px; margin-bottom:15px'>";
+				commentHtml += "	<div class='col-md-10'>";
+				commentHtml += "		<div class='blog__details__author'>";
+				commentHtml += "			<div class='blog__details__author__pic'>";
+				commentHtml += "				<a href='#'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
+				commentHtml += "					<div class='blog__details__author__text'>";
+				commentHtml += "						<h6>"+ this.user_id + " " + this.reg_date + "</h6>";
+				commentHtml += "							<span>" + this.st_c_content + "</span></div></div></div>";
+				commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
+				commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;'>수정</a>"
+				commentHtml += "		<a href='#' style='font-size:13px;'>삭제</a></div></div></div><hr>"
+				$("#comment").html(commentHtml);
+			});
+	});
+	
 	// 댓글 입력 
 	$("#btnCommentInsert").click(function() {
 		var st_c_content = $("#txtComment").val();
@@ -18,12 +43,31 @@ $(document).ready(function() {
 		$.post(url, sendData, function(rData) {
 			console.log(rData);
 			if (rData == "success") {
-				
+				var url = "/st_comment/comment_list";
+				var st_no = parseInt("${storyVo.st_no}");
+				var sendData = { "st_no" : st_no }
+					$.get(url, sendData, function(rData) {
+						console.log(rData);
+						var commentHtml = "";
+						$.each(rData, function() {
+							// 입력했을 때 댓글 새로 로딩
+							commentHtml += "<div class='row' style='margin-top: 15px; margin-bottom:15px'>";
+							commentHtml += "	<div class='col-md-10'>";
+							commentHtml += "		<div class='blog__details__author'>";
+							commentHtml += "			<div class='blog__details__author__pic'>";
+							commentHtml += "				<a href='#'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
+							commentHtml += "					<div class='blog__details__author__text'>";
+							commentHtml += "						<h6>"+ this.user_id + "</h6>";
+							commentHtml += "							<span>" + this.st_c_content + "</span></div></div></div>";
+							commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
+							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;'>수정</a>"
+							commentHtml += "		<a href='#' style='font-size:13px;'>삭제</a></div></div></div><hr>"
+							$("#comment").html(commentHtml);
+						});
+				});
 			}
 		});
 	});
-	
-	
 	
 	// 답글
 	$("#commentReply").click(function(e) {
@@ -116,43 +160,50 @@ $(document).ready(function() {
 							<div class="row">
 								<div class="col-md-9">
 									<a class="fa fa-heart-o" href="#" style="margin-right: 5px">
-										${storyVo.st_like_count}</a> <a class="fa fa-comment-o" href="#">
-										${storyVo.st_c_count}</a>
+										${storyVo.st_like_count}</a> 
+									<button type="button" class="fa fa-comment-o" 
+									style="border:none; background:none; padding: 0; margin-right: 5px; color: #666666;" id="commentList">
+										${storyVo.st_c_count}</button>
 								</div>
 								<div class="col-md-3">
 									<div style="text-align: right">
-										<a href="/workroom/wr_story_update?st_no=${storyVo.st_no}"
+										<a href="/story/update?st_no=${storyVo.st_no}"
 											style="margin-right: 5px">수정</a> <a href="#">삭제</a>
 									</div>
 								</div>
 							</div>
 							<!-- 댓글 -->
-							<div style="margin-top: 30px">
+							<div style="margin-top: 30px;">
 								<h3>댓글</h3>
 								<hr>
-								<div class="row">
-									<div class="col-md-10">
-										<div class="blog__details__author">
-											<div class="blog__details__author__pic">
-												<a href="#"><img
-													src="/resources/img/test/littleduck.png" alt=""></a>
-											</div>
-											<div class="blog__details__author__text">
-												<h6>작성자 이름 2021-07-20 15:08:27</h6>
-												<span>댓글내용내용내용내용</span>
-												<a href="#" style="font-size:13px" id="commentReply">답글</a>
-												<br>
-												<span id="span"></span>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div style="text-align: right">
-											<a href="#" style="margin-right: 5px; font-size:13px;">수정</a> 
-											<a href="#" style="font-size:13px;">삭제</a>
-										</div>
-									</div>
-								</div>
+								<span id="comment"></span>
+								<!-- 댓글목록 -->
+<%-- 								<c:forEach var="commentVo" items="${list}"> --%>
+<!-- 								<div class="row" style="margin-top: 15px; margin-bottom:15px"> -->
+<!-- 									<div class="col-md-10"> -->
+<!-- 										<div class="blog__details__author"> -->
+<!-- 											<div class="blog__details__author__pic"> -->
+<!-- 												<a href="#"><img -->
+<!-- 													src="/resources/img/test/littleduck.png" alt=""></a> -->
+<!-- 											</div> -->
+<!-- 											<div class="blog__details__author__text"> -->
+<%-- 												<h6>${commentVo.user_id} ${commentVo.reg_date}</h6> --%>
+<%-- 												<span>${commentVo.st_c_content }</span> --%>
+<!-- 												<a href="#" style="font-size:13px" id="commentReply">답글</a> -->
+<!-- 												<br> -->
+<!-- 												<span id="span"></span> -->
+<!-- 											</div> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 									<div class="col-md-2"> -->
+<!-- 										<div style="text-align: right"> -->
+<!-- 											<a href="#" style="margin-right: 5px; font-size:13px;">수정</a>  -->
+<!-- 											<a href="#" style="font-size:13px;">삭제</a> -->
+<!-- 										</div> -->
+<!-- 									</div> -->
+<!-- 								</div> -->
+<!-- 								<hr> -->
+<%-- 								</c:forEach> --%>
 							</div>
 							<!-- 댓글작성 -->
 							<div class="row" style="margin-top: 30px">

@@ -77,7 +77,7 @@ $(document).ready(function() {
 				<!-- 글작성 폼 -->
 				<div class="col-md-9">
 					<div class="checkout__order contact-form">
-					 <form action="/workroom/wr_story_update_run" method="post">
+					 <form action="/story/update_run" method="post">
                     <div class="col-lg-12 text-center">
                     <input type="hidden" name="st_no" value="${storyVo.st_no}" />
                         <textarea placeholder="스토리를 작성해 주세요." name="st_content" id="st_content">${storyVo.st_content}</textarea>
