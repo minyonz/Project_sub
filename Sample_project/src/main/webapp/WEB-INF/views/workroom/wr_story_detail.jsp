@@ -23,7 +23,7 @@ $(document).ready(function() {
 				commentHtml += "						<h6>"+ this.user_id + " " + this.reg_date + "</h6>";
 				commentHtml += "							<span>" + this.st_c_content + "</span></div></div></div>";
 				commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
-				commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;'>수정</a>"
+				commentHtml += "		<a href='#' style='margin-right:5px; font-size:13px;' id='commentMod'>수정</a>"
 				commentHtml += "		<a href='#' style='font-size:13px;'>삭제</a></div></div></div><hr>"
 				$("#comment").html(commentHtml);
 			});
@@ -60,7 +60,7 @@ $(document).ready(function() {
 							commentHtml += "						<h6>"+ this.user_id + "</h6>";
 							commentHtml += "							<span>" + this.st_c_content + "</span></div></div></div>";
 							commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
-							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;'>수정</a>"
+							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod'>수정</a>"
 							commentHtml += "		<a href='#' style='font-size:13px;'>삭제</a></div></div></div><hr>"
 							$("#comment").html(commentHtml);
 						});
@@ -89,7 +89,7 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/wr_main"><img class="profile" src="/resources/img/test/littleduck.png"
+							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">
@@ -172,11 +172,30 @@ $(document).ready(function() {
 									</div>
 								</div>
 							</div>
+								<!-- 댓글작성 -->
+							<div class="row" style="margin-top: 30px">
+								<div class="col-md-10">
+									<textarea class="form-control" style="width:100%; resize:none;" id="txtComment"></textarea>
+								</div>
+								<div class="col-md-2">
+									<button type="button" class="site-btn" id="btnCommentInsert">입력</button>
+								</div>
+							</div>
 							<!-- 댓글 -->
 							<div style="margin-top: 30px;">
 								<h3>댓글</h3>
 								<hr>
 								<span id="comment"></span>
+								<!-- 댓글 수정 -->
+								<div class="row updateComment" style="margin-top: 30px; display:none;">
+									<div class="col-md-10">
+										<textarea class="form-control"
+											style="width: 100%; resize: none;" id="txtComment"></textarea>
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="site-btn" id="btnCommentInsert">입력</button>
+									</div>
+								</div>
 								<!-- 댓글목록 -->
 <%-- 								<c:forEach var="commentVo" items="${list}"> --%>
 <!-- 								<div class="row" style="margin-top: 15px; margin-bottom:15px"> -->
@@ -204,15 +223,6 @@ $(document).ready(function() {
 <!-- 								</div> -->
 <!-- 								<hr> -->
 <%-- 								</c:forEach> --%>
-							</div>
-							<!-- 댓글작성 -->
-							<div class="row" style="margin-top: 30px">
-								<div class="col-md-10">
-									<textarea class="form-control" style="width:100%; resize:none;" id="txtComment"></textarea>
-								</div>
-								<div class="col-md-2">
-									<button type="button" class="site-btn" id="btnCommentInsert">입력</button>
-								</div>
 							</div>
 						</div>
 					</div>

@@ -24,7 +24,7 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/wr_main"><img class="profile" src="/resources/img/test/littleduck.png"
+							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">

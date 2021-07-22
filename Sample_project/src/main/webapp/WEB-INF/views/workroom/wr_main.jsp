@@ -9,7 +9,7 @@ $(document).ready(function() {
 	// 스토리 더보기
 	var txt = $(".story_detail").text().substring(0,100) + ". . .";
 	console.log(txt);
-// 	var txt_short = "<a href='/workroom/wr_story_detail style='color: #666666;'>" + txt + "</a>"
+// 	var txt_short = "<a href='/workroom/story_detail style='color: #666666;'>" + txt + "</a>"
 	var text = $("#story_detail").text().length;
 	if (text >= 100) {
 		$(".story_detail").text(txt);
@@ -21,7 +21,7 @@ $(document).ready(function() {
 	$("#btnStSearch").click(function() {
 		var txtStSearch = $("#txtStSearch").val();
 		console.log(txtStSearch);	
-		location.href = "/workroom/wr_search?txtStSearch=" + txtStSearch;
+		location.href = "/workroom/search?txtStSearch=" + txtStSearch;
 	});
 });
 </script>
@@ -34,15 +34,16 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/wr_main"><img class="profile" src="/resources/img/test/littleduck.png"
+							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">user1</h4><a href="#" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							<h4 class="text-center" style="display:inline;">user1</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
 							</div>
 							<p class="text-center" style="font-size:12px; margin-top:-20px">곰손</p>
-							<p class="card-text text-center">베이킹</p>
+							<p class="card-text text-center" style="font-size:13px;">
+							${workroomVo.cate_no1}, ${workroomVo.cate_no2}, ${workroomVo.cate_no3} </p>
 							<div style="text-align: center;">
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로워</p>
@@ -93,18 +94,18 @@ $(document).ready(function() {
 					<!-- 소개 -->
 					<div class="checkout__order">
 						<div class="workroom_box">
-							<h4>작업실</h4>
+							<h4>${workroomVo.wr_name}</h4>
 						</div>
 						<div class="workroom_box">
 							<hr>
-							<p>안녕하세요. 취미공유취미공유</p>
+							<p>${workroomVo.wr_intro}</p>
 						</div>
 					</div>
 					<!-- 취미 -->
 					<div class="checkout__order" id="hobby">
 						<div class="workroom_box row" style="height:39px;">
 							<h4>꼼지락</h4>
-							<a href="/workroom/wr_hobby">더보기</a>
+							<a href="/workroom/hobby">더보기</a>
 						</div>
 							<hr>
 						<div>
@@ -172,7 +173,7 @@ $(document).ready(function() {
 					<div class="checkout__order" id="mbm">
 						<div class="workroom_box row" style="height:39px;">
 							<h4>MadeByMe</h4>
-							<a href="/workroom/wr_mbm">더보기</a>
+							<a href="/workroom/mbm">더보기</a>
 						</div>
 							<hr>
 						<div>
@@ -210,11 +211,11 @@ $(document).ready(function() {
 					<!-- 피드 -->
 					<div class="checkout__order" id="feed">
 						<div class="workroom_box">
-							<h4>피드</h4>
+							<h4>북마크</h4>
 						</div>
 						<div class="workroom_box">
 							<hr>
-							<p>안녕하세요. 피드피드피드피드</p>
+							<p>안녕하세요. 북마크북마크</p>
 						</div>
 					</div>
 				</div>
