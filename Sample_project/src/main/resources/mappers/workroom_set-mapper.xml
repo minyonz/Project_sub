@@ -21,6 +21,12 @@
 			wr_name = #{wr_name}
 		where user_id = #{user_id}
 	</update>
+	
+	<update id="updateWrIntro">
+		update tbl_workroom set
+			wr_intro = #{wr_intro}
+		where user_id = #{user_id}
+	</update>
 		
 </mapper>
 

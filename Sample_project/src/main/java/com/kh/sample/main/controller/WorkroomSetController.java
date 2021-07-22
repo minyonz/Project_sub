@@ -33,7 +33,14 @@ public class WorkroomSetController {
 	public String wrNameSet(WorkroomVo workroomVo) throws Exception {
 		workroomSetService.updateWrName(workroomVo);
 		String wr_name = workroomVo.getWr_name();
-		return "success";
+		return "nameSuccess";
+	}
+	
+	@RequestMapping(value="/introSet", method=RequestMethod.POST)
+	@ResponseBody
+	public String wrIntroSet(String wr_intro, String user_id) throws Exception {
+		workroomSetService.updateWrIntro(user_id, wr_intro);
+		return "introSuccess";
 	}
 }
 

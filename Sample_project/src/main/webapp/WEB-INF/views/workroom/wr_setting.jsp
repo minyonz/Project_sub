@@ -31,7 +31,7 @@ $(document).ready(function() {
 		}
 		$.post(url, sendData, function(rData) {
 			console.log(rData);
-			if (rData == "success") {
+			if (rData == "nameSuccess") {
 				$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>" + wr_name + "</h4>");
 				$("#btnWrName").show();
 				$("#btnWrNameMod").attr("style", "margin-left:10px; display:none;");
@@ -43,37 +43,37 @@ $(document).ready(function() {
 	// 작업실 소개 
 	// 수정 버튼 클릭 시 텍스트 입력으로 변경(수정버튼 비활성화)
 	// input type="text"말ㄹ고 TEXTAREA로 변경해
-	$("#wrIntro").click(function() {
-		$("#wrIntro").replaceWith("<input type='text' id='wrIntro' style='border: 1px solid #E5E8E8; height: 30px;' value='${workroomVo.wr_intro}'>");
+	$("#btnIntro").click(function() {
+		$("#wrIntro").replaceWith("<textarea id='wrIntro' class='form-control'>${workroomVo.wr_intro}</textarea>");
 		$("#btnIntro").attr("style", "margin-left:10px; height:20px; border:none; background:none; padding: 0; display:none");
 		$("#btnIntroMod").show();
 		$("#btnIntroCancel").show();
 	});
 	
 	// 수정취소(wrName에 원래상태로 붙여줌)
-	$("#btnWrNameModCancel").click(function() {
-		$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>${workroomVo.wr_name}</h4>");
-		$("#btnWrName").show();
-		$("#btnWrNameMod").attr("style", "margin-left:10px; display:none;");
-		$("#btnWrNameModCancel").attr("style", "margin-left:10px; display:none;");
+	$("#btnIntroCancel").click(function() {
+		$("#wrIntro").replaceWith("<p id='wrIntro'>${workroomVo.wr_intro}</p>");
+		$("#btnIntro").show();
+		$("#btnIntroMod").attr("style", "margin-left:10px; display:none;");
+		$("#btnIntroCancel").attr("style", "margin-left:10px; display:none;");
 	});
 	
 	// 수정실행(완료되면 수정버튼 활성화 / 변경,취소 비활성화)
-	$("#btnWrNameMod").click(function() {
-		var wr_name = $("#wrName").val();
+	$("#btnIntroMod").click(function() {
+		var wr_intro = $("#wrIntro").val();
 		var user_id = "${workroomVo.user_id}";
-		var url = "/workroomset/nameSet";
+		var url = "/workroomset/introSet";
 		var sendData = {
-			"wr_name" : wr_name,
-			"user_id" : user_id
+			"wr_intro" 	: wr_intro,
+			"user_id"	: user_id
 		}
-		$.post(url, sendData, function(rData) {
+		$.post(url, sendData, function(rData){
 			console.log(rData);
-			if (rData == "success") {
-				$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>" + wr_name + "</h4>");
-				$("#btnWrName").show();
-				$("#btnWrNameMod").attr("style", "margin-left:10px; display:none;");
-				$("#btnWrNameModCancel").attr("style", "margin-left:10px; display:none;");
+			if (rData == "introSuccess") {
+				$("#wrIntro").replaceWith("<p id='wrIntro'>" + wr_intro + "</p>");
+				$("#btnIntro").show();
+				$("#btnIntroMod").attr("style", "margin-left:10px; display:none;");
+				$("#btnIntroCancel").attr("style", "margin-left:10px; display:none;");
 			}
 		});
 	});
@@ -93,11 +93,10 @@ $(document).ready(function() {
 					<button type="button" class="btn btn-primary btn-sm" id="btnWrNameMod" style="margin-left:10px; display:none;">변경</button>
 					<button type="button" class="btn btn-warning btn-sm" id="btnWrNameModCancel" style="margin-left:10px; display:none;">취소</button>
 				</div>
-				<div class="workroom_box">
 					<hr>
-					<p id="wrIntro">${workroomVo.wr_intro}
+				<div class="workroom_box row">
+					<p id="wrIntro">${workroomVo.wr_intro}</p>
 					<button type="button" class="fa fa-pencil" id="btnIntro" style="margin-left:10px; height:20px; border:none; background:none; padding: 0;"></button>
-					</p>
 					<button type="button" class="btn btn-primary btn-sm" id="btnIntroMod" style="margin-left:10px; display:none;">변경</button>
 					<button type="button" class="btn btn-warning btn-sm" id="btnIntroCancel" style="margin-left:10px; display:none;">취소</button>
 				</div>

@@ -24,4 +24,9 @@ public class WorkroomSetServiceImpl implements WorkroomSetService {
 		workroomSetDao.updateWrName(workroomVo);
 	}
 
+	@Override
+	public void updateWrIntro(String user_id, String wr_intro) {
+		workroomSetDao.updateWrIntro(user_id, wr_intro);
+	}
+
 }

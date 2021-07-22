@@ -54,7 +54,7 @@ public class StoryController {
 		// 세션 아이디값 받기
 		storyVo.setUser_id("cat");
 		storyService.StoryWrite(storyVo);
-		return "redirect:/workroom/wr_main";
+		return "redirect:/workroom/main";
 	}
 	
 	
@@ -73,6 +73,6 @@ public class StoryController {
 		storyVo.setUser_id("cat");
 		storyService.StoryUpdate(storyVo);
 		System.out.println(storyVo);
-		return "redirect:/workroom/wr_main";
+		return "redirect:/workroom/main";
 	}
 }

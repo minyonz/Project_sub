@@ -33,4 +33,13 @@ public class WorkroomSetDaoImpl implements WorkroomSetDao {
 		sqlSession.update(NAMESPACE + "updateWrName", workroomVo);
 	}
 
+	@Override
+	public void updateWrIntro(String user_id, String wr_intro) {
+		Map<String, String> map = new HashMap<String, String>();
+		map.put("wr_intro", wr_intro);
+		map.put("user_id", user_id);
+		sqlSession.update(NAMESPACE + "updateWrIntro", map);
+		
+	}
+
 }
