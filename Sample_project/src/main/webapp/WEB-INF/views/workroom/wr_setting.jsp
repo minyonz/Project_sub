@@ -5,23 +5,23 @@
 $(document).ready(function() {
 	// 작업실 이름
 	// 수정 버튼 클릭 시 텍스트 입력으로 변경(수정버튼 비활성화)
-	$("#btnWrName").click(function() {
+	$("#btnName").click(function() {
 		$("#wrName").replaceWith("<input type='text' id='wrName' style='border: 1px solid #E5E8E8; height: 30px;' value='${workroomVo.wr_name}'>");
-		$("#btnWrName").attr("style", "margin-left:10px; height:20px; border:none; background:none; padding: 0; display:none");
-		$("#btnWrNameMod").show();
-		$("#btnWrNameModCancel").show();
+		$("#btnName").attr("style", "margin-left:10px; height:20px; border:none; background:none; padding: 0; display:none");
+		$("#btnNameMod").show();
+		$("#btnNameCancel").show();
 	});
 	
 	// 수정취소(wrName에 원래상태로 붙여줌)
-	$("#btnWrNameModCancel").click(function() {
+	$("#btnNameCancel").click(function() {
 		$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>${workroomVo.wr_name}</h4>");
-		$("#btnWrName").show();
-		$("#btnWrNameMod").attr("style", "margin-left:10px; display:none;");
-		$("#btnWrNameModCancel").attr("style", "margin-left:10px; display:none;");
+		$("#btnName").show();
+		$("#btnNameMod").attr("style", "margin-left:10px; display:none;");
+		$("#btnNameCancel").attr("style", "margin-left:10px; display:none;");
 	});
 	
 	// 수정실행(완료되면 수정버튼 활성화 / 변경,취소 비활성화)
-	$("#btnWrNameMod").click(function() {
+	$("#btnNameMod").click(function() {
 		var wr_name = $("#wrName").val();
 		var user_id = "${workroomVo.user_id}";
 		var url = "/workroomset/nameSet";
@@ -33,9 +33,9 @@ $(document).ready(function() {
 			console.log(rData);
 			if (rData == "nameSuccess") {
 				$("#wrName").replaceWith("<h4 style='margin-bottom:0px;' id='wrName'>" + wr_name + "</h4>");
-				$("#btnWrName").show();
-				$("#btnWrNameMod").attr("style", "margin-left:10px; display:none;");
-				$("#btnWrNameModCancel").attr("style", "margin-left:10px; display:none;");
+				$("#btnName").show();
+				$("#btnNameMod").attr("style", "margin-left:10px; display:none;");
+				$("#btnNameCancel").attr("style", "margin-left:10px; display:none;");
 			}
 		});
 	});
@@ -89,9 +89,9 @@ $(document).ready(function() {
 			<div class="checkout__order">
 				<div class="workroom_box row">
 					<h4 style="margin-bottom: 0px;" id="wrName">${workroomVo.wr_name}</h4>
-					<button type="button" id="btnWrName" class="fa fa-pencil" style="margin-left:10px; height:20px; border:none; background:none; padding: 0;"></button>
-					<button type="button" class="btn btn-primary btn-sm" id="btnWrNameMod" style="margin-left:10px; display:none;">변경</button>
-					<button type="button" class="btn btn-warning btn-sm" id="btnWrNameModCancel" style="margin-left:10px; display:none;">취소</button>
+					<button type="button" id="btnName" class="fa fa-pencil" style="margin-left:10px; height:20px; border:none; background:none; padding: 0;"></button>
+					<button type="button" class="btn btn-primary btn-sm" id="btnNameMod" style="margin-left:10px; display:none;">변경</button>
+					<button type="button" class="btn btn-warning btn-sm" id="btnNameCancel" style="margin-left:10px; display:none;">취소</button>
 				</div>
 					<hr>
 				<div class="workroom_box row">

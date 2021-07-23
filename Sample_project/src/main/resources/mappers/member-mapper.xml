@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.member">
+
+	<select id ="login" resultType="MemberVo">
+		select * from tbl_memberInfo 
+		where user_id = #{user_id} and user_pw = #{user_pw}
+	</select>
+	
+	<select id ="info" resultType="MemberVo">
+		select * from tbl_memberInfo 
+		where user_id = #{user_id}
+	</select>
+	
+	<update id="updateMemberInfo">
+		update tbl_memberInfo set
+			user_pw = #{user_pw},
+			user_name = #{user_name},
+			user_email = #{user_email, jdbcType=VARCHAR},
+			user_tel =  #{user_tel, jdbcType=VARCHAR}
+ 		where user_id = #{user_id}
+	</update>
+
+	<update id="updateMemberDetail">
+		update tbl_memberDetail set
+			cate_etc = #{cate_etc}
+ 		where user_id = #{user_id}
+	</update>
+
+	<select id="checkDupId" resultType="int">
+		select count(*) from tbl_memberInfo
+		where user_id = #{user_id}
+	</select>
+	
+	<insert id="insertMember">
+		insert into tbl_memberInfo 
+			(user_id, user_pw, user_name, user_email, user_tel, reg_date) 
+		values 
+ 			(#{user_id}, #{user_pw}, #{user_name}, #{user_email, jdbcType=VARCHAR}, #{user_tel, jdbcType=VARCHAR}, sysdate)
+	</insert>
+	
+	<insert id="insertMemberDetail">
+		insert into tbl_memberDetail 
+			(user_id, user_nick, cate_no1, cate_no2, cate_no3, cate_etc, follower_cnt, following_cnt, user_grade, reg_date) 
+		values
+			(#{user_id}, #{user_nick, jdbcType=VARCHAR}, 
+			 #{cate_no1, jdbcType=NUMERIC}, #{cate_no2, jdbcType=NUMERIC}, #{cate_no3, jdbcType=NUMERIC}, #{cate_etc, jdbcType=VARCHAR}, 
+			 #{follower_cnt}, #{following_cnt}, #{user_grade, jdbcType=NUMERIC}, sysdate)
+	</insert>
+	
+	<insert id="insertMemberSetUp">
+		insert into tbl_memberSetup (user_id) values (#{user_id}) 
+	</insert>
+	
+	
+</mapper>

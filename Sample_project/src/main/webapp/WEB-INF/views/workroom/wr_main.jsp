@@ -8,7 +8,7 @@ $(document).ready(function() {
 	// 애니메이션 효과 사용 보류
 	// 스토리 더보기
 	var txt = $(".story_detail").text().substring(0,100) + ". . .";
-	console.log(txt);
+// 	console.log(txt);
 // 	var txt_short = "<a href='/workroom/story_detail style='color: #666666;'>" + txt + "</a>"
 	var text = $("#story_detail").text().length;
 	if (text >= 100) {
@@ -23,6 +23,35 @@ $(document).ready(function() {
 		console.log(txtStSearch);	
 		location.href = "/workroom/search?txtStSearch=" + txtStSearch;
 	});
+	
+	if ("${checkFollow}" == 1) {
+		$("#follow").replaceWith("<button type='button' id='unFollow' class='btn btn-warning'>언팔로우</button>");
+	}
+	
+	$("#follow").click(function() {
+		var url = "/workroom/follow/${memberVo.user_id}";
+		$.get(url, function(rData) {
+			console.log(rData);
+			// 팔로우
+			if (rData.follow) {
+				$("#follow").replaceWith("<button type='button' id='unFollow' class='btn btn-warning'>언팔로우</button>");
+				$("#follower_cnt").text(rData.countFollow);
+			} 
+		});
+	});
+	
+	$("#unFollow").click(function() {
+		console.log("unFollow");
+		var url = "/workroom/unFollow/${memberVo.user_id}";
+		$.get(url, function(rData) {
+			console.log(rData);
+			if (rData.unFollow) {
+				$("#unFollow").replaceWith("<button type='button' id='follow' class='btn btn-primary'>팔로우</button>");
+				$("#follower_cnt").text(rData.countFollowCancel);
+			}
+		});
+	});
+	
 });
 </script>
 <div class="container-fluid" style="background: #F5F5F5">
@@ -39,15 +68,16 @@ $(document).ready(function() {
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">user1</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							<h4 class="text-center" style="display:inline;">${memberVo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
 							</div>
-							<p class="text-center" style="font-size:12px; margin-top:-20px">곰손</p>
+							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberVo.name}</p>
+							<!-- memberVo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
 							<p class="card-text text-center" style="font-size:13px;">
 							${workroomVo.cate_no1}, ${workroomVo.cate_no2}, ${workroomVo.cate_no3} </p>
 							<div style="text-align: center;">
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로워</p>
-									<p style="text-align: center">5</p>
+									<p style="text-align: center" id="follower_cnt">${memberVo.follower_cnt}</p>
 								</div>
 								<div style="display: inline-block;">
 									<p style="margin: -2px">
@@ -58,12 +88,12 @@ $(document).ready(function() {
 									</p>
 								</div>
 								<div style="display: inline-block;">
-									<p style="margin-bottom: -5px">좋아요</p>
-									<p style="text-align: center">5</p>
+									<p style="margin-bottom: -5px">팔로잉</p>
+									<p style="text-align: center">${memberVo.following_cnt}</p>
 								</div>
 							</div>
 							<div style="text-align: center;">
-								<a href="#" class="btn btn-primary">팔로우</a> 
+								<button type="button" id="follow" class="btn btn-primary">팔로우</button> 
 								<a href="#" class="btn btn-primary">쪽지</a> 
 								<a href="/story/write" class="btn btn-primary">글쓰기</a>
 							</div>

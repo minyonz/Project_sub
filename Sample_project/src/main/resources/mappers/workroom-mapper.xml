@@ -3,13 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.kh.sample.workroom">
+<mapper namespace="com.dp.ggomjirak.workroom">
 		
+	<!-- 취미목록 -->
 	<select id="listHobby" resultType="HobbyVo">
 		select * from tbl_hobby
-		where hobby_writer = #{hobby_writer}
+			where hobby_writer = #{hobby_writer}
 		order by hobby_no desc
 	</select>
+	
+	<!-- 프로필카드 -->
+	<select id="getMemInfo" resultType="MemberVo">
+		select md.*, mg.name
+			from tbl_memberdetail md, tbl_membergrade mg
+			where md.user_grade = mg.cd
+			and md.user_id = #{user_id}
+	</select>
+	
 		
 </mapper>
 

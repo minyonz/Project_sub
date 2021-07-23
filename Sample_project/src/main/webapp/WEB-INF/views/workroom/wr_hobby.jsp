@@ -9,17 +9,22 @@
 				<div class="col-md-3">
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
-						<div class="box" style="margin: 12px auto;">
+					<div class="box" style="margin: 12px auto;">
 							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">
-							<h4 class="text-center">user1</h4>
-							<p class="card-text text-center">안녕하세요</p>
+							<div style="display: flex; justify-content: center;">
+							<h4 class="text-center" style="display:inline;">${memberVo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							</div>
+							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberVo.name}</p>
+							<!-- memberVo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
+							<p class="card-text text-center" style="font-size:13px;">
+							${workroomVo.cate_no1}, ${workroomVo.cate_no2}, ${workroomVo.cate_no3} </p>
 							<div style="text-align: center;">
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로워</p>
-									<p style="text-align: center">5</p>
+									<p style="text-align: center">${memberVo.follower_cnt}</p>
 								</div>
 								<div style="display: inline-block;">
 									<p style="margin: -2px">
@@ -30,16 +35,17 @@
 									</p>
 								</div>
 								<div style="display: inline-block;">
-									<p style="margin-bottom: -5px">좋아요</p>
-									<p style="text-align: center">5</p>
+									<p style="margin-bottom: -5px">팔로잉</p>
+									<p style="text-align: center">${memberVo.following_cnt}</p>
 								</div>
 							</div>
 							<div style="text-align: center;">
 								<a href="#" class="btn btn-primary">팔로우</a> 
 								<a href="#" class="btn btn-primary">쪽지</a> 
-								<a href="#" class="btn btn-primary">글쓰기</a>
+								<a href="/story/write" class="btn btn-primary">글쓰기</a>
 							</div>
 						</div>
+
 
 					</div>
 					<!-- 카테고리 -->

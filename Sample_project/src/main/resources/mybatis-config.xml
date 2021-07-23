@@ -2,14 +2,9 @@
 <!DOCTYPE configuration
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
-  
+
 <configuration>
-	<!-- 별명같은것, 풀네임 쓰기 귀찮아서..(줄여쓰기) -->
 	<typeAliases>
-	<!-- 클래스 단위 -->
-	<!-- com.kh.sample01.MemberVo -->
-		<typeAlias type="com.kh.sample.main.vo.StoryVo" alias="StoryVo"/>		
-	<!-- 패키지 단위 -->
-		<package name="com.kh.sample.main.vo"/>
+		<package name="com.dp.ggomjirak.vo"/>
 	</typeAliases>
 </configuration>
