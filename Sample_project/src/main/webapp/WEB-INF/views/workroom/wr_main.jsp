@@ -25,7 +25,8 @@ $(document).ready(function() {
 	});
 	
 	if ("${checkFollow}" == 1) {
-		$("#follow").replaceWith("<button type='button' id='unFollow' class='btn btn-warning'>언팔로우</button>");
+		$("#follow").attr("class", "btn btn-warning");
+		$("#follow").text("언팔로우");
 	}
 	
 	$("#follow").click(function() {
@@ -34,23 +35,16 @@ $(document).ready(function() {
 			console.log(rData);
 			// 팔로우
 			if (rData.follow) {
-				$("#follow").replaceWith("<button type='button' id='unFollow' class='btn btn-warning'>언팔로우</button>");
-				$("#follower_cnt").text(rData.countFollow);
-			} 
+				$("#follow").attr("class", "btn btn-warning");
+				$("#follow").text("언팔로우");
+			} else if (rData.unFollow) {
+				$("#follow").attr("class", "btn btn-primary");
+				$("#follow").text("팔로우");
+			}
+			$("#follower_cnt").text(rData.countFollow);
 		});
 	});
 	
-	$("#unFollow").click(function() {
-		console.log("unFollow");
-		var url = "/workroom/unFollow/${memberVo.user_id}";
-		$.get(url, function(rData) {
-			console.log(rData);
-			if (rData.unFollow) {
-				$("#unFollow").replaceWith("<button type='button' id='follow' class='btn btn-primary'>팔로우</button>");
-				$("#follower_cnt").text(rData.countFollowCancel);
-			}
-		});
-	});
 	
 });
 </script>
@@ -92,7 +86,7 @@ $(document).ready(function() {
 									<p style="text-align: center">${memberVo.following_cnt}</p>
 								</div>
 							</div>
-							<div style="text-align: center;">
+							<div style="text-align: center;" id="fo">
 								<button type="button" id="follow" class="btn btn-primary">팔로우</button> 
 								<a href="#" class="btn btn-primary">쪽지</a> 
 								<a href="/story/write" class="btn btn-primary">글쓰기</a>

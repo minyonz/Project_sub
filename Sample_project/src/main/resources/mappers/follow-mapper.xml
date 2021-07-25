@@ -30,6 +30,13 @@
 		where user_id = #{user_id}
 	</update>
 	
+	<!-- 팔로잉 수 업데이트 -->
+	<update id="updateFollowing">
+		update tbl_memberdetail set
+			following_cnt = following_cnt + #{count}
+		where user_id = #{user_id}
+	</update>
+	
 	<!-- 팔로워 수 -->
 	<select id="countFollower" resultType="int">
 		select follower_cnt from tbl_memberdetail

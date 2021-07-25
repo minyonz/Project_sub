@@ -98,30 +98,32 @@ public class WorkroomController {
 		boolean result = followService.follow(followVo);
 		int countFollow = followService.countFollower(user_id);
 		Map<String, Object> map = new HashMap<>();
+		// 팔로워 수 보냄
+		map.put("countFollow", countFollow);
 		if (result == true) {
 			map.put("follow", "follow");
-			map.put("countFollow", countFollow);
 			return map;
-		}
-		return null;
-	}
-	
-	// 언팔로우
-	@RequestMapping(value="/unFollow/{user_id}", method=RequestMethod.GET)
-	@ResponseBody
-	public Map<String, Object> unFollow(@PathVariable("user_id") String user_id) throws Exception {
-		FollowVo followVo = new FollowVo();
-		followVo.setFollowing(user_id);
-		followVo.setFollower("duck");
-		boolean result = followService.unFollow(followVo);
-		int countFollowCancel = followService.countFollower(user_id);
-		Map<String, Object> map = new HashMap<>();
-		if (result == true) {
-			map.put("unFollow", "unFollow");
-			map.put("countFollow", countFollowCancel);
-		}
+		} 
+		map.put("unFollow", "unFollow");
 		return map;
 	}
+	
+//	// 언팔로우
+//	@RequestMapping(value="/unFollow/{user_id}", method=RequestMethod.GET)
+//	@ResponseBody
+//	public Map<String, Object> unFollow(@PathVariable("user_id") String user_id) throws Exception {
+//		FollowVo followVo = new FollowVo();
+//		followVo.setFollowing(user_id);
+//		followVo.setFollower("duck");
+//		boolean result = followService.unFollow(followVo);
+//		int countFollowCancel = followService.countFollower(user_id);
+//		Map<String, Object> map = new HashMap<>();
+//		if (result == true) {
+//			map.put("unFollow", "unFollow");
+//			map.put("countFollow", countFollowCancel);
+//		}
+//		return map;
+//	}
 
 }
 

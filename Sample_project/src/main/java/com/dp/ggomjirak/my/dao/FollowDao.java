@@ -10,7 +10,7 @@ public interface FollowDao {
 	// 팔로우시 팔로워 수 증가(팔로우 당하는 사람의 팔로워 수)
 	public void updateFollower(String user_id, int count);
 	// 팔로우시 팔로잉 수 증가(팔로우 하는 사람의 팔로잉 수)
-	
+	public void updateFollowing(String user_id, int count);
 	// 한 사람의 팔로우 팔로잉 수 가져오기
 	public int countFollower(String user_id);
 }

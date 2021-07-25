@@ -25,6 +25,7 @@ public class WorkroomServiceImpl implements WorkroomService {
 	@Override
 	public MemberVo getMemInfo(String user_id) {
 		MemberVo memberVo = workroomDao.getMemInfo(user_id);
+//		System.out.println("service:" + memberVo);
 		return memberVo;
 	}
 

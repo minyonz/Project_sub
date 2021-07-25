@@ -27,6 +27,7 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 	@Override
 	public MemberVo getMemInfo(String user_id) {
 		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "getMemInfo", user_id);
+//		System.out.println(memberVo);
 		return memberVo;
 	}
 

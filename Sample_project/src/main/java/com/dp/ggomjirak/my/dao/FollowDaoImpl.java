@@ -41,6 +41,15 @@ public class FollowDaoImpl implements FollowDao{
 		map.put("count", count);
 		sqlSession.update(NAMESPACE + "updateFollower", map);
 	}
+	
+	@Override
+	public void updateFollowing(String user_id, int count) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("user_id", user_id);
+		map.put("count", count);
+		sqlSession.update(NAMESPACE + "updateFollowing", map);
+		
+	}
 
 	@Override
 	public int countFollower(String user_id) {
