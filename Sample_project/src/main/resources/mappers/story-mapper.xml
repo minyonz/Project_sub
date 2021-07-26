@@ -13,9 +13,12 @@
 	
 	<!-- story list -->
 	<select id="listStory" resultType="StoryVo">
-		select * from tbl_story
-		where user_id = #{user_id}
-		order by st_no desc
+		select * from 
+			(select rownum rnum, a.* from 
+				(select * from tbl_story
+				order by st_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+		and user_id = #{user_id}
 	</select>
 	
 	<!-- story delete -->
@@ -44,6 +47,12 @@
 			st_c_count = st_c_count + #{count}
 		where st_no = #{st_no}
 	</update>
+	
+	<!-- 스토리 총 갯수 -->
+	<select id="storyCount" resultType="int">
+		select count(*) from tbl_story
+		where user_id = #{user_id}
+	</select>
 	
 </mapper>
 

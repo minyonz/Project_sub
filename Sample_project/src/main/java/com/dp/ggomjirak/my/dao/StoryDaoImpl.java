@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.dp.ggomjirak.vo.StoryPagingDto;
 import com.dp.ggomjirak.vo.StoryVo;
 
 @Repository
@@ -25,8 +26,8 @@ public class StoryDaoImpl implements StoryDao{
 	}
 
 	@Override
-	public List<StoryVo> listStory(String user_id) {
-		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "listStory", user_id);
+	public List<StoryVo> listStory(StoryPagingDto storyPagingDto) {
+		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "listStory", storyPagingDto);
 		return list;
 	}
 
@@ -54,6 +55,12 @@ public class StoryDaoImpl implements StoryDao{
 		map.put("count", count);
 		sqlSession.update(NAMESPACE + "updateCommentCnt", map);
 		
+	}
+
+	@Override
+	public int storyCount(StoryPagingDto storyPagingDto) {
+		int count = sqlSession.selectOne(NAMESPACE + "storyCount", storyPagingDto);
+		return count;
 	}
 	
 }

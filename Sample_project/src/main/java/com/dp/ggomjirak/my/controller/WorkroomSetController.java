@@ -32,7 +32,7 @@ public class WorkroomSetController {
 	@ResponseBody
 	public String wrNameSet(WorkroomVo workroomVo) throws Exception {
 		workroomSetService.updateWrName(workroomVo);
-		String wr_name = workroomVo.getWr_name();
+//		String wr_name = workroomVo.getWr_name();
 		return "nameSuccess";
 	}
 	

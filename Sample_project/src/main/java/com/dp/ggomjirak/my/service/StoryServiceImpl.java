@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 
 import com.dp.ggomjirak.my.dao.StoryDao;
+import com.dp.ggomjirak.vo.StoryPagingDto;
 import com.dp.ggomjirak.vo.StoryVo;
 
 @Service
@@ -16,8 +17,8 @@ public class StoryServiceImpl implements StoryService{
 	StoryDao storyDao;
 	
 	@Override
-	public List<StoryVo> StoryList(String user_id) {
-		List<StoryVo> list = storyDao.listStory(user_id);
+	public List<StoryVo> StoryList(StoryPagingDto storyPagingDto) {
+		List<StoryVo> list = storyDao.listStory(storyPagingDto);
 		return list;
 	}
 
@@ -40,6 +41,12 @@ public class StoryServiceImpl implements StoryService{
 	public StoryVo StorySelect(int st_no) {
 		StoryVo storyVo = storyDao.selectStory(st_no);
 		return storyVo;
+	}
+
+	@Override
+	public int storyCount(StoryPagingDto storyPagingDto) {
+		int count = storyDao.storyCount(storyPagingDto);
+		return count;
 	}
 
 }

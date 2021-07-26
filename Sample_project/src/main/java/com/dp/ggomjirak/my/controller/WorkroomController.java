@@ -21,6 +21,8 @@ import com.dp.ggomjirak.my.service.WorkroomSetService;
 import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.MemberVo;
+import com.dp.ggomjirak.vo.PagingDto;
+import com.dp.ggomjirak.vo.StoryPagingDto;
 import com.dp.ggomjirak.vo.StoryVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
@@ -41,15 +43,24 @@ public class WorkroomController {
 	FollowService followService;
 	
 
-	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public String wrMain(Model model) throws Exception {
-		// 스토리 목록
-		List<StoryVo> storyList = storyService.StoryList("cat");
-		// 취미 목록
-		List<HobbyVo> hobbyList = workroomService.listHobby("cat");
-		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
+	// 카드 프로필 값 공통 메서드
+	public void profileCommon(Model model) throws Exception {
 		MemberVo memberVo = workroomService.getMemInfo("cat");
 		WorkroomVo workroomVo = workroomSetService.getWrSet("cat");
+		model.addAttribute("memberVo", memberVo);
+		model.addAttribute("workroomVo", workroomVo);
+	}
+	
+	@RequestMapping(value="/main", method=RequestMethod.GET)
+	public String wrMain(Model model, StoryPagingDto storyPagingDto, PagingDto pagingDto) throws Exception {
+		// 스토리 목록
+		storyPagingDto.setUser_id("cat");
+		List<StoryVo> storyList = storyService.StoryList(storyPagingDto);
+		pagingDto.setHobby_writer("cat");
+		System.out.println("storyList:" + storyList);
+		// 취미 목록
+		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
+		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
 		// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
 		FollowVo followVo = new FollowVo();
 		// 현재 페이지의 사용자
@@ -57,26 +68,31 @@ public class WorkroomController {
 		// 현재 로그인한 사용자
 		followVo.setFollower("duck");
 		int checkFollow = followService.checkFollow(followVo);
+		// 카드 프로필 값 공통 메서드 보내줌
+		profileCommon(model);
 		model.addAttribute("storyList", storyList);
 		model.addAttribute("hobbyList", hobbyList);
-		model.addAttribute("memberVo", memberVo);
-		model.addAttribute("workroomVo", workroomVo);
 		model.addAttribute("checkFollow", checkFollow);
 		return "workroom/wr_main";
-	}
+	}	
 	
 	@RequestMapping(value="/hobby", method=RequestMethod.GET)
-	public String wrHobby(Model model) throws Exception {
+	public String wrHobby(Model model, PagingDto pagingDto) throws Exception {
+		// pagingDto값 받고 sesseion값으로 아이디 설정 후 넘겨줌
+		int count = workroomService.hobbyCount("cat");
+		pagingDto.setCount(count);
+		pagingDto.setHobby_writer("cat");
+		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 프로필 카드용
-		MemberVo memberVo = workroomService.getMemInfo("cat");
-		WorkroomVo workroomVo = workroomSetService.getWrSet("cat");
-		model.addAttribute("memberVo", memberVo);
-		model.addAttribute("workroomVo", workroomVo);
+		profileCommon(model);
+		model.addAttribute("pagingDto", pagingDto);
+		model.addAttribute("hobbyList", hobbyList);
 		return "workroom/wr_hobby";
 	}
 	
 	@RequestMapping(value="/mbm", method=RequestMethod.GET)
-	public String wrMbm() throws Exception {
+	public String wrMbm(Model model) throws Exception {
+		profileCommon(model);
 		return "workroom/wr_mbm";
 	}
 		
@@ -84,6 +100,7 @@ public class WorkroomController {
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public String wrSearch(String txtStSearch, Model model) throws Exception {
 		System.out.println(txtStSearch);
+		profileCommon(model);
 		model.addAttribute("txtStSearch", txtStSearch);
 		return "workroom/wr_search";
 	}
@@ -107,23 +124,7 @@ public class WorkroomController {
 		map.put("unFollow", "unFollow");
 		return map;
 	}
-	
-//	// 언팔로우
-//	@RequestMapping(value="/unFollow/{user_id}", method=RequestMethod.GET)
-//	@ResponseBody
-//	public Map<String, Object> unFollow(@PathVariable("user_id") String user_id) throws Exception {
-//		FollowVo followVo = new FollowVo();
-//		followVo.setFollowing(user_id);
-//		followVo.setFollower("duck");
-//		boolean result = followService.unFollow(followVo);
-//		int countFollowCancel = followService.countFollower(user_id);
-//		Map<String, Object> map = new HashMap<>();
-//		if (result == true) {
-//			map.put("unFollow", "unFollow");
-//			map.put("countFollow", countFollowCancel);
-//		}
-//		return map;
-//	}
+
 
 }
 

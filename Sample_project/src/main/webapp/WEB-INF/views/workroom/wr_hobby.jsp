@@ -1,209 +1,52 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
-<div class="container-fluid" style="background: #F5F5F5">
-	<div class="row">
-		<div class="col-md-2"></div>
-		<div class="col-md-8">
-			<div class="row">
-				<div class="col-md-3">
-					<div class="checkout__order">
-						<!-- 유저 카드 프로필 -->
-					<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
-								alt="profile image" style="width: 100%; text-align: center"></a>
-						</div>
-						<div class="card-body">
-							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">${memberVo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
-							</div>
-							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberVo.name}</p>
-							<!-- memberVo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
-							<p class="card-text text-center" style="font-size:13px;">
-							${workroomVo.cate_no1}, ${workroomVo.cate_no2}, ${workroomVo.cate_no3} </p>
-							<div style="text-align: center;">
-								<div style="display: inline-block;">
-									<p style="margin-bottom: -5px">팔로워</p>
-									<p style="text-align: center">${memberVo.follower_cnt}</p>
-								</div>
-								<div style="display: inline-block;">
-									<p style="margin: -2px">
-										<img src="/resources/img/test/minus.png" height="25px">
-									</p>
-									<p>
-										<img src="/resources/img/test/minus.png" height="25px">
-									</p>
-								</div>
-								<div style="display: inline-block;">
-									<p style="margin-bottom: -5px">팔로잉</p>
-									<p style="text-align: center">${memberVo.following_cnt}</p>
-								</div>
-							</div>
-							<div style="text-align: center;">
-								<a href="#" class="btn btn-primary">팔로우</a> 
-								<a href="#" class="btn btn-primary">쪽지</a> 
-								<a href="/story/write" class="btn btn-primary">글쓰기</a>
-							</div>
-						</div>
-
-
+<%@ include file="../include/workroomSide.jsp" %>
+<!-- 간단 카드 보여주기 -->
+<div class="col-md-9">
+	<div class="checkout__order">
+		<div class="workroom_box row" style="height: 39px;">
+			<h4>꼼지락</h4>
+			<select>
+				<option>인기순</option>
+				<option>최신순</option>
+			</select>
+		</div>
+		<hr>
+		<div class="row featured__filter">
+		<c:forEach var="hobbyVo" items="${hobbyList}">
+			<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
+				<div class="featured__item">
+					<div class="featured__item__pic set-bg"
+						data-setbg="/resources/img/test/sample06.jpg">
+						<ul class="featured__item__pic__hover">
+							<li><a href="#"><i class="fa fa-heart"></i></a></li>
+							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
+							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+						</ul>
 					</div>
-					<!-- 카테고리 -->
-					<div class="checkout__order">
-						<div class="blog__sidebar__item" style="margin-left: 40px;">
-							<ul>
-								<li><a href="#">소개</a></li>
-								<li><a href="/workroom/wr_hobby">꼼지락</a></li>
-								<li><a href="#">Story</a></li>
-								<li><a href="/workroom/wr_mbm">MadeByMe</a></li>
-								<li><a href="#">피드</a></li>
-							</ul>
-						</div>
-					</div>
-					<div>
-						<input type="text"
-							style="border: 1px solid #E5E8E8; height: 30px;">
-						<button type="button"
-							style="border: none; background: none; padding: 0;">
-							<img src="/resources/img/test/loupe.png" height="17px">
-						</button>
+					<div class="featured__item__text">
+						<h6>
+							<a href="#">${hobbyVo.hobby_title}</a>
+						</h6>
 					</div>
 				</div>
-				<!-- 간단 카드 보여주기 -->
-				<div class="col-md-9">
-					<div class="checkout__order">
-					<div class="workroom_box row" style="height:39px;">
-							<h4>꼼지락</h4>
-							<select>
-								<option>인기순</option>
-								<option>최신순</option>
-							</select>
-						</div>
-							<hr>
-				<div class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample08.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample08.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="product__pagination justify-content-center" style="display: flex;">
-                        <a href="#">1</a>
-                        <a href="#">2</a>
-                        <a href="#">3</a>
-                        <a href="#"><i class="fa fa-long-arrow-right"></i></a>
-                    </div>
 			</div>
+			</c:forEach>
+			
 		</div>
-		<div class="col-md-2"></div>
+		<div class="product__pagination justify-content-center"
+			style="display: flex;">
+			<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
+			<a href="/workroom/hobby?page=${v}&perPage=${pagingDto.perPage}">${v}</a> 
+			</c:forEach> 
+			<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+		</div>
 	</div>
+</div>
+<div class="col-md-2"></div>
+</div>
 </div>
 
 <%@ include file="../include/footer.jsp"%>
