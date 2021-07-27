@@ -16,9 +16,9 @@ $(document).ready(function() {
 	}
 	
 	$("#btnStSearch").click(function() {
-		var txtStSearch = $("#txtStSearch").val();
+		var keyword = $("#txtStSearch").val();
 		console.log(txtStSearch);	
-		location.href = "/workroom/search?txtStSearch=" + txtStSearch;
+		location.href = "/workroom/search?keyword=" + keyword;
 	});
 	
 	if ("${checkFollow}" == 1) {

@@ -16,5 +16,11 @@ public interface StoryDao {
 	public void updateCommentCnt(int st_no, int count);
 	// 스토리 총 갯수
 	public int storyCount(StoryPagingDto storyPagingDto);
-	
+	// 좋아요 수 증가
+	public void updateLikeCount(int st_no, int count);
+	// 좋아요 테이블 
+	public void insertLike(int st_no, String user_id);
+	public void deleteLike(int st_no, String user_id);
+	public int likeCheck(int st_no, String user_id);
+	public int likeAll(int st_no);
 }

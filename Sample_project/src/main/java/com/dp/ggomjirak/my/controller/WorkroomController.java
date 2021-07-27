@@ -57,7 +57,8 @@ public class WorkroomController {
 		storyPagingDto.setUser_id("cat");
 		List<StoryVo> storyList = storyService.StoryList(storyPagingDto);
 		pagingDto.setHobby_writer("cat");
-		System.out.println("storyList:" + storyList);
+		
+//		System.out.println("storyList:" + storyList);
 		// 취미 목록
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
@@ -98,10 +99,17 @@ public class WorkroomController {
 		
 	// 검색
 	@RequestMapping(value="/search", method=RequestMethod.GET)
-	public String wrSearch(String txtStSearch, Model model) throws Exception {
-		System.out.println(txtStSearch);
+	public String wrSearch(String keyword, Model model, PagingDto pagingDto) throws Exception {
+		System.out.println(keyword);
+		pagingDto.setKeyword(keyword);
+		pagingDto.setUser_id("cat");
+		pagingDto.setHobby_writer("cat");
+		List<HobbyVo> searchHobbyList = workroomService.searchHobby(pagingDto);
+		List<StoryVo> searchStoryList = workroomService.searchStory(pagingDto);
 		profileCommon(model);
-		model.addAttribute("txtStSearch", txtStSearch);
+		model.addAttribute("searchHobbyList", searchHobbyList);
+		model.addAttribute("searchStoryList", searchStoryList);
+		model.addAttribute("keyword", keyword);
 		return "workroom/wr_search";
 	}
 	

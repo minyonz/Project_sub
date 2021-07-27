@@ -1,16 +1,21 @@
 package com.dp.ggomjirak.my.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dp.ggomjirak.my.service.StoryCommentService;
 import com.dp.ggomjirak.my.service.StoryService;
+import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.StoryCommentVo;
 import com.dp.ggomjirak.vo.StoryPagingDto;
 import com.dp.ggomjirak.vo.StoryVo;
@@ -52,6 +57,9 @@ public class StoryController {
 		StoryVo storyVo = storyService.StorySelect(st_no);
 		List<StoryCommentVo> list = storyCommentService.listComment(st_no);
 		wrController.profileCommon(model);
+		// 세션값 얻어서 user_id넘겨줌 지금은 임시
+		int likeCheck = storyService.likeCheck(st_no, "cat");
+		model.addAttribute("likeCheck", likeCheck);
 		model.addAttribute("storyVo", storyVo);
 		model.addAttribute("list", list);
 		return "workroom/wr_story_detail";
@@ -93,4 +101,34 @@ public class StoryController {
 		System.out.println(storyVo);
 		return "redirect:/workroom/main";
 	}
+	
+	// 스토리 좋아요
+	@RequestMapping(value="/like/{st_no}", method=RequestMethod.GET)
+	@ResponseBody
+	public Map<String, Object> like(@PathVariable("st_no") int st_no) throws Exception {
+		Map<String, Object> map = new HashMap<>();
+		// 세션값 넣기
+		MemberVo memberVo = new MemberVo();;
+		memberVo.setUser_id("cat");
+		String user_id = memberVo.getUser_id();
+		boolean result = storyService.like(st_no, user_id);
+		int likeCount = storyService.likeAll(st_no);
+		map.put("likeCount", likeCount);
+		if (result == true) {
+			map.put("like", "like");
+			return map;
+		}
+		map.put("cancel", "cancel");
+		return map;
+	}
 }
+
+
+
+
+
+
+
+
+
+

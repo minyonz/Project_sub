@@ -62,5 +62,45 @@ public class StoryDaoImpl implements StoryDao{
 		int count = sqlSession.selectOne(NAMESPACE + "storyCount", storyPagingDto);
 		return count;
 	}
+
+	@Override
+	public void updateLikeCount(int st_no, int count) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("st_no", st_no);
+		map.put("count", count);
+		sqlSession.update(NAMESPACE + "updateLikeCount", map);
+	}
+
+	@Override
+	public void insertLike(int st_no, String user_id) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("st_no", st_no);
+		map.put("user_id", user_id);
+		sqlSession.insert(NAMESPACE + "insertLike", map);
+	}
+
+	@Override
+	public void deleteLike(int st_no, String user_id) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("st_no", st_no);
+		map.put("user_id", user_id);
+		sqlSession.delete(NAMESPACE + "deleteLike", map);
+	}
+
+	@Override
+	public int likeCheck(int st_no, String user_id) {
+		Map<String, Object> map = new HashMap<>();
+		map.put("st_no", st_no);
+		map.put("user_id", user_id);
+		int count = sqlSession.selectOne(NAMESPACE + "likeCheck", map);
+		return count;
+	}
+
+	@Override
+	public int likeAll(int st_no) {
+		int count = sqlSession.selectOne(NAMESPACE + "likeAll", st_no);
+		System.out.println("dao count:" + count);
+		return count;
+	}
 	
 }

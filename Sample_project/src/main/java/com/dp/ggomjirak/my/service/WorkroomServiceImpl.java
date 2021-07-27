@@ -10,6 +10,8 @@ import com.dp.ggomjirak.my.dao.WorkRoomDao;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
+import com.dp.ggomjirak.vo.StoryPagingDto;
+import com.dp.ggomjirak.vo.StoryVo;
 
 @Service
 public class WorkroomServiceImpl implements WorkroomService {
@@ -34,6 +36,18 @@ public class WorkroomServiceImpl implements WorkroomService {
 		MemberVo memberVo = workroomDao.getMemInfo(user_id);
 //		System.out.println("service:" + memberVo);
 		return memberVo;
+	}
+
+	@Override
+	public List<HobbyVo> searchHobby(PagingDto pagingDto) {
+		List<HobbyVo> list = workroomDao.searchHobby(pagingDto);
+		return list;
+	}
+
+	@Override
+	public List<StoryVo> searchStory(PagingDto pagingDto) {
+		List<StoryVo> list = workroomDao.searchStory(pagingDto);
+		return list;
 	}
 
 

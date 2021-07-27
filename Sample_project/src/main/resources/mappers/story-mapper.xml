@@ -54,6 +54,36 @@
 		where user_id = #{user_id}
 	</select>
 	
+	<!-- 좋아요 -->
+	<update id="updateLikeCount">
+		update tbl_story set
+			st_like_count = st_like_count + #{count}
+		where st_no = #{st_no}
+	</update>
+	
+	<!-- 좋아요 테이블 -->
+	<insert id="insertLike">
+		insert into tbl_story_like
+		values (#{st_no}, #{user_id})
+	</insert>
+	
+	<delete id="deleteLike">
+		delete from tbl_story_like
+		where st_no = #{st_no} and user_id = #{user_id}
+	</delete>
+	
+	<!-- 좋아요 여부 -->
+	<select id="likeCheck" resultType="int">
+		select count(*) from tbl_story_like
+		where st_no = #{st_no} and user_id = #{user_id}
+	</select>
+	
+	<!-- 좋아요 전체 갯수 -->
+	<select id="likeAll" resultType="int">
+		select st_like_count from tbl_story
+		where st_no = #{st_no}
+	</select>
+	
 </mapper>
 
 

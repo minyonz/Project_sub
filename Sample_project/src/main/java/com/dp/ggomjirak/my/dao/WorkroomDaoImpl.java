@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
+import com.dp.ggomjirak.vo.StoryPagingDto;
+import com.dp.ggomjirak.vo.StoryVo;
 
 @Repository
 public class WorkroomDaoImpl implements WorkRoomDao {
@@ -36,6 +38,18 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "getMemInfo", user_id);
 //		System.out.println(memberVo);
 		return memberVo;
+	}
+
+	@Override
+	public List<HobbyVo> searchHobby(PagingDto pagingDto) {
+		List<HobbyVo> list = sqlSession.selectList(NAMESPACE + "searchHobby", pagingDto);
+		return list;
+	}
+
+	@Override
+	public List<StoryVo> searchStory(PagingDto pagingDto) {
+		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "searchStory" , pagingDto);
+		return list;
 	}
 
 }

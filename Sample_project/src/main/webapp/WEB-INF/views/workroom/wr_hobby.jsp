@@ -38,10 +38,21 @@
 		</div>
 		<div class="product__pagination justify-content-center"
 			style="display: flex;">
+			<!-- 이전페이지(<-) -->
+			<c:if test="${pagingDto.startPage != 1}">
+				<a href="/workroom/hobby/?page=${pagingDto.startPage - 1}&perPage=${pagingDto.perPage}">
+					<i class="fa fa-long-arrow-left"></i>
+				</a>
+			</c:if>
 			<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
 			<a href="/workroom/hobby?page=${v}&perPage=${pagingDto.perPage}">${v}</a> 
 			</c:forEach> 
-			<a href="#"><i class="fa fa-long-arrow-right"></i></a>
+			<!-- 다음페이지(->) -->
+			<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
+			<a href="/workroom/hobby/?page=${pagingDto.endPage + 1}&perPage=${pagingDto.perPage}">
+				<i class="fa fa-long-arrow-right"></i>
+			</a>
+			</c:if>
 		</div>
 	</div>
 </div>
