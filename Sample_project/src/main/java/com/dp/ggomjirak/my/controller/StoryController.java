@@ -102,6 +102,12 @@ public class StoryController {
 		return "redirect:/workroom/main";
 	}
 	
+	@RequestMapping(value="/delete_run", method=RequestMethod.GET)
+	public String wrStoryDeleteRun(int st_no) throws Exception {
+		storyService.StoryDelete(st_no);
+		return "redirect:/story/list";
+	}
+	
 	// 스토리 좋아요
 	@RequestMapping(value="/like/{st_no}", method=RequestMethod.GET)
 	@ResponseBody

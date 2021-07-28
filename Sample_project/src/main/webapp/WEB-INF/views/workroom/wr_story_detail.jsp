@@ -7,13 +7,19 @@
 <!-- 스토리 상세 폼 -->
 <script>
 $(document).ready(function() {
+	// 스토리 삭제
+	$("#storyDel").click(function(e) {
+		e.preventDefault();
+		if (confirm("삭제하시겠습니까?")) {
+			location.href = "/story/delete_run?st_no=${storyVo.st_no}";
+		}
+	});
+	
 	// 댓글 보이기
-	// 날짜 포맷 변경 필요
-	var url = "/st_comment/comment_list";
+	var url = "/st_comment/list";
 	var st_no = parseInt("${storyVo.st_no}");
 	var sendData = { "st_no" : st_no }
 		$.get(url, sendData, function(rData) {
-// 			console.log(rData);
 			var commentHtml = "";
 			$.each(rData, function() {
 				commentHtml += "<div class='row' style='margin-top: 15px; margin-bottom:15px'>";
@@ -25,8 +31,8 @@ $(document).ready(function() {
 				commentHtml += "						<h6>"+ this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
 				commentHtml += "							<span id='content'>" + this.st_c_content + "</span></div></div></div>";
 				commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
-				commentHtml += "		<a href='#' style='margin-right:5px; font-size:13px;' id='commentMod'>수정</a>"
-				commentHtml += "		<a href='#' style='font-size:13px;' id='commentDel'>삭제</a></div></div></div><hr>"
+				commentHtml += "		<a href='#' style='margin-right:5px; font-size:13px;' id='commentMod' data-content=" + this.st_c_content + ">수정</a>"
+				commentHtml += "		<a href='#' style='font-size:13px;' id='commentDel' data-cno=" + this.st_c_no + ">삭제</a></div></div></div><hr>"
 				$("#comment").html(commentHtml);
 				
 				$("commentMod").click(function() {
@@ -41,16 +47,16 @@ $(document).ready(function() {
 		console.log(txtComment);
 		var st_no = parseInt("${storyVo.st_no}");
 		console.log(st_no);
-		var url = "/st_comment/comment_write";
+		var url = "/st_comment/write";
 		var sendData = {
 			"st_c_content" : st_c_content,
 			"st_no"		   : st_no
 		}
 		$.post(url, sendData, function(rData) {
-// 			console.log(rData);
-			if (rData == "success") {
+			if (rData.success) {
 				$("#txtComment").val("");
-				var url = "/st_comment/comment_list";
+				$("#commentList").text(" " + rData.commentCount);
+				var url = "/st_comment/list";
 				var st_no = parseInt("${storyVo.st_no}");
 				var sendData = { "st_no" : st_no }
 					$.get(url, sendData, function(rData) {
@@ -64,11 +70,11 @@ $(document).ready(function() {
 							commentHtml += "			<div class='blog__details__author__pic'>";
 							commentHtml += "				<a href='#'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
 							commentHtml += "					<div class='blog__details__author__text'>";
-							commentHtml += "						<h6>"+ this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
+							commentHtml += "						<h6>" + this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span id='content'>" + this.st_c_content + "</span></div></div></div>";
 							commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
-							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod'>수정</a>"
-							commentHtml += "		<a href='#' style='font-size:13px;' id='commentDel'>삭제</a></div></div></div><hr>"
+							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod' data-content=" + this.st_c_content + ">수정</a>"
+							commentHtml += "		<a href='#' style='font-size:13px;' id='commentDel' data-cno=" + this.st_c_no + ">삭제</a></div></div></div><hr>"
 							$("#comment").html(commentHtml);
 						});
 				});
@@ -78,13 +84,44 @@ $(document).ready(function() {
 	
 	$("#comment").on("click", "#commentMod", function(e) {
 		e.preventDefault();
-		console.log("클릭");
-		$("#content").replaceWith("<textarea class='form-control' style='width: 100%; resize: none;'>" + this.st_c_content + "</textarea>");
+		var st_c_content = $(this).attr("data-content");
+		var commentModHtml = "";
+		commentModHtml += "<div class='row'><div class='col-md-9'>";
+		commentModHtml += "<textarea class='form-control' style='width: 100%; resize: none; id='txtCommentMod'>" + st_c_content + "</textarea></div>";
+		commentModHtml += "<div class='col-md-3'>";
+		commentModHtml += "<button type='button' class='site-btn' id='btnCommentMod'>수정</button></div></div>";
+		$("#content").replaceWith(commentModHtml);
+		$("#btnCommentMod").click(function() {
+			var txtCommentMod = $("#txtCommentMod").val();
+			console.log(txtCommentMod);			
+		});
 	});
 	
-	$("#commentDel").click(function(e){
+	// 댓글 삭제
+	$("#comment").on("click", "#commentDel", function(e) {
 		e.preventDefault();
-		console.log("삭제클릭");
+		console.log("삭제");
+		// 현재 댓글을 감싸고 있는 div
+		var div = $(this).parent().parent().parent();
+		// 감싼 div다음 hr
+		var hr = div.next();
+		if (confirm("댓글을 삭제하시겠습니까?")) {
+			var url = "/st_comment/delete";
+			var st_c_no = $(this).attr("data-cno");
+			var st_no = parseInt("${storyVo.st_no}");
+			var sendData = {
+				"st_no" 	: st_no,
+				"st_c_no" 	: st_c_no
+			}
+			$.get(url, sendData, function(rData) {
+				console.log(rData);
+				if (rData.success) {
+					div.attr("style", "display:none;");
+					hr.remove();
+					$("#commentList").text(" " + rData.commentCount);
+				}
+			});
+		}
 	});
 	
 	// 답글
@@ -96,6 +133,7 @@ $(document).ready(function() {
 // 		"<div class='col-md-2'><button type='button' style='width:50px; height:30px' class='site-btn' id='btnInsert'>입력</button></div></div>");
 	});
 	
+	// 좋아요 유지
 	if ("${likeCheck}" == 1) {
 		$("#like").attr("class", "fa fa-heart");
 	}
@@ -142,8 +180,8 @@ $(document).ready(function() {
 				</div>
 				<div class="col-md-3">
 					<div style="text-align: right">
-						<a href="/story/update?st_no=${storyVo.st_no}"
-							style="margin-right: 5px">수정</a> <a href="#">삭제</a>
+						<a href="/story/update?st_no=${storyVo.st_no}" style="margin-right: 5px">수정</a> 
+						<a href="#" id="storyDel">삭제</a>
 					</div>
 				</div>
 			</div>

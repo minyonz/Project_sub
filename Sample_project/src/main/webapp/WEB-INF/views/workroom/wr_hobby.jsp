@@ -45,7 +45,16 @@
 				</a>
 			</c:if>
 			<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
-			<a href="/workroom/hobby?page=${v}&perPage=${pagingDto.perPage}">${v}</a> 
+			<a 
+				<c:choose>
+					<c:when test="${v == pagingDto.page}">
+						class="green_background" style="color: white;"
+				 	</c:when>
+				 	<c:otherwise>
+				 		class="page-item"
+					</c:otherwise>
+				</c:choose>
+			href="/workroom/hobby?page=${v}&perPage=${pagingDto.perPage}">${v}</a> 
 			</c:forEach> 
 			<!-- 다음페이지(->) -->
 			<c:if test="${pagingDto.endPage < pagingDto.totalPage}">

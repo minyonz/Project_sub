@@ -52,4 +52,16 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 		return list;
 	}
 
+	@Override
+	public int searchHobbyCount(PagingDto pagingDto) {
+		int count = sqlSession.selectOne(NAMESPACE + "searchHobbyCount", pagingDto);
+		return count;
+	}
+
+	@Override
+	public int searchStoryCount(PagingDto pagingDto) {
+		int count = sqlSession.selectOne(NAMESPACE + "searchStoryCount", pagingDto);
+		return count;
+	}
+
 }

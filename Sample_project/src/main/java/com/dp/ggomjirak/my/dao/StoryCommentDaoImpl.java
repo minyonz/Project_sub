@@ -28,4 +28,15 @@ public class StoryCommentDaoImpl implements StoryCommentDao{
 		return list;
 	}
 
+	@Override
+	public void deleteComment(int st_c_no) {
+		sqlSession.update(NAMESPACE + "deleteComment", st_c_no);
+	}
+
+	@Override
+	public int commentCount(int st_no) {
+		int count = sqlSession.selectOne(NAMESPACE + "commentCount", st_no);
+		return count;
+	}
+
 }

@@ -12,10 +12,10 @@ public interface StoryDao {
 	public void deleteStory(int st_no);
 	public void updateStory(StoryVo storyVo);
 	public StoryVo selectStory(int st_no);
-	// 댓글 카운트 증가
-	public void updateCommentCnt(int st_no, int count);
 	// 스토리 총 갯수
 	public int storyCount(StoryPagingDto storyPagingDto);
+	// 댓글 카운트 증가
+	public void updateCommentCnt(int st_no, int count);
 	// 좋아요 수 증가
 	public void updateLikeCount(int st_no, int count);
 	// 좋아요 테이블 

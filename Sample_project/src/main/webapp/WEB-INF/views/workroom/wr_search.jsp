@@ -4,7 +4,26 @@
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
 <!-- 간단 카드 보여주기 -->
+<script>	
+$(document).ready(function() {
+	$("#pagination > a").click(function(e) {
+		e.preventDefault(); // 페이지 이동 막기
+		// a태그의 속성값 중 href를 들고와서 page로 설정
+		var page = $(this).attr("href");
+		console.log(page);
+		$("#frmPaging").find("[name=page]").val(page);
+		$("#frmPaging").submit();
+	});
+});
+	
+</script>
 <div class="col-md-9">
+<!-- 페이지용 form -->
+<form id="frmPaging" action="/workroom/search" method="get">
+	<input type="hidden" name="page" value="${pagingDto.page}"/>
+	<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
+	<input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
+</form>
 	<!-- 검색결과 -->
 	<h3 class="text-center">${keyword}의검색결과 입니다.</h3>
 	<div class="checkout__order" id="hobby">
@@ -57,8 +76,36 @@
 				<hr>
 			</c:forEach>
 		</div>
-		<div class="col-md-2"></div>
 	</div>
+	<!-- 페이징 -->
+	<div class="product__pagination justify-content-center" id="pagination" style="display: flex;">
+			<!-- 이전페이지(<-) -->
+			<c:if test="${pagingDto.startPage != 1}">
+				<a href="${pagingDto.startPage - 1}">
+					<i class="fa fa-long-arrow-left"></i>
+				</a>
+			</c:if>
+			<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
+				<a 
+					<c:choose>
+						<c:when test="${v == pagingDto.page}">
+							class="green_background" style="color: white;"
+					 	</c:when>
+					 	<c:otherwise>
+					 		class="page-item"
+						</c:otherwise>
+					</c:choose>
+				href="${v}">${v}</a> 
+				</c:forEach> 
+			<!-- 다음페이지(->) -->
+			<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
+				<a href="${pagingDto.endPage + 1}">
+					<i class="fa fa-long-arrow-right"></i>
+				</a>
+			</c:if>
+		</div>
+		<!-- 페이징 끝 -->
+	<div class="col-md-2"></div>
 </div>
 
 <%@ include file="../include/footer.jsp"%>

@@ -18,4 +18,7 @@ public interface WorkRoomDao {
 	// 취미, 스토리 검색
 	public List<HobbyVo> searchHobby(PagingDto pagingDto);
 	public List<StoryVo> searchStory(PagingDto pagingDto);
+	// 검색 후 총 갯수
+	public int searchHobbyCount(PagingDto pagingDto);
+	public int searchStoryCount(PagingDto pagingDto);
 }

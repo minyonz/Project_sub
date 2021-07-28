@@ -47,8 +47,17 @@ public class WorkroomController {
 	public void profileCommon(Model model) throws Exception {
 		MemberVo memberVo = workroomService.getMemInfo("cat");
 		WorkroomVo workroomVo = workroomSetService.getWrSet("cat");
+		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
+		// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
+		FollowVo followVo = new FollowVo();
+		// 현재 페이지의 사용자
+		followVo.setFollowing("cat");
+		// 현재 로그인한 사용자
+		followVo.setFollower("duck");
+		int checkFollow = followService.checkFollow(followVo);
 		model.addAttribute("memberVo", memberVo);
 		model.addAttribute("workroomVo", workroomVo);
+		model.addAttribute("checkFollow", checkFollow);
 	}
 	
 	@RequestMapping(value="/main", method=RequestMethod.GET)
@@ -63,17 +72,17 @@ public class WorkroomController {
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
 		// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
-		FollowVo followVo = new FollowVo();
-		// 현재 페이지의 사용자
-		followVo.setFollowing("cat");
-		// 현재 로그인한 사용자
-		followVo.setFollower("duck");
-		int checkFollow = followService.checkFollow(followVo);
+//		FollowVo followVo = new FollowVo();
+//		// 현재 페이지의 사용자
+//		followVo.setFollowing("cat");
+//		// 현재 로그인한 사용자
+//		followVo.setFollower("duck");
+//		int checkFollow = followService.checkFollow(followVo);
 		// 카드 프로필 값 공통 메서드 보내줌
 		profileCommon(model);
 		model.addAttribute("storyList", storyList);
 		model.addAttribute("hobbyList", hobbyList);
-		model.addAttribute("checkFollow", checkFollow);
+//		model.addAttribute("checkFollow", checkFollow);
 		return "workroom/wr_main";
 	}	
 	
@@ -100,13 +109,23 @@ public class WorkroomController {
 	// 검색
 	@RequestMapping(value="/search", method=RequestMethod.GET)
 	public String wrSearch(String keyword, Model model, PagingDto pagingDto) throws Exception {
-		System.out.println(keyword);
 		pagingDto.setKeyword(keyword);
 		pagingDto.setUser_id("cat");
+		// 나중에 삭제(hobbyVo에 hobby_writer = user_id)
 		pagingDto.setHobby_writer("cat");
+		int hobbyCount = workroomService.searchHobbyCount(pagingDto);
+		int storyCount = workroomService.searchStoryCount(pagingDto);
+		int count = 0;
+		if (hobbyCount > storyCount) {
+			count = hobbyCount;
+		} else if (storyCount > hobbyCount) {
+			count = storyCount;
+		}
+		pagingDto.setCount(count);
 		List<HobbyVo> searchHobbyList = workroomService.searchHobby(pagingDto);
 		List<StoryVo> searchStoryList = workroomService.searchStory(pagingDto);
 		profileCommon(model);
+		model.addAttribute("pagingDto", pagingDto);
 		model.addAttribute("searchHobbyList", searchHobbyList);
 		model.addAttribute("searchStoryList", searchStoryList);
 		model.addAttribute("keyword", keyword);

@@ -5,35 +5,43 @@
 
 <mapper namespace="com.dp.ggomjirak.story">
 		
-	<!-- story write -->
+	<!-- 입력 -->
 	<insert id="insertStory">
 		insert into tbl_story(st_no, user_id, st_content)
 		values(seq_story_no.nextval, #{user_id}, #{st_content})
 	</insert>
 	
-	<!-- story list -->
+	<!-- 목록 -->
 	<select id="listStory" resultType="StoryVo">
 		select * from 
 			(select rownum rnum, a.* from 
 				(select * from tbl_story
+				where user_id = 'cat' and is_del = 'N'
 				order by st_no desc)a)
 		where rnum between #{startRow} and #{endRow}
-		and user_id = #{user_id}
 	</select>
-	
-	<!-- story delete -->
-	<delete id="deleteStory">
-		delete from tbl_story
-		where st_no = #{st_no}
-	</delete>
-	
-	<!-- story update -->
+
+	<!-- 수정 -->
 	<update id="updateStory">
 		update tbl_story set
 			st_content = #{st_content},
 			mod_date = sysdate
 		where st_no = #{st_no}
 	</update>
+		
+	<!-- 삭제 -->
+	<update id="deleteStory">
+		update tbl_story set
+			is_del = 'Y',
+			del_date = sysdate
+		where st_no = #{st_no}
+	</update>
+		
+	<!-- 스토리 총 갯수 -->
+	<select id="storyCount" resultType="int">
+		select count(*) from tbl_story
+		where user_id = #{user_id} and is_del = 'N'
+	</select>
 	
 	<!-- 글조회 -->
 	<select id="selectStory" resultType="StoryVo">
@@ -47,12 +55,6 @@
 			st_c_count = st_c_count + #{count}
 		where st_no = #{st_no}
 	</update>
-	
-	<!-- 스토리 총 갯수 -->
-	<select id="storyCount" resultType="int">
-		select count(*) from tbl_story
-		where user_id = #{user_id}
-	</select>
 	
 	<!-- 좋아요 -->
 	<update id="updateLikeCount">

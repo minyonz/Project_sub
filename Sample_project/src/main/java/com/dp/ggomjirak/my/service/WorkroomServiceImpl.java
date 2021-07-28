@@ -50,5 +50,17 @@ public class WorkroomServiceImpl implements WorkroomService {
 		return list;
 	}
 
+	@Override
+	public int searchHobbyCount(PagingDto pagingDto) {
+		int count = workroomDao.searchHobbyCount(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int searchStoryCount(PagingDto pagingDto) {
+		int count = workroomDao.searchStoryCount(pagingDto);
+		return count;
+	}
+
 
 }

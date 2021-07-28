@@ -14,8 +14,23 @@
 	<!-- 댓글목록 -->
 	<select id="listComment" resultType="StoryCommentVo">
 		select * from tbl_story_comment
-		where st_no = #{st_no}
+		where st_no = #{st_no} 
+		and is_del = 'N'
 		order by st_c_no desc
+	</select>
+	
+	<!-- 댓글삭제 -->
+	<update id="deleteComment">
+		update tbl_story_comment set
+			is_del = 'Y',
+			del_date = sysdate
+		where st_c_no = #{st_c_no}
+	</update>
+	
+	<!-- 댓글 수 -->
+	<select id="commentCount" resultType="int">
+		select st_c_count from tbl_story
+		where st_no = #{st_no}
 	</select>
 	
 </mapper>

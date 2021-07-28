@@ -41,7 +41,16 @@
 				</a>
 			</c:if>
 			<c:forEach var="v" begin="${storyPagingDto.startPage}" end="${storyPagingDto.endPage}">
-				<a href="/story/list/?page=${v}&perPage=${storyPagingDto.perPage}">${v}</a>
+				<a 
+					<c:choose>
+						<c:when test="${v == storyPagingDto.page}">
+							class="green_background" style="color: white;"
+					 	</c:when>
+					 	<c:otherwise>
+					 		class="page-item"
+						</c:otherwise>
+					</c:choose>
+				href="/story/list/?page=${v}&perPage=${storyPagingDto.perPage}">${v}</a>
 			</c:forEach>
 			<c:if test="${storyPagingDto.endPage < storyPagingDto.totalPage}">
 				<a href="/story/list/?page=${storyPagingDto.endPage + 1}&perPage=${storyPagingDto.perPage}">
