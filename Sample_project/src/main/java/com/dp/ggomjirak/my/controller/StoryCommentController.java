@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dp.ggomjirak.my.service.StoryCommentService;
+import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.StoryCommentVo;
 
 @RestController
@@ -24,8 +26,10 @@ public class StoryCommentController {
 	
 	// 댓글쓰기
 	@RequestMapping(value="/write", method=RequestMethod.POST)
-	public Map<String, Object> stCommentWrite(StoryCommentVo storyCommentVo) throws Exception {
-		storyCommentVo.setUser_id("cat");
+	public Map<String, Object> stCommentWrite(StoryCommentVo storyCommentVo, HttpSession session) throws Exception {
+		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+		String user_id = memberVo.getUser_id();
+		storyCommentVo.setUser_id(user_id);
 		storyCommentService.writeComment(storyCommentVo);
 		int commentCount = storyCommentService.commentCount(storyCommentVo.getSt_no());
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -40,6 +44,12 @@ public class StoryCommentController {
 		List<StoryCommentVo> list = storyCommentService.listComment(st_no);
 		System.out.println(st_no);
 		return list;
+	}
+	
+	@RequestMapping(value="/modify", method=RequestMethod.GET)
+	public String stCommentModify(int st_c_no, String st_c_content) throws Exception {
+		storyCommentService.updateComment(st_c_no, st_c_content);
+		return "success";
 	}
 	
 	// 댓글 삭제

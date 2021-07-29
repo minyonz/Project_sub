@@ -16,7 +16,7 @@
 		select * from 
 			(select rownum rnum, a.* from 
 				(select * from tbl_story
-				where user_id = 'cat' and is_del = 'N'
+				where user_id = #{user_id} and is_del = 'N'
 				order by st_no desc)a)
 		where rnum between #{startRow} and #{endRow}
 	</select>

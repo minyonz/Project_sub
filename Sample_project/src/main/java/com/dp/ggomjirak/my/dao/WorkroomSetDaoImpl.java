@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
 @Repository
@@ -40,6 +41,12 @@ public class WorkroomSetDaoImpl implements WorkroomSetDao {
 		map.put("user_id", user_id);
 		sqlSession.update(NAMESPACE + "updateWrIntro", map);
 		
+	}
+
+	@Override
+	public List<FollowVo> followingList(String follower) {
+		List<FollowVo> list = sqlSession.selectList(NAMESPACE + "followingList", follower);
+		return list;
 	}
 
 }

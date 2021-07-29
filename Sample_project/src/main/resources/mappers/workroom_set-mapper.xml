@@ -5,6 +5,7 @@
 
 <mapper namespace="com.dp.ggomjirak.workroomset">
 	
+	<!-- 관심취미 불러오기 -->
 	<select id="getWrSet" resultType="WorkroomVo">
 		select wr.*, a.cate_name as "cate_no1", b.cate_name as "cate_no2", c.cate_name as "cate_no3"
 		from tbl_workroom wr
@@ -28,7 +29,15 @@
 			wr_intro = #{wr_intro}
 		where user_id = #{user_id}
 	</update>
-		
+	
+	<!-- 팔로잉 목록 -->
+	<select id="followingList" resultType="FollowVo">
+		select f.following, m.user_nick, m.user_img
+			from tbl_follow f, tbl_memberdetail m
+		where f.following = m.user_id
+			and f.follower = #{follower}
+	</select>
+
 </mapper>
 
 

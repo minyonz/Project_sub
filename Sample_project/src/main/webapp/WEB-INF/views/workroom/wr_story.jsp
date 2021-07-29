@@ -3,6 +3,43 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
+<script>
+$(document).ready(function() {
+	// 좋아요 유지
+// 	if ("${likeCheck}" == 1) {
+// 		$("#like").attr("class", "fa fa-heart");
+// 	}
+	
+// 	$.each("${likeCheck}", function() {
+// 		console.log("${likeCheck}");
+// 	});
+	
+// 	$.each(function() {
+// 		var st_no = $(".like").attr("data-st_no");
+// 		console.log(st_no);
+// 	});
+
+// 	var url = "/story/like/" + st_no;
+	
+	
+	// 좋아요
+	$(".like").click(function(e) {
+		e.preventDefault();
+		var st_no = $(this).attr("data-st_no");
+		var url = "/story/like/" + st_no;
+		console.log(url);
+// 		$.get(url, function(rData) {
+// 			console.log(rData.likeCount);
+// 			if (rData.like) {
+// 				$("#like").attr("class", "fa fa-heart like");
+// 			} else if (rData.cancel) {
+// 				$("#like").attr("class", "fa fa-heart-o like");
+// 			}
+// 			$("#like > span").text(rData.likeCount);
+// 		});
+	});
+});
+</script>
 <!-- 간단 카드 보여주기 -->
 <div class="col-md-9">
 	<div class="checkout__order">
@@ -18,7 +55,7 @@
 							<p style="font-size: 14px; margin: 10px" id="story_detail">
 								<a href="/story/detail?st_no=${storyVo.st_no}">
 									${storyVo.st_content}</a><br> 
-									<a class="fa fa-heart-o" href="#" style="margin-right: 5px">
+									<a class="fa fa-heart-o like" href="#" style="margin-right: 5px" data-st_no="${storyVo.st_no}">
 									${storyVo.st_like_count}</a> 
 									<a class="fa fa-comment-o" href="/story/detail?st_no=${storyVo.st_no}">
 									${storyVo.st_c_count}</a>

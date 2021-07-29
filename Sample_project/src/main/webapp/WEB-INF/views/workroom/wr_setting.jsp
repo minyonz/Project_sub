@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
 <script>
 $(document).ready(function() {
@@ -101,25 +102,16 @@ $(document).ready(function() {
 					<button type="button" class="btn btn-warning btn-sm" id="btnIntroCancel" style="margin-left:10px; display:none;">취소</button>
 				</div>
 			</div>
-			<!-- 보류 -->
-<!-- 			<div class="checkout__order"> -->
-<!-- 				<div class="workroom_box"> -->
-<!-- 					<h4>나의 관심 취미</h4> -->
-<!-- 				</div> -->
-<!-- 				<div class="workroom_box"> -->
-<!-- 					<hr> -->
-<%-- 						<input type="radio" name="hobby">${workroomVo.cate_no1} --%>
-<%-- 						<input type="radio" name="hobby">${workroomVo.cate_no2} --%>
-<%-- 						<input type="radio" name="hobby">${workroomVo.cate_no3} --%>
-<!-- 					</div> -->
-<!-- 				</div> -->
 			<div class="checkout__order">
 				<div class="workroom_box">
 					<h4>작업실 공개 여부</h4>
 				</div>
 				<div class="workroom_box">
 					<hr>
-					<p>공개</p>
+					<div class="custom-control custom-switch">
+					  <input type="checkbox" class="custom-control-input" id="customSwitch1">
+					  <label class="custom-control-label" for="customSwitch1">공개</label>
+					</div>
 				</div>
 			</div>
 			<div class="checkout__order">
@@ -128,7 +120,25 @@ $(document).ready(function() {
 				</div>
 				<div class="workroom_box">
 					<hr>
-					<p>공개</p>
+						<c:forEach var="followVo" items="${followingList}">
+					<div class="row" style="margin-top: 15px; margin-bottom:15px">
+						<div class="col-md-10">
+							<div class="blog__details__author">
+								<div class="blog__details__author__pic">
+									<a href="#"><img src="/resources/img/test/littleduck.png" alt=""></a>
+								</div>
+								<div class="blog__details__author__text">
+									<span class="st_c_content">${followVo.user_nick}</span>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-2">
+							<div style="text-align: right">
+								<button type="button" class="btn btn-outline-primary">언팔로우</button> 
+							</div>
+						</div>
+					</div>
+					</c:forEach>
 				</div>
 			</div>
 			<div class="checkout__order">
@@ -140,8 +150,8 @@ $(document).ready(function() {
 					<p>공개</p>
 				</div>
 			</div>
-</div>
-			<div class="col-md-3"></div>
 		</div>
 	</div>
+			<div class="col-md-3"></div>
+		</div>
 	<%@ include file="../include/footer.jsp"%>

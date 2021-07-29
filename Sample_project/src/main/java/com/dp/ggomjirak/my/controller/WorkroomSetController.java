@@ -1,6 +1,9 @@
 package com.dp.ggomjirak.my.controller;
 
+import java.util.List;
+
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.dp.ggomjirak.my.service.WorkroomSetService;
+import com.dp.ggomjirak.vo.FollowVo;
+import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
 @Controller
@@ -21,8 +26,12 @@ public class WorkroomSetController {
 	
 	// 작업실 설정 메인
 	@RequestMapping(value="/main", method=RequestMethod.GET)
-	public String wrSetting(Model model) throws Exception {
-		WorkroomVo workroomVo = workroomSetService.getWrSet("cat");
+	public String wrSetting(Model model, HttpSession session) throws Exception {
+		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+		String user_id = memberVo.getUser_id();
+		WorkroomVo workroomVo = workroomSetService.getWrSet(user_id);
+		List<FollowVo> followingList = workroomSetService.followingList(user_id);
+		model.addAttribute("followingList", followingList);
 		model.addAttribute("workroomVo", workroomVo);
 		return "workroom/wr_setting";
 	}
@@ -36,12 +45,14 @@ public class WorkroomSetController {
 		return "nameSuccess";
 	}
 	
+	// 작업실 소개
 	@RequestMapping(value="/introSet", method=RequestMethod.POST)
 	@ResponseBody
 	public String wrIntroSet(String wr_intro, String user_id) throws Exception {
 		workroomSetService.updateWrIntro(user_id, wr_intro);
 		return "introSuccess";
 	}
+	
 }
 
 

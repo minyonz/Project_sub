@@ -27,7 +27,7 @@ $(document).ready(function() {
 	}
 	
 	$("#follow").click(function() {
-		var url = "/workroom/follow/${memberVo.user_id}";
+		var url = "/workroom/follow/${memberInfo.user_id}";
 		$.get(url, function(rData) {
 			console.log(rData);
 			// 팔로우
@@ -59,16 +59,16 @@ $(document).ready(function() {
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">${memberVo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
 							</div>
-							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberVo.name}</p>
-							<!-- memberVo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
+							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberInfo.name}</p>
+							<!-- memberInfo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
 							<p class="card-text text-center" style="font-size:13px;">
-							${workroomVo.cate_no1}, ${workroomVo.cate_no2}, ${workroomVo.cate_no3} </p>
+							${workroomVo.cate_no1}  ${workroomVo.cate_no2}  ${workroomVo.cate_no3} </p>
 							<div style="text-align: center;">
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로워</p>
-									<p style="text-align: center" id="follower_cnt">${memberVo.follower_cnt}</p>
+									<p style="text-align: center" id="follower_cnt">${memberInfo.follower_cnt}</p>
 								</div>
 								<div style="display: inline-block;">
 									<p style="margin: -2px">
@@ -80,7 +80,7 @@ $(document).ready(function() {
 								</div>
 								<div style="display: inline-block;">
 									<p style="margin-bottom: -5px">팔로잉</p>
-									<p style="text-align: center">${memberVo.following_cnt}</p>
+									<p style="text-align: center">${memberInfo.following_cnt}</p>
 								</div>
 							</div>
 							<div style="text-align: center;">

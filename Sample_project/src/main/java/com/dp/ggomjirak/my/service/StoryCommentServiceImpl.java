@@ -33,6 +33,11 @@ public class StoryCommentServiceImpl implements StoryCommentService{
 		return list;
 	}
 
+	@Override
+	public void updateComment(int st_c_no, String st_c_content) {
+		storyCommentDao.updateComment(st_c_no, st_c_content);
+	}
+	
 	@Transactional
 	@Override
 	public void deleteComment(int st_no, int st_c_no) {
@@ -45,6 +50,7 @@ public class StoryCommentServiceImpl implements StoryCommentService{
 		int count = storyCommentDao.commentCount(st_no);
 		return count;
 	}
+
 	
 	
 

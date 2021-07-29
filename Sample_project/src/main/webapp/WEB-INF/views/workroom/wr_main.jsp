@@ -29,10 +29,10 @@
 						<div class="col-lg-3">
 							<div class="categories__item set-bg"
 								data-setbg="/resources/img/test/sample06.jpg">
-								<h5>
-									<a href="#">${hobbyVo.hobby_title}</a>
-								</h5>
 							</div>
+							<div class="product__item__text">
+                           		<h6><a href="#">${hobbyVo.hobby_title}</a></h6>
+                         	</div>
 						</div>
 					</c:forEach>
 				</div>
