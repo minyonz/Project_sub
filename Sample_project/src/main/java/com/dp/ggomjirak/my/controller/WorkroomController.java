@@ -48,13 +48,14 @@ public class WorkroomController {
 	public void profileCommon(Model model, HttpSession session) throws Exception {
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
 		String user_id = memberVo.getUser_id();
+		// 유저 정보 가져오기
 		MemberVo memberInfo = workroomService.getMemInfo(user_id);
 		WorkroomVo workroomVo = workroomSetService.getWrSet(user_id);
 		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
 		// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
 		FollowVo followVo = new FollowVo();
 		// 현재 페이지의 사용자
-		followVo.setFollowing("cat");
+		followVo.setFollowing("duck");
 		// 현재 로그인한 사용자
 		followVo.setFollower(user_id);
 		int checkFollow = followService.checkFollow(followVo);
@@ -71,7 +72,7 @@ public class WorkroomController {
 		// 스토리 목록
 		storyPagingDto.setUser_id(user_id);
 		List<StoryVo> storyList = storyService.StoryList(storyPagingDto);
-		pagingDto.setHobby_writer(user_id);
+		pagingDto.setUser_id(user_id);
 		
 //		System.out.println("storyList:" + storyList);
 		// 취미 목록
@@ -99,7 +100,7 @@ public class WorkroomController {
 		// pagingDto값 받고 sesseion값으로 아이디 설정 후 넘겨줌
 		int count = workroomService.hobbyCount(user_id);
 		pagingDto.setCount(count);
-		pagingDto.setHobby_writer(user_id);
+		pagingDto.setUser_id(user_id);
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 프로필 카드용
 		profileCommon(model, session);
@@ -122,7 +123,7 @@ public class WorkroomController {
 		pagingDto.setKeyword(keyword);
 		pagingDto.setUser_id(user_id);
 		// 나중에 삭제(hobbyVo에 hobby_writer = user_id)
-		pagingDto.setHobby_writer(user_id);
+		pagingDto.setUser_id(user_id);
 		int hobbyCount = workroomService.searchHobbyCount(pagingDto);
 		int storyCount = workroomService.searchStoryCount(pagingDto);
 		int count = 0;
@@ -145,13 +146,20 @@ public class WorkroomController {
 	// 팔로우
 	@RequestMapping(value="/follow/{user_id}", method=RequestMethod.GET)
 	@ResponseBody
-	public Map<String, Object> follow(@PathVariable("user_id") String user_id) throws Exception {
+	public Map<String, Object> follow(@PathVariable("user_id") String page_user, HttpSession session) throws Exception {
+		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+		String user_id = memberVo.getUser_id();
 		FollowVo followVo = new FollowVo();
-		followVo.setFollowing(user_id);
-		followVo.setFollower("duck");
+		// 팔로우 당하는 사람(현재 페이지 유저)
+		followVo.setFollowing(page_user);
+		// 팔로우 하는 사람(현재 로그인 유저)
+		followVo.setFollower(user_id);
 		boolean result = followService.follow(followVo);
-		int countFollow = followService.countFollower(user_id);
+		int countFollow = followService.countFollower(page_user);
 		Map<String, Object> map = new HashMap<>();
+//		if (page_user == user_id) {
+//			map.put("same_user", "same_user");
+//		}
 		// 팔로워 수 보냄
 		map.put("countFollow", countFollow);
 		if (result == true) {

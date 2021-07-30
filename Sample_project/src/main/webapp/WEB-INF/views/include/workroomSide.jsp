@@ -59,7 +59,7 @@ $(document).ready(function() {
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4>
 							</div>
 							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberInfo.name}</p>
 							<!-- memberInfo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->

@@ -78,6 +78,33 @@ $(document).ready(function() {
 			}
 		});
 	});
+	
+	// 언팔로우
+	$(".unfollow").click(function() {
+		var athis = $(this);
+		var user_id = $(this).parent().parent().parent().find("span").attr("data-id");
+		var url = "/workroom/follow/" + user_id;
+		console.log(url);
+		$.get(url, function(rData) {
+			if (rData.unFollow) {
+				athis.replaceWith("<button type='button' class='btn btn-primary follow'>팔로우</button>");
+			}
+		});
+	});
+	
+	// 언팔로우 후 다시 팔로우
+	$(".divUnfollow").on("click", ".follow", function() {
+		var athis = $(this);
+		var user_id = $(this).parent().parent().parent().find("span").attr("data-id");
+		var url = "/workroom/follow/" + user_id;
+		console.log(url);
+		$.get(url, function(rData) {
+			if (rData.follow) {
+				athis.replaceWith("<button type='button' class='btn btn-outline-primary unfollow'>언팔로우</button>");
+			}
+		});
+	});
+	
 });
 </script>
 <div class="container-fluid" style="background: #F5F5F5">
@@ -128,13 +155,13 @@ $(document).ready(function() {
 									<a href="#"><img src="/resources/img/test/littleduck.png" alt=""></a>
 								</div>
 								<div class="blog__details__author__text">
-									<span class="st_c_content">${followVo.user_nick}</span>
+									<span data-id="${followVo.following}">${followVo.user_nick}</span>
 								</div>
 							</div>
 						</div>
 						<div class="col-md-2">
-							<div style="text-align: right">
-								<button type="button" class="btn btn-outline-primary">언팔로우</button> 
+							<div style="text-align: right" class="divUnfollow">
+								<button type="button" class="btn btn-outline-primary unfollow">언팔로우</button> 
 							</div>
 						</div>
 					</div>

@@ -23,19 +23,27 @@ public class PagingDto {
 	private final int PAGE_BLOCK = 10;
 	
 	// 유저아이디
-	private String hobby_writer;
 	private String user_id;
 	
 	// 검색
 	private String searchType;
 	private String keyword;
 	
+	// 카테고리
+	private int parent_cate_no;
+	private int m_cate_no;
+	
+	//문의글
+	private int qCheck;
+	
 	public PagingDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
 	public PagingDto(int page, int startRow, int endRow, int count, int startPage, int endPage, int totalPage,
-			int perPage, String hobby_writer, String user_id, String searchType, String keyword) {
+			int perPage, String user_id, String searchType, String keyword,
+			int parent_cate_no, int m_cate_no, int qCheck) {
 		super();
 		this.page = page;
 		this.startRow = startRow;
@@ -45,32 +53,42 @@ public class PagingDto {
 		this.endPage = endPage;
 		this.totalPage = totalPage;
 		this.perPage = perPage;
-		this.hobby_writer = hobby_writer;
 		this.user_id = user_id;
 		this.searchType = searchType;
 		this.keyword = keyword;
+		this.parent_cate_no = parent_cate_no;
+		this.m_cate_no = m_cate_no;
+		this.qCheck = qCheck;
 	}
+	
 	public int getPage() {
 		return page;
 	}
+	
 	public void setPage(int page) {
 		this.page = page;
 	}
+	
 	public int getStartRow() {
 		return startRow;
 	}
+	
 	public void setStartRow(int startRow) {
 		this.startRow = startRow;
 	}
+	
 	public int getEndRow() {
 		return endRow;
 	}
+
 	public void setEndRow(int endRow) {
 		this.endRow = endRow;
 	}
+	
 	public int getCount() {
 		return count;
 	}
+	
 	public void setCount(int count) {
 		this.count = count;
 		
@@ -88,63 +106,100 @@ public class PagingDto {
 			this.endPage = this.totalPage;
 		}
 	}
+	
 	public int getStartPage() {
 		return startPage;
 	}
+	
 	public void setStartPage(int startPage) {
 		this.startPage = startPage;
 	}
+	
 	public int getEndPage() {
 		return endPage;
 	}
+	
 	public void setEndPage(int endPage) {
 		this.endPage = endPage;
 	}
+	
 	public int getTotalPage() {
 		return totalPage;
 	}
+	
 	public void setTotalPage(int totalPage) {
 		this.totalPage = totalPage;
 	}
+	
 	public int getPerPage() {
 		return perPage;
 	}
+	
 	public void setPerPage(int perPage) {
 		this.perPage = perPage;
 	}
-	public String getHobby_writer() {
-		return hobby_writer;
-	}
-	public void setHobby_writer(String hobby_writer) {
-		this.hobby_writer = hobby_writer;
-	}
+	
 	public String getUser_id() {
 		return user_id;
 	}
+	
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
+	
 	public String getSearchType() {
 		return searchType;
 	}
+	
 	public void setSearchType(String searchType) {
 		this.searchType = searchType;
 	}
+	
 	public String getKeyword() {
 		return keyword;
 	}
+	
 	public void setKeyword(String keyword) {
 		this.keyword = keyword;
 	}
+	
 	public int getPAGE_BLOCK() {
 		return PAGE_BLOCK;
 	}
+	
+	public int getParent_cate_no() {
+		return parent_cate_no;
+	}
+
+	public void setParent_cate_no(int parent_cate_no) {
+		this.parent_cate_no = parent_cate_no;
+	}
+
+	public int getM_cate_no() {
+		return m_cate_no;
+	}
+
+	public void setM_cate_no(int m_cate_no) {
+		this.m_cate_no = m_cate_no;
+	}
+
+	public int getqCheck() {
+		return qCheck;
+	}
+
+	public void setqCheck(int qCheck) {
+		this.qCheck = qCheck;
+	}
+
 	@Override
 	public String toString() {
 		return "PagingDto [page=" + page + ", startRow=" + startRow + ", endRow=" + endRow + ", count=" + count
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", totalPage=" + totalPage + ", perPage="
-				+ perPage + ", PAGE_BLOCK=" + PAGE_BLOCK + ", hobby_writer=" + hobby_writer + ", user_id=" + user_id
-				+ ", searchType=" + searchType + ", keyword=" + keyword + "]";
+				+ perPage + ", PAGE_BLOCK=" + PAGE_BLOCK + ", user_id=" + user_id + ", searchType="
+				+ searchType + ", keyword=" + keyword + ", parent_cate_no=" + parent_cate_no + ", m_cate_no="
+				+ m_cate_no + ", qCheck=" + qCheck + "]";
 	}
 
+
+	
 }

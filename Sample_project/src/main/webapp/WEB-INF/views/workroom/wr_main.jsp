@@ -8,7 +8,7 @@
 	<!-- 소개 -->
 	<div class="checkout__order">
 		<div class="workroom_box">
-			<h4>${workroomVo.wr_name}</h4>
+			<h4>${workroomVo.wr_name}<a href="/workroomset/main" class="fa fa-cog" style="font-size:20px; margin-left:5px;"></a></h4>
 		</div>
 		<div class="workroom_box">
 			<hr>
@@ -19,7 +19,7 @@
 	<div class="checkout__order" id="hobby">
 		<div class="workroom_box row" style="height: 39px;">
 			<h4>꼼지락</h4>
-			<a href="/workroom/hobby">더보기</a>
+			<p style="text-align:right;"><a href="/workroom/hobby">더보기</a></p>
 		</div>
 		<hr>
 		<div>

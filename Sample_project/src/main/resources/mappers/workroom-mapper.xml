@@ -9,7 +9,7 @@
 	<select id="listHobby" resultType="HobbyVo">
 		select * from(select rownum rnum, a.* from 
 		    (select * from tbl_hobby
-		    where hobby_writer = #{hobby_writer} 
+		    where user_id = #{user_id} 
 		    order by hobby_no desc)a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
@@ -17,7 +17,7 @@
 	<!-- 취미 총 갯수 -->
 	<select id="hobbyCount" resultType="int">
 		select count(*) from tbl_hobby
-		where hobby_writer = #{hobby_writer}
+		where user_id = #{user_id}
 	</select>
 	
 	<!-- 프로필카드 -->
@@ -34,7 +34,7 @@
 		(select rownum rnum, a.* from 
 			(select * from tbl_hobby
 				where hobby_title like '%' || #{keyword} || '%'
-				and hobby_writer = #{hobby_writer} and is_del = 'N'
+				and user_id = #{user_id} and is_del = 'N'
 				order by hobby_no desc)a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
@@ -52,7 +52,7 @@
 	<!-- 검색 후 취미 총 갯수 -->
 	<select id="searchHobbyCount" resultType="int">
 		select count(*) from tbl_hobby
-		where hobby_writer = #{hobby_writer}
+		where user_id = #{user_id}
 		and hobby_title like '%' || #{keyword} || '%'
 		and is_del = 'N'
 	</select>
