@@ -6,6 +6,14 @@
 <!-- <title>설정</title> -->
 <!-- </head> -->
 <body>
+<script>
+$(document).ready(function(){
+	var msg = "${msg}";
+	if (msg == "success") {
+		alert("회원 가입을 환영합니다~");
+	}
+});
+</script>
 <div class="container-fluid">
 	<div class="row">
 		<div class="col-md-12">

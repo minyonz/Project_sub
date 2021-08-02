@@ -8,4 +8,7 @@ public interface MemberDao {
 	public void insertMember(MemberVo memberVo);
 	public MemberVo info(String user_id);
 	public void updateArticle(MemberVo memberVo);
+	public boolean checkDupNick(String user_nick);
+	public void updateProfileArticle(MemberVo memberVo);
+	public void updateSetupArticle(MemberVo memberVo);
 }	

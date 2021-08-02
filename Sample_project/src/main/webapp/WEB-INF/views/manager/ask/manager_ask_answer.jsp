@@ -4,7 +4,6 @@
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-
 	<!-- Page Heading -->
 	<div style="display: flex;">
 		<h1 class="h3 mb-2 text-gray-800">1:1문의 답변</h1>
@@ -23,21 +22,19 @@
 			  <tbody>
 			    <tr>
 			      <th scope="row">번호</th>
-			      <td>01</td>
+			      <td>${qnaVo.qna_no}</td>
 			      <th style="width: 15%; border-left: 1px solid lightgray">회원 아이디</th>
-			      <td style="width: 20%">java</td>
+			      <td style="width: 20%">${qnaVo.user_id}</td>
 			      <th style="width: 15%; border-left: 1px solid lightgray">작성일</th>
-			      <td style="width: 20%">2021/07/17 15:16:23</td>
+			      <td style="width: 20%">${qnaVo.save_time}</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">제목</th>
-			      <td colspan=5 style="width: 90%">Jacob</td>
+			      <td colspan=5 style="width: 90%">${qnaVo.title}</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">내용</th>
-			      <td colspan=5 style="width: 90%">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-			      				내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-			      				내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</td>
+			      <td colspan=5 style="width: 90%">${qnaVo.content}</td>
 			      
 			    </tr>
 			  </tbody>
@@ -58,7 +55,7 @@
 				  <tbody>
 				    <tr>
 				      <th scope="row">관리자</th>
-				      <td style="width: 90%">manager</td>
+				      <td style="width: 90%">꼼지락</td>
 				    </tr>
 				    <tr>
 				      <th scope="row">내용</th>

@@ -22,7 +22,10 @@ import com.dp.ggomjirak.vo.WorkroomVo;
 public class WorkroomSetController {
 
 	@Inject
-	WorkroomSetService workroomSetService;
+	private WorkroomSetService workroomSetService;
+	
+	@Inject
+	private WorkroomController wrController = new WorkroomController();
 	
 	// 작업실 설정 메인
 	@RequestMapping(value="/main", method=RequestMethod.GET)
@@ -31,6 +34,9 @@ public class WorkroomSetController {
 		String user_id = memberVo.getUser_id();
 		WorkroomVo workroomVo = workroomSetService.getWrSet(user_id);
 		List<FollowVo> followingList = workroomSetService.followingList(user_id);
+		
+		wrController.category(model);
+		model.addAttribute("page_id", user_id);
 		model.addAttribute("followingList", followingList);
 		model.addAttribute("workroomVo", workroomVo);
 		return "workroom/wr_setting";
@@ -41,7 +47,6 @@ public class WorkroomSetController {
 	@ResponseBody
 	public String wrNameSet(WorkroomVo workroomVo) throws Exception {
 		workroomSetService.updateWrName(workroomVo);
-//		String wr_name = workroomVo.getWr_name();
 		return "nameSuccess";
 	}
 	
@@ -54,18 +59,6 @@ public class WorkroomSetController {
 	}
 	
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

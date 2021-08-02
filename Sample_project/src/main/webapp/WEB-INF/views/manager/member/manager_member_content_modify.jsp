@@ -177,17 +177,17 @@
 						<th scope="col" style="width: 15%">등급</th>
 						<td style="width: 35%">
 							<select id="user_grade" name="user_grade" class="btn btn-light">
-								<option value="1"
-									<c:if test="${memberVo.user_grade == '1'}"> selected</c:if>
-								>금손</option>
-								<option value="2"
-									<c:if test="${memberVo.user_grade == '2'}"> selected</c:if>
-								>은손</option>
-								<option value="3"
-									<c:if test="${memberVo.user_grade == '3'}"> selected</c:if>
-								>곰손</option>
 								<option value="4"
 									<c:if test="${memberVo.user_grade == '4'}"> selected</c:if>
+								>금손</option>
+								<option value="3"
+									<c:if test="${memberVo.user_grade == '3'}"> selected</c:if>
+								>은손</option>
+								<option value="2"
+									<c:if test="${memberVo.user_grade == '2'}"> selected</c:if>
+								>곰손</option>
+								<option value="1"
+									<c:if test="${memberVo.user_grade == '1'}"> selected</c:if>
 								>맨손</option>
 							</select>
 						</td>

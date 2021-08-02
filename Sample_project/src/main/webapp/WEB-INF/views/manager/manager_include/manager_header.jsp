@@ -80,7 +80,7 @@
 
             <!-- Heading -->
             <div class="sidebar-heading">
-                Interface
+                회원 관리
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
@@ -112,8 +112,6 @@
                         <h6 class="collapse-header">관리자 회원</h6>
                         <a class="collapse-item" href="/manager/managerManagerList">관리자 회원 정보</a>
                         <a class="collapse-item" href="/manager/managerManagerPermission">관리자 등록</a>
-                        <a class="collapse-item" href="utilities-animation.html">Animations</a>
-                        <a class="collapse-item" href="utilities-other.html">Other</a>
                     </div>
                 </div>
             </li>

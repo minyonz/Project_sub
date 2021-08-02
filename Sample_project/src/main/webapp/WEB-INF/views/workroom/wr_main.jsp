@@ -8,7 +8,7 @@
 	<!-- 소개 -->
 	<div class="checkout__order">
 		<div class="workroom_box">
-			<h4>${workroomVo.wr_name}<a href="/workroomset/main" class="fa fa-cog" style="font-size:20px; margin-left:5px;"></a></h4>
+			<h4>${workroomVo.wr_name}</h4>
 		</div>
 		<div class="workroom_box">
 			<hr>
@@ -19,13 +19,14 @@
 	<div class="checkout__order" id="hobby">
 		<div class="workroom_box row" style="height: 39px;">
 			<h4>꼼지락</h4>
-			<p style="text-align:right;"><a href="/workroom/hobby">더보기</a></p>
+			<p style="text-align:right;">
+			<a href="/workroom/hobby/${page_id}" class="btn btn-outline-dark btn-sm" style="margin-left:700px;">더보기</a></p>
 		</div>
 		<hr>
 		<div>
 			<div class="row">
 				<div class="categories__slider owl-carousel">
-					<c:forEach begin="0" end="4" var="hobbyVo" items="${hobbyList}">
+					<c:forEach begin="0" end="3" var="hobbyVo" items="${hobbyList}">
 						<div class="col-lg-3">
 							<div class="categories__item set-bg"
 								data-setbg="/resources/img/test/sample06.jpg">
@@ -43,7 +44,11 @@
 	<div class="checkout__order" id="story">
 		<div class="workroom_box row" style="height: 39px;">
 			<h4>Story</h4>
-			<a href="/story/list">더보기</a>
+			<p style="text-align:right;">
+				<c:if test="${user_id == page_id}">
+					<a href="/story/write" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+				</c:if>
+				<a href="/story/list/${page_id}" class="btn btn-outline-dark btn-sm" style="margin-left:700px;">더보기</a>
 		</div>
 		<div class="workroom_box">
 			<hr>
@@ -52,16 +57,17 @@
 					<div class="row">
 						<div class="col-md-10" style="padding: 0px; margin: auto;">
 							<p style="font-size: 14px; margin: 10px" class="story_detail">
-								<a href="/story/detail?st_no=${storyVo.st_no}">
-									${storyVo.st_content}</a><br> 
-									<a class="fa fa-heart-o" href="#" style="margin-right: 5px">
-									${storyVo.st_like_count}</a> 
-									<a class="fa fa-comment-o" href="/story/detail?st_no=${storyVo.st_no}">
+								<a href="/story/detail/${page_id}?st_no=${storyVo.st_no}">${storyVo.st_content}</a><br> 
+								<a class="fa fa-heart-o" href="/story/detail/${page_id}?st_no=${storyVo.st_no}" 
+									style="margin-right: 5px"> ${storyVo.st_like_count}</a> 
+								<a class="fa fa-comment-o" href="/story/detail/${page_id}?st_no=${storyVo.st_no}">
 									${storyVo.st_c_count}</a>
 							</p>
 						</div>
 						<div class="col-md-2" style="padding: 0px;">
-							<img src="/resources/img/test/duck.png" width="100px">
+							<c:if test="${storyVo.st_img != null}">
+								<img src="/displayImage?fileName=${storyVo.st_img}" width="100px">
+							</c:if>
 						</div>
 					</div>
 					<hr>
@@ -73,7 +79,7 @@
 	<div class="checkout__order" id="mbm">
 		<div class="workroom_box row" style="height: 39px;">
 			<h4>MadeByMe</h4>
-			<a href="/workroom/mbm">더보기</a>
+			<a href="/workroom/mbm/${page_id}">더보기</a>
 		</div>
 		<hr>
 		<div>

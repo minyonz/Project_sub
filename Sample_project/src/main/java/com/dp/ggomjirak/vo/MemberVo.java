@@ -39,6 +39,17 @@ public class MemberVo {
 	private String cate_name2;
 	private String cate_name3;
 	
+	// 메시지 보내기 내용
+	private int notReadCount;
+	
+	public int getNotReadCount() {
+		return notReadCount;
+	}
+
+	public void setNotReadCount(int notReadCount) {
+		this.notReadCount = notReadCount;
+	}
+
 	public MemberVo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -276,8 +287,10 @@ public class MemberVo {
 				+ cate_no2 + ", cate_no3=" + cate_no3 + ", cate_etc=" + cate_etc + ", follower_cnt=" + follower_cnt
 				+ ", following_cnt=" + following_cnt + ", user_img=" + user_img + ", user_grade=" + user_grade + ", cd="
 				+ cd + ", name=" + name + ", onOff=" + onOff + ", setup_save_time=" + setup_save_time + ", cate_name1="
-				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + "]";
+				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + ", notReadCount="
+				+ notReadCount + "]";
 	}
 
+	
 	
 }

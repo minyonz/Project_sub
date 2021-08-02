@@ -2,7 +2,24 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
-
+<script>
+$(document).ready(function() {
+	$(".pagination > li > a").click(function(e) {
+		e.preventDefault(); // 페이지 이동 막기
+		var page = $(this).attr("href");
+		var frmPaging = $("#frmPaging");
+		frmPaging.find("[name=page]").val(page); // page에 페이지 숫자 넣어줌
+		console.log(page);
+		frmPaging.submit();
+		// -> 주소창에 : http://localhost/board/listAll?page=1&perPage=10&searchType=&keyword=
+	});
+});
+</script>
+<form id="frmPaging" action="/manager/managerManagerList" method="get">
+<input type="hidden" name="page" value="${pagingDto.page}"/>
+<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
+<input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
+</form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -83,6 +100,7 @@
 							<th>직급</th>
 							<th>닉네임</th>
 							<th>관리자 승인일</th>
+							<th>관리자 취소</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -94,6 +112,12 @@
 							<td>${manager.m_autority}</td>
 							<td>${manager.m_nik}</td>
 							<td>${manager.m_reg_date}</td>
+							<td>
+								<form action="/manager/managerDeleteManager" method="post">
+									<button type="submit" class="btn btn-danger orange_background">취소</button>
+									<input type="hidden" id="user_id" name="user_id" value="${manager.user_id}">
+								</form>
+							</td>
 						</tr>
 					</c:forEach>
 					</tbody>
@@ -102,6 +126,36 @@
 			
 		</div>
 	</div>
+	<!-- 페이징 -->
+			<div class="row  text-center">
+				<div class="col-md-12">
+					<nav class="pagination justify-content-center">
+						<ul class="pagination">
+						<c:if test="${pagingDto.startPage != 1}">
+							<li class="page-item"><a class="page-link" href="${pagingDto.startPage - 1}">&laquo;</a></li>
+						</c:if>
+						
+						<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
+							<li
+								<c:choose>
+									<c:when test="${v == pagingDto.page}">
+										class="page-item active"
+								 	</c:when>
+								 	<c:otherwise>
+								 		class="page-item"
+									</c:otherwise>
+								</c:choose>
+									><a class="page-link" href="${v}">${v}</a></li>
+						</c:forEach>
+						
+						<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
+							<li class="page-item"><a class="page-link" href="${pagingDto.endPage + 1}">&raquo;</a></li>
+						</c:if>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- // 페이징 -->
 
 </div>
 <!-- /.container-fluid -->

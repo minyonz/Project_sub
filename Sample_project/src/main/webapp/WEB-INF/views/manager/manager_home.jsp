@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="manager_include/manager_header.jsp" %>
 
 <!-- Begin Page Content -->
@@ -23,7 +24,7 @@
                         <div class="col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                 총 회원 수</div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">158명</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">${memberCount}명</div>
                         </div>
                         <div class="col-auto">
                             <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -195,19 +196,23 @@
                    <table class="table">
 					  <thead>
 					    <tr>
-					      <th scope="col">#</th>
-					      <th scope="col">First</th>
-					      <th scope="col">Last</th>
-					      <th scope="col">Handle</th>
+					      <th scope="col">순위</th>
+					      <th scope="col">아이디</th>
+					      <th scope="col">닉네임</th>
+					      <th scope="col">등급</th>
+					      <th scope="col">팔로워 수</th>
 					    </tr>
 					  </thead>
 					  <tbody>
+					  <c:forEach var="member" items="${popularMemberList}">
 					    <tr>
-					      <th scope="row">1</th>
-					      <td>Mark</td>
-					      <td>Otto</td>
-					      <td>@mdo</td>
+					      <th>1</th>
+					      <th><a href="/manager/managerMemberContent?user_id=${member.user_id}">${member.user_id}</a></th>
+					      <th>${member.user_nick}</th>
+					      <th>${member.name}</th>
+					      <th>${member.follower_cnt}</th>
 					    </tr>
+					    </c:forEach>
 					  </tbody>
 					</table>
 					

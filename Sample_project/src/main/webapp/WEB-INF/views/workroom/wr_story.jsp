@@ -45,6 +45,9 @@ $(document).ready(function() {
 	<div class="checkout__order">
 		<div class="workroom_box row" style="height: 39px;">
 			<h4>Story detail</h4>
+			<c:if test="${user_id == page_id}">
+				<a href="/story/write" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+			</c:if>
 		</div>
 		<div class="workroom_box">
 			<hr>
@@ -53,16 +56,18 @@ $(document).ready(function() {
 					<div class="row">
 						<div class="col-md-10" style="padding: 0px; margin: auto;">
 							<p style="font-size: 14px; margin: 10px" id="story_detail">
-								<a href="/story/detail?st_no=${storyVo.st_no}">
+								<a href="/story/detail/${page_id}?st_no=${storyVo.st_no}">
 									${storyVo.st_content}</a><br> 
 									<a class="fa fa-heart-o like" href="#" style="margin-right: 5px" data-st_no="${storyVo.st_no}">
 									${storyVo.st_like_count}</a> 
-									<a class="fa fa-comment-o" href="/story/detail?st_no=${storyVo.st_no}">
+									<a class="fa fa-comment-o" href="/story/detail/${page_id}?st_no=${storyVo.st_no}">
 									${storyVo.st_c_count}</a>
 							</p>
 						</div>
 						<div class="col-md-2" style="padding: 0px;">
-							<img src="/resources/img/test/duck.png" width="100px">
+							<c:if test="${storyVo.st_img != null}">
+								<img src="/displayImage?fileName=${storyVo.st_img}" width="100px">
+							</c:if>
 						</div>
 					</div>
 					<hr>
@@ -73,7 +78,7 @@ $(document).ready(function() {
 		<div class="product__pagination justify-content-center"
 			style="display: flex;">
 			<c:if test="${storyPagingDto.startPage != 1}">
-				<a href="/story/list/?page=${storyPagingDto.startPage - 1}&perPage=${storyPagingDto.perPage}">
+				<a href="/story/list/${page_id}?page=${storyPagingDto.startPage - 1}&perPage=${storyPagingDto.perPage}">
 					<i class="fa fa-long-arrow-left"></i>
 				</a>
 			</c:if>
@@ -87,10 +92,10 @@ $(document).ready(function() {
 					 		class="page-item"
 						</c:otherwise>
 					</c:choose>
-				href="/story/list/?page=${v}&perPage=${storyPagingDto.perPage}">${v}</a>
+				href="/story/list/${page_id}?page=${v}&perPage=${storyPagingDto.perPage}">${v}</a>
 			</c:forEach>
 			<c:if test="${storyPagingDto.endPage < storyPagingDto.totalPage}">
-				<a href="/story/list/?page=${storyPagingDto.endPage + 1}&perPage=${storyPagingDto.perPage}">
+				<a href="/story/list/${page_id}?page=${storyPagingDto.endPage + 1}&perPage=${storyPagingDto.perPage}">
 					<i class="fa fa-long-arrow-right"></i>
 				</a>
 			</c:if>

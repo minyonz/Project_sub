@@ -22,7 +22,7 @@ import com.dp.ggomjirak.vo.StoryCommentVo;
 public class StoryCommentController {
 	
 	@Inject
-	StoryCommentService storyCommentService;
+	private StoryCommentService storyCommentService;
 	
 	// 댓글쓰기
 	@RequestMapping(value="/write", method=RequestMethod.POST)

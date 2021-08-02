@@ -65,78 +65,7 @@ ${memberVo}
 								<label for="user_tel">연락처</label>
 								<input type="text" class="form-control" id="user_tel" name="user_tel" value="${memberVo.user_tel}"  />
 							</div>
-							<div class="form-group">
-								<label for="user_details">부가 정보</label>
-							</div>
-							
-							<div class="form-group">
-								<label for="user_hobbys">관심 취미 선택</label>
-							</div>
-							
-							<table>	
-							<tr>
-								<td>
-									<select name="bigSort1" id="bigSort1">
-										<option value="bigSort1">대분류</option>
-										<option value="DIY">만들기</option>
-										<option value="painting">그리기</option>
-										<option value="decorating">꾸미기</option>
-									</select>
-									&nbsp;<!-- ??? -->
-								</td>
-								<td>										
-									<select name="midSort1" id="midSort1">
-										<option value="midSort1">중분류</option>
-										<option value="DIY">향초</option>
-										<option value="painting">수채화</option>
-										<option value="decorating">다이어리</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<select name="bigSort2" id="bigSort2">
-										<option value="bigSort2">대분류</option>
-										<option value="DIY">만들기</option>
-										<option value="painting">그리기</option>
-										<option value="decorating">꾸미기</option>
-									</select>
-								</td>
-								<td>										
-									<select name="midSort2" id="midSort2">
-										<option value="midSort2">중분류</option>
-										<option value="DIY">향초</option>
-										<option value="painting">수채화</option>
-										<option value="decorating">다이어리</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<select name="bigSort3" id="bigSort3">
-										<option value="bigSort3">대분류</option>
-										<option value="DIY">만들기</option>
-										<option value="painting">그리기</option>
-										<option value="decorating">꾸미기</option>
-									</select>
-								</td>
-								<td>										
-									<select name="midSort3" id="midSort3">
-										<option value="midSort3">중분류</option>
-										<option value="DIY">향초</option>
-										<option value="painting">수채화</option>
-										<option value="decorating">다이어리</option>
-									</select>
-								</td>
-							</tr>
-							</table>
-							<br>
-							<div class="form-group">
-								<label for="cate_etc">직접 입력</label>
-								<input type="text" class="form-control" id="cate_etc" name="cate_etc" value="${memberVo.cate_etc}" />
-							</div>
-
-							<br><br>
+						
 							<div class="form-group">
 								<button type="submit" class="btn btn-primary">회원정보수정</button>
 							</div>

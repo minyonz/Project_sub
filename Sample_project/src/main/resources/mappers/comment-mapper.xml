@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.dp.ggomjirak.comment">
+ 
+ 	<!-- 댓글  달기-->
+	<insert id="insertComment" parameterType="CommentVo">
+		insert into tbl_comment (c_no, user_id, h_no, re_group, c_content)
+		values (seq_c_no.nextval, #{user_id}, #{h_no}, seq_c_no.nextval, #{c_content})
+	</insert>
+	
+	<!-- 답댓글 달기 -->
+	<insert id="insertRecomment" parameterType="CommentVo">
+	
+		insert into tbl_comment (
+			c_no, user_id, c_content,
+			h_no, parent_c_no, re_group, c_depth
+		)
+		values (
+			seq_c_no.nextval, #{user_id}, #{c_content},
+			#{h_no}, #{parent_c_no}, #{re_group}, 1
+		)
+	</insert>
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="selectCommentList" parameterType="int" resultType="CommentVo">
+		select a.*, b.user_name user_name, b.user_img user_img, c.user_id parent_user_id, c.user_name parent_user_name
+		from tbl_comment a
+		left outer join tbl_member b on a.user_id = b.user_id
+		left outer join (select a.*, b.user_name user_name 
+							from tbl_comment a 
+							left outer join tbl_member b 
+							on a.user_id = b.user_id ) c on a.parent_c_no = c.c_no
+		where a.h_no = #{h_no} and a.is_del = 'N'
+		order by a.re_group desc, a.c_no asc
+	</select>
+	
+	<!-- 댓글 수정 -->
+	<update id="updateComment" parameterType="CommentVo">
+		update tbl_comment
+		set c_content = #{c_content},
+			mod_date = sysdate
+		where c_no = #{c_no}
+	</update>
+	
+	<!-- 댓글 삭제 -->
+	<update id="deleteComment" parameterType="int">
+		UPDATE tbl_comment
+		SET is_del = 'Y',
+   		    del_date = sysdate
+ 		WHERE c_no = #{c_no} 
+ 		 AND NOT EXISTS ( SELECT * FROM tbl_comment
+                 		  WHERE parent_c_no = #{c_no})
+	</update>
+ </mapper>

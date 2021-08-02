@@ -2,7 +2,24 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
-
+<script>
+$(document).ready(function() {
+	$(".pagination > li > a").click(function(e) {
+		e.preventDefault(); // 페이지 이동 막기
+		var page = $(this).attr("href");
+		var frmPaging = $("#frmPaging");
+		frmPaging.find("[name=page]").val(page); // page에 페이지 숫자 넣어줌
+		console.log(page);
+		frmPaging.submit();
+		// -> 주소창에 : http://localhost/board/listAll?page=1&perPage=10&searchType=&keyword=
+	});
+});
+</script>
+<form id="frmPaging" action="/manager/managerMemberListLeave" method="get">
+<input type="hidden" name="page" value="${pagingDto.page}"/>
+<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
+<input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
+</form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -13,21 +30,6 @@
 		
 			<!-- 검색 -->
 			<div class="input-group">
-				<div class="dropdown">
-
-					<select name="category"
-						class="btn btn-outline-light green_background dropdown-toggle"
-						data-bs-toggle="dropdown" aria-expanded="false">
-						<option class="dropdown-item" value="ca">검색 옵션</option>
-						<option class="dropdown-item" value="1">1</option>
-						<option class="dropdown-item" value="2">2</option>
-						<option class="dropdown-item" value="3">3</option>
-						<option class="dropdown-item" value="4">4</option>
-					</select>
-
-
-				</div>
-
 				<input id="searchText" type="text" class="form-control"
 					aria-label="Text input with dropdown button" placeholder="회원 정보 검색">
 
@@ -86,6 +88,7 @@
 							<th>회원가입일</th>
 							<th>회원 탈퇴 여부</th>
 							<th>회원 탈퇴일</th>
+							<th>탈퇴 취소</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -100,6 +103,9 @@
 							<td>${leaveList.reg_date}</td>
 							<td>${leaveList.is_del}</td>
 							<td>${leaveList.del_date}</td>
+							<td>
+								<a href="/manager/managerCancelMemberDeleteRun?user_id=${leaveList.user_id}" type="button" class="btn btn-danger orange_background">취소</a>
+							</td>
 						</tr>
 					</c:forEach>
 					</tbody>
@@ -108,6 +114,36 @@
 			
 		</div>
 	</div>
+	<!-- 페이징 -->
+			<div class="row  text-center">
+				<div class="col-md-12">
+					<nav class="pagination justify-content-center">
+						<ul class="pagination">
+						<c:if test="${pagingDto.startPage != 1}">
+							<li class="page-item"><a class="page-link" href="${pagingDto.startPage - 1}">&laquo;</a></li>
+						</c:if>
+						
+						<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
+							<li
+								<c:choose>
+									<c:when test="${v == pagingDto.page}">
+										class="page-item active"
+								 	</c:when>
+								 	<c:otherwise>
+								 		class="page-item"
+									</c:otherwise>
+								</c:choose>
+									><a class="page-link" href="${v}">${v}</a></li>
+						</c:forEach>
+						
+						<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
+							<li class="page-item"><a class="page-link" href="${pagingDto.endPage + 1}">&raquo;</a></li>
+						</c:if>
+						</ul>
+					</nav>
+				</div>
+			</div>
+			<!-- // 페이징 -->
 
 </div>
 <!-- /.container-fluid -->

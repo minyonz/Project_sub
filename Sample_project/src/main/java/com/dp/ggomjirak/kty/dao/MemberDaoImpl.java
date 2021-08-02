@@ -39,21 +39,53 @@ public class MemberDaoImpl implements MemberDao {
 	@Override
 	public void insertMember(MemberVo memberVo) {
 		sqlSession.insert(NAMESPACE + "insertMember", memberVo);
+		System.out.println("insertMember");
+		
 		sqlSession.insert(NAMESPACE + "insertMemberDetail", memberVo);
+		System.out.println("insertMemberDetail");
+		
 		sqlSession.insert(NAMESPACE + "insertMemberSetUp", memberVo);
+		System.out.println("insertMemberSetUp");
+		
+		sqlSession.insert(NAMESPACE + "insertWorkRoom", memberVo);
+		System.out.println("insertWorkRoom");
 	}
 
 	@Override
 	public MemberVo info(String user_id) {
-		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "info");
+		System.out.println("MemberDaoImpl info 들어옴 user_id: " + user_id);
+		MemberVo memberVo = sqlSession.selectOne(NAMESPACE + "info", user_id);
+		System.out.println("MemberDaoImpl selectOne info: " + memberVo);
 		return memberVo;
 	}
 
 	@Override
 	public void updateArticle(MemberVo memberVo) {
 		sqlSession.update(NAMESPACE + "updateMemberInfo", memberVo); 
-		sqlSession.update(NAMESPACE + "updateMemberDetail", memberVo); 
+		//sqlSession.update(NAMESPACE + "updateMemberDetail", memberVo); 
 		
+	}
+	
+	
+
+	@Override
+	public boolean checkDupNick(String user_nick) {
+		int count = sqlSession.selectOne(NAMESPACE + "checkDupNick", user_nick);
+		if (count > 0) {
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public void updateProfileArticle(MemberVo memberVo) {
+		sqlSession.update(NAMESPACE + "updateMemberProfile", memberVo); 
+		
+	}
+
+	@Override
+	public void updateSetupArticle(MemberVo memberVo) {
+		sqlSession.update(NAMESPACE + "updateMemberSetup", memberVo); 
 	}
 
 }

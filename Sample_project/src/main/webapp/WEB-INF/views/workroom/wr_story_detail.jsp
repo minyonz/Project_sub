@@ -15,37 +15,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	//댓글 보이기
-// 	var url = "/st_comment/list";
-// 	var st_no = parseInt("${storyVo.st_no}");
-// 	var sendData = { "st_no" : st_no }
-// 		$.get(url, sendData, function(rData) {
-// 			var commentHtml = "";
-// 			$.each(rData, function() {
-// 				commentHtml += "<div class='row' style='margin-top: 15px; margin-bottom:15px'>";
-// 				commentHtml += "	<div class='col-md-10'>";
-// 				commentHtml += "		<div class='blog__details__author'>";
-// 				commentHtml += "			<div class='blog__details__author__pic'>";
-// 				commentHtml += "				<a href='#'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
-// 				commentHtml += "					<div class='blog__details__author__text'>";
-// 				commentHtml += "						<h6>"+ this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
-// 				commentHtml += "							<span id='content'>" + this.st_c_content + "</span></div></div></div>";
-// 				commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
-// 				commentHtml += "		<a href='#' style='margin-right:5px; font-size:13px;' id='commentMod'>수정</a>"
-// 				commentHtml += "		<a href='#' style='font-size:13px;' id='commentDel' data-cno=" + this.st_c_no + ">삭제</a></div></div></div>"
-// 				commentHtml += "<div class='row' id='divCommentMod' style='display:none'><div class='col-md-9'>";
-// 				commentHtml += "	<textarea class='form-control' style='width: 100%; resize: none; id='txtCommentMod'>" + this.st_c_content + "</textarea></div>";
-// 				commentHtml += "<div class='col-md-3'>";
-// 				commentHtml += "	<button type='button' class='btn btn-warning btn-sm' id='btnCommentMod' data-csno=" + this.st_c_no + ">수정</button><br>";
-// 				commentHtml += "	<button tyle='button' class='btn btn-light btn-sm' id='btnCommentModCancel'>취소</button></div></div><hr>";
-// 				$("#comment").html(commentHtml);
-				
-// 				$("commentMod").click(function() {
-// 					console.log("클릭");
-// 				});
-// 			});
-// 	});
-	
 	// 댓글 입력 
 	$("#btnCommentInsert").click(function() {
 		var st_c_content = $("#txtComment").val();
@@ -74,7 +43,7 @@ $(document).ready(function() {
 							commentHtml += "	<div class='col-md-10'>";
 							commentHtml += "		<div class='blog__details__author'>";
 							commentHtml += "			<div class='blog__details__author__pic'>";
-							commentHtml += "				<a href='#'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
+							commentHtml += "				<a href='/workroom/main/" + this.user_id + "><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
 							commentHtml += "					<div class='blog__details__author__text'>";
 							commentHtml += "						<h6>" + this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span class='st_c_content'>" + this.st_c_content + "</span></div></div></div>";
@@ -82,7 +51,7 @@ $(document).ready(function() {
 							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod'>수정</a>"
 							commentHtml += "		<a href='#' style='font-size:13px;' class='commentDel' data-cno=" + this.st_c_no + ">삭제</a></div></div></div>"
 							commentHtml += "<div class='row' id='divCommentMod' style='display:none'><div class='col-md-9'>";
-							commentHtml += "	<textarea class='form-control' style='width: 100%; resize: none; id='txtCommentMod'>" + this.st_c_content + "</textarea></div>";
+							commentHtml += "	<textarea class='form-control txtCommentMod' style='width: 100%; resize: none;>" + this.st_c_content + "</textarea></div>";
 							commentHtml += "<div class='col-md-3'>";
 							commentHtml += "	<button type='button' class='btn btn-warning btn-sm modRun' data-st_c_no" + this.st_c_no + ">등록</button><br>";
 							commentHtml += "	<button tyle='button' class='btn btn-light btn-sm modCancel'>취소</button></div></div><hr>";
@@ -105,7 +74,8 @@ $(document).ready(function() {
 		});
 		// 수정
 		$(".modRun").click(function() {
-			var st_c_content = $("#txtCommentMod").val();
+			console.log("클릭");
+			var st_c_content = $(this).parent().parent().find("textarea").val();
 			var st_c_no = $(this).attr("data-st_c_no");
 			console.log(st_c_no);
 			var url = "/st_comment/modify";
@@ -233,14 +203,14 @@ $(document).ready(function() {
 						<div class="col-md-10">
 							<div class="blog__details__author">
 								<div class="blog__details__author__pic">
-									<a href="#"><img src="/resources/img/test/littleduck.png" alt=""></a>
+									<a href="/workroom/main/${commentVo.user_id}"><img src="/resources/img/test/littleduck.png" alt=""></a>
 								</div>
 								<div class="blog__details__author__text">
 									<h6>${commentVo.user_id} ${commentVo.reg_date}</h6>
 									<span class="st_c_content">${commentVo.st_c_content}</span>
-	<!-- 												<a href="#" style="font-size:13px" id="commentReply">답글</a> -->
-	<!-- 												<br> -->
-	<!-- 												<span id="span"></span> -->
+	<!-- 								<a href="#" style="font-size:13px" id="commentReply">답글</a> -->
+	<!-- 								<br> -->
+	<!-- 								<span id="span"></span> -->
 								</div>
 							</div>
 						</div>
@@ -253,7 +223,7 @@ $(document).ready(function() {
 					</div>
 					<div class="row divCommentMod" style="display:none">
 						<div class="col-md-9">
-							<textarea class="form-control" style="width: 100%; resize: none;" id="txtCommentMod">${commentVo.st_c_content}</textarea>
+							<textarea class="form-control txtCommentMod" style="width: 100%; resize: none;">${commentVo.st_c_content}</textarea>
 						</div>
 					<div class="col-md-3">
 						<button type="button" class="btn btn-warning btn-sm modRun" data-st_c_no="${commentVo.st_c_no}">등록</button><br>

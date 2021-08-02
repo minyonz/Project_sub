@@ -5,14 +5,32 @@
 
 <mapper namespace="com.dp.ggomjirak.member">
 
-	<select id ="login" resultType="MemberVo">
+	<select id ="login-이전내용" resultType="MemberVo">
 		select * from tbl_memberInfo 
 		where user_id = #{user_id} and user_pw = #{user_pw}
 	</select>
+
+	<select id ="login" resultType="MemberVo">
+		select * from tbl_memberInfo 
+		where user_id = #{user_id} and user_pw = #{user_pw} and is_del = 'N'
+	</select>
+
 	
 	<select id ="info" resultType="MemberVo">
-		select * from tbl_memberInfo 
-		where user_id = #{user_id}
+		select a.user_id, a.user_pw, a.user_name, a.user_email, a.user_tel, a.reg_date, a.is_del, 
+			   b.user_nick, b.cate_no1, b.cate_no2, b.cate_no3, b.cate_etc, 
+			   b.follower_cnt, b.following_cnt, b.user_img, b.user_grade, 
+	 		   c.name, 
+	 		   d.onOff, d.setup_save_time,
+	 		   e.cate_name as "cate_name1", f.cate_name as "cate_name2", g.cate_name as "cate_name3"
+		from tbl_memberInfo a
+	    	left join tbl_memberDetail b on a.user_id = b.user_id
+	    	left join tbl_memberGrade c on b.user_grade = c.cd 
+	    	left join tbl_memberSetup d on a.user_id = d.user_id
+	    	left join tbl_hobby_cate e on b.cate_no1 = e.cate_no
+	    	left join tbl_hobby_cate f on b.cate_no2 = f.cate_no
+	    	left join tbl_hobby_cate g on b.cate_no3 = g.cate_no
+		where a.user_id = #{user_id}
 	</select>
 	
 	<update id="updateMemberInfo">
@@ -29,10 +47,30 @@
 			cate_etc = #{cate_etc}
  		where user_id = #{user_id}
 	</update>
+	
+	<update id="updateMemberProfile">
+		update tbl_memberDetail set
+			user_nick = #{user_nick},
+			cate_etc = #{cate_etc},
+			reg_date = reg_date
+ 		where user_id = #{user_id}
+	</update>
 
+	<update id="updateMemberSetup">
+		update tbl_memberSetup set 
+			onoff = #{onOff},
+			setup_save_time = sysdate
+		where user_id = #{user_id}
+	</update>
+	
 	<select id="checkDupId" resultType="int">
 		select count(*) from tbl_memberInfo
 		where user_id = #{user_id}
+	</select>
+	
+	<select id="checkDupNick" resultType="int">
+		select count(*) from tbl_memberDetail
+		where user_nick = #{user_nick}
 	</select>
 	
 	<insert id="insertMember">
@@ -48,12 +86,25 @@
 		values
 			(#{user_id}, #{user_nick, jdbcType=VARCHAR}, 
 			 #{cate_no1, jdbcType=NUMERIC}, #{cate_no2, jdbcType=NUMERIC}, #{cate_no3, jdbcType=NUMERIC}, #{cate_etc, jdbcType=VARCHAR}, 
-			 #{follower_cnt}, #{following_cnt}, #{user_grade, jdbcType=NUMERIC}, sysdate)
+			 #{follower_cnt}, #{following_cnt}, 1, sysdate)
 	</insert>
 	
 	<insert id="insertMemberSetUp">
 		insert into tbl_memberSetup (user_id) values (#{user_id}) 
 	</insert>
 	
+	<insert id="insertWorkRoom-이전내용">
+		insert into tbl_workroom (user_id, wr_name, wr_intro) values (#{user_id}, #{user_id} || '의 작업실','안녕하세요~')
+	</insert>
+	
+	<insert id="insertWorkRoom">
+		insert into tbl_workroom (wr_no, user_id, wr_name, wr_intro) 
+ 			values 
+ 		( seq_wr_no.nextval, 
+ 		  #{user_id}, 
+ 		  nvl((select user_nick  from tbl_memberdetail where user_id=#{user_id}),
+ 		  #{user_id}) || '의 작업실', '안녕하세요~'
+ 		)
+	</insert>
 	
 </mapper>

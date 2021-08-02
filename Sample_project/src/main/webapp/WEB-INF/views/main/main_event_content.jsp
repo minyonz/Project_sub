@@ -2,32 +2,23 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp" %>
 <!-- 이벤트 -->
-
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
 			
-				<div class="container">
-	
-					<ul class="nav nav-tabs">
-						<li class="nav-item"><a class="nav-link active" href="/main/mainEvent">진행중인 이벤트</a></li>
-						<li class="nav-item"><a class="nav-link" href="#">종료된 이벤트</a></li>
-					</ul>
-				</div>
-				
 				<table class="table table-borderless">
 				  <thead>
 				    <tr>
-				      <th scope="col" colspan="2"><h3>제목입니다아아</h3></th>
+				      <th scope="col" colspan="2"><h3>${eventVo.e_title}</h3></th>
 				      
 				    </tr>
 				  </thead>
 				  <tbody>
 				    <tr>
-				      <th scope="row">이벤트 진행 기간 : 2021/07/20 ~ 2021/07/21</th>
-				      <td class="text-right">작성일 : 2021/07/20 10:20:15</td>
+				      <th scope="row">이벤트 진행 기간 : ${eventVo.start_date} ~ ${eventVo.end_date}</th>
+				      <td class="text-right">작성일 : ${eventVo.reg_date}</td>
 				    </tr>
 				    <tr>
 				      <td colspan="2">
@@ -37,7 +28,7 @@
 				    </tr>
 				    <tr>
 				    	<td colspan="2">
-				    		내용
+				    		${eventVo.e_content}
 				    	</td>
 				    </tr>
 				  </tbody>

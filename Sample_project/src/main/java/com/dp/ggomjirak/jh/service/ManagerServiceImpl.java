@@ -14,6 +14,9 @@ import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberDetailVo;
 import com.dp.ggomjirak.vo.MemberInfoVo;
 import com.dp.ggomjirak.vo.MemberVo;
+import com.dp.ggomjirak.vo.PagingDto;
+import com.dp.ggomjirak.vo.QnAVo;
+import com.dp.ggomjirak.vo.WorkroomVo;
 
 @Service
 public class ManagerServiceImpl implements ManagerService {
@@ -23,21 +26,41 @@ public class ManagerServiceImpl implements ManagerService {
 
 
 	@Override
-	public List<MemberVo> showMemberList() {
-		List<MemberVo> list = managerDao.showMemberList();
+	public List<MemberVo> showMemberList(PagingDto pagingDto) {
+		List<MemberVo> list = managerDao.showMemberList(pagingDto);
 		return list;
 	}
 
 	@Override
-	public List<MemberVo> showMemberListLeave() {
-		List<MemberVo> list = managerDao.showMemberListLeave();
+	public List<MemberVo> showMemberListLeave(PagingDto pagingDto) {
+		List<MemberVo> list = managerDao.showMemberListLeave(pagingDto);
+		return list;
+	}
+	
+
+	@Override
+	public int getCountMemberList(PagingDto pagingDto) {
+		int count = managerDao.getCountMemberList(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountMemberListLeave(PagingDto pagingDto) {
+		int count = managerDao.getCountMemberListLeave(pagingDto);
+		return count;
+	}
+
+
+	@Override
+	public List<ManagerVo> showManagerList(PagingDto pagingDto) {
+		List<ManagerVo> list = managerDao.showManagerList(pagingDto);
 		return list;
 	}
 
 	@Override
-	public List<ManagerVo> showManagerList() {
-		List<ManagerVo> list = managerDao.showManagerList();
-		return list;
+	public int getCountManager(PagingDto pagingDto) {
+		int count = managerDao.getCountManager(pagingDto);
+		return count;
 	}
 
 	@Override
@@ -73,35 +96,85 @@ public class ManagerServiceImpl implements ManagerService {
 
 
 	@Override
-	public void updateMember(MemberVo memberVo) {
+	public void updateMember(MemberVo memberVo, WorkroomVo workroomVo) {
 		managerDao.updateMemberInfo(memberVo);
 		managerDao.updateMemberDetail(memberVo);
+		managerDao.updateMemberWorkroom(workroomVo);
 		
 	}
 
+
+	@Override
+	public void deleteMember(String user_id) {
+		managerDao.deleteMember(user_id);
+		
+	}
+
+	@Override
+	public void cancleDeleteMember(String user_id) {
+		managerDao.cancleDeleteMember(user_id);
+		
+	}
+	
+
+	@Override
+	public void insertManager(ManagerVo managerVo) {
+		managerDao.insertManager(managerVo);
+		
+	}
+
+	@Override
+	public void deleteManager(String user_id) {
+		managerDao.deleteManager(user_id);
+		
+	}
 	
 	@Override
-	public List<EventVo> showEventListAll() {
-		List<EventVo> list = managerDao.showEventListAll();
+	public List<EventVo> showEventListAll(PagingDto pagingDto) {
+		List<EventVo> list = managerDao.showEventListAll(pagingDto);
 		return list;
 	}
 	
 	@Override
-	public List<EventVo> showEventList() {
-		List<EventVo> list = managerDao.showEventList();
+	public List<EventVo> showEventList(PagingDto pagingDto) {
+		List<EventVo> list = managerDao.showEventList(pagingDto);
 		return list; 
 	}
 
 	@Override
-	public List<EventVo> showEventListEnd() {
-		List<EventVo> list = managerDao.showEventListEnd();
+	public List<EventVo> showEventListEnd(PagingDto pagingDto) {
+		List<EventVo> list = managerDao.showEventListEnd(pagingDto);
 		return list;
 	}
 
 	@Override
-	public List<EventVo> showEventListDelete() {
-		List<EventVo> list = managerDao.showEventListDelete();
+	public List<EventVo> showEventListDelete(PagingDto pagingDto) {
+		List<EventVo> list = managerDao.showEventListDelete(pagingDto);
 		return list;
+	}
+
+	@Override
+	public int getCountEventAll(PagingDto pagingDto) {
+		int count = managerDao.getCountEventAll(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountEvent(PagingDto pagingDto) {
+		int count = managerDao.getCountEvent(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountEventEnd(PagingDto pagingDto) {
+		int count = managerDao.getCountEventEnd(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountEventDelete(PagingDto pagingDto) {
+		int count = managerDao.getCountEventDelete(pagingDto);
+		return count;
 	}
 
 	@Override
@@ -125,6 +198,40 @@ public class ManagerServiceImpl implements ManagerService {
 	public void deleteEvent(int e_no) {
 		managerDao.deleteEvent(e_no);
 	}
+	
+
+	// 문의
+	@Override
+	public List<QnAVo> selectQnAList(PagingDto pagingDto) {
+		List<QnAVo> list = managerDao.selectQnAList(pagingDto);
+		return list;
+	}
+
+	@Override
+	public int getCountQnA(PagingDto pagingDto) {
+		int count = managerDao.getCountQnA(pagingDto);
+		return count;
+	}
+
+	@Override
+	public QnAVo selectQnaByNo(int qna_no) {
+		QnAVo qnaVo = managerDao.selectQnaByNo(qna_no);
+		return qnaVo;
+	}
+	
+
+	@Override
+	public List<MemberVo> selectPopularMemberList() {
+		List<MemberVo> list = managerDao.selectPopularMemberList();
+		return list;
+	}
+
+	@Override
+	public int getMemberCount() {
+		int count = managerDao.getMemberCount();
+		return count;
+	}
+
 
 
 

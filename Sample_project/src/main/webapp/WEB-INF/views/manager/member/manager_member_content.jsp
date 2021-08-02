@@ -27,10 +27,9 @@
 					class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
 					aria-labelledby="dropdownMenuLink">
 					<div class="dropdown-header">회원 정보 관리</div>
-					<a class="dropdown-item" href="/manager/managerMemberContentModify?user_id=${memberVo.user_id}">회원 정보 수정</a> <a
-						class="dropdown-item" href="#">회원 탈퇴</a>
+					<a class="dropdown-item" href="/manager/managerMemberContentModify?user_id=${memberVo.user_id}">회원 정보 수정</a>
 					<div class="dropdown-divider"></div>
-					<a class="dropdown-item" href="#">회원 정보 삭제</a>
+					<a class="dropdown-item" href="/manager/managerMemberDeleteRun?user_id=${memberVo.user_id}">회원 탈퇴</a>
 				</div>
 			</div>
 		</div>

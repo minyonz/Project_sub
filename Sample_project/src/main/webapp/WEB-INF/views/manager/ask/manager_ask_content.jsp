@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../manager_include/manager_header.jsp" %>
 
 <!-- Begin Page Content -->
@@ -23,21 +24,19 @@
 			  <tbody>
 			    <tr>
 			      <th scope="row">번호</th>
-			      <td>01</td>
+			      <td>${qnaVo.qna_no}</td>
 			      <th style="width: 15%; border-left: 1px solid lightgray">회원 아이디</th>
-			      <td style="width: 20%">java</td>
+			      <td style="width: 20%">${qnaVo.user_id}</td>
 			      <th style="width: 15%; border-left: 1px solid lightgray">작성일</th>
-			      <td style="width: 20%">2021/07/17 15:16:23</td>
+			      <td style="width: 20%">${qnaVo.save_time}</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">제목</th>
-			      <td colspan=5 style="width: 90%">Jacob</td>
+			      <td colspan=5 style="width: 90%">${qnaVo.title}</td>
 			    </tr>
 			    <tr>
 			      <th scope="row">내용</th>
-			      <td colspan=5 style="width: 90%">내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-			      				내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용
-			      				내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용내용</td>
+			      <td colspan=5 style="width: 90%">${qnaVo.content}</td>
 			      
 			    </tr>
 			  </tbody>
@@ -45,7 +44,8 @@
 		
 		</div>
 	</div>
-	
+	<c:choose>
+	<c:when test="${qnaVo.a_no != 0}">
 	<!-- DataTales Example -->
 	<div class="card shadow mb-4">
 		<div class="card-header py-3">
@@ -79,6 +79,11 @@
 		
 		</div>
 	</div>
+	</c:when>
+	<c:otherwise>
+	<a href="/manager/managerAskAnswer?qna_no=${qnaVo.qna_no}" type="button" class="btn btn-success green_background">답변하기</a>
+	</c:otherwise>
+	</c:choose>
 	
 
 

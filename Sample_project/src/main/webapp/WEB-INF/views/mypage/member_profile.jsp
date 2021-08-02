@@ -19,6 +19,27 @@
 <script src="/resources/js/my-script.js"></script>
 <script>
 $(document).ready(function(){
+	
+	// 닉네임 중복 확인 버튼
+	$("#btnCheckDupNick").click(function(){
+		var url = "/mypage/checkDupNick";
+		var user_nick = $("#user_nick").val();
+		var sendData = {
+				"user_nick" : user_nick
+		};
+		$.get(url, sendData, function(rData) {
+			console.log(rData);
+			if(rData == "true"){
+				$("#checkDupNickResult").text("사용 중인 별명").css("color", "red");
+			} else {
+				$("#checkDupNickResult").text("사용 가능한 별명").css("color", "blue");
+			}
+			isCheckDupId = true;
+			checkId = user_id;
+		});
+	});
+	
+
 	$("#fileDrop").on("dragenter dragover", function(e){
 		e.preventDefault();
 	});
@@ -117,8 +138,29 @@ $(document).ready(function(){
 		
 		// return false;
 	}); */
+
+// 	var selectBoxChange = function(value){
+// 		console.log("값 변경 테스트: " + value);
+// 		$("#changeInput").val(value);
+	$("#changeTest").change(function(){
+
+		var url = "/mypage/changeCate";
+		var parent_cate_no = $(this).val();
+		console.log("값 변경 테스트: " + parent_cate_no);
+		$("#changeInput").val(parent_cate_no);
+		
+		var sendData = {
+			"parent_cate_no" : parent_cate_no
+		};
+		
+		$.get(url, sendData, function(rData) {
+			console.log(rData);
+		});
+	});
+	
 });
 </script>
+${memberVo}
 <!-- 파일 업로드 안내 모달-->
 <div class="container-fluid">
 	<div class="row">
@@ -170,20 +212,18 @@ $(document).ready(function(){
 					</div>
 					<div class="col-md-9">
 						<!-- 내부 패널 메인 -->
-						<form role="form" id="frmProfile" action="joinRun" method="post" enctype="multipart/form-data">
+						<form role="form" id="frmProfile" action="/mypage/modifyProfileRun" method="post" enctype="multipart/form-data">
+							<input type="hidden" name="user_id" value="${memberVo.user_id}"/> 
 							<div class="form-group">
-								<label for="user_id"> 닉네임</label> 
-								<input type="text" class="form-control" id="user_id" name="user_id" /> 
+								<label for="user_nick">닉네임</label> 
+								<input type="text" class="form-control" id="user_nick" name="user_nick" 
+									value="${memberVo.user_nick}"/> 
 								<br/>
 								<button type="button" class="btn btn-small btn-danger"
-									id="btnCheckDupId">닉네임 중복 확인</button>
-								<span id="checkDupIdResult"></span>
+									id="btnCheckDupNick">닉네임 중복 확인</button>
+								<span id="checkDupNickResult"></span>
 							</div>
-							<div class="form-group">
-								<label for="floatingTextarea2">프로필 정보</label> 
-							  	<textarea class="form-control" placeholder="프로필을 입력해주세요..." id="floatingTextarea2" 
-							  			style="height: 100px"></textarea>
-							</div>
+							
 						<div class="form-group">
 <!-- 							<label for="exampleInputFile">사진</label>  -->
 <!-- 							<input type="file" class="form-control-file" id="file" name="file" /> -->
@@ -204,6 +244,89 @@ $(document).ready(function(){
 						
 						<!-- // 첨부 파일  -->
 						
+<!-- 							<div class="form-group"> -->
+<!-- 								<label for="user_details">부가 정보</label> -->
+<!-- 							</div> -->
+							
+<!-- 							<div class="form-group"> -->
+<!-- 								<label for="user_hobbys">관심 취미 선택</label> -->
+<!-- 							</div> -->
+							
+<!-- 							<table>	 -->
+<!-- 							<tr> -->
+<!-- 								<td> -->
+<!-- 								<input type="text" id ="changeInput"/> -->
+<%-- 								<c:if test ="${!empty list1}" > --%>
+<!-- 									<select id="changeTest" onchange="selectBoxChange(this.value)"> -->
+<!-- 									<select id="changeTest"> -->
+<%-- 									<c:forEach var ="list1" items="${list1}"> --%>
+<%-- 										<option value="${list1.cate_no}">${list1.cate_name}</option> --%>
+<%-- 									</c:forEach> --%>
+<!-- 									</select> -->
+<%-- 								</c:if>									 --%>
+<!-- 									&nbsp;??? -->
+<!-- 								</td> -->
+								
+<!-- 								<td> -->
+<%-- <%-- 								<c:if test ="${!empty list2}">										 --%> 
+<!-- 									<select name="cate_no1" id="cate_no1"> -->
+<%-- 										<c:forEach var ="list2" items="${list2}"> --%>
+<%-- 										<option value="${list2.cate_no}">${list2.cate_name}</option> --%>
+<%-- 									</c:forEach> --%>
+<!-- 									</select> -->
+<%-- <%-- 								</c:if> --%> 
+<!-- 								</td> -->
+<!-- 								<td> -->
+<!-- 								<label for="changeInput">대분류에서 선택한 내용 코드</label> -->
+							
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- 							<tr> -->
+<!-- 								<td> -->
+<!-- 									<select name="bigSort2" id="bigSort2"> -->
+<!-- 										<option value="bigSort2">대분류</option> -->
+<!-- 										<option value="DIY">만들기</option> -->
+<!-- 										<option value="painting">그리기</option> -->
+<!-- 										<option value="decorating">꾸미기</option> -->
+<!-- 									</select> -->
+<!-- 								</td> -->
+<!-- 								<td>										 -->
+<!-- 									<select name="midSort2" id="midSort2"> -->
+<!-- 										<option value="midSort2">중분류</option> -->
+<!-- 										<option value="DIY">향초</option> -->
+<!-- 										<option value="painting">수채화</option> -->
+<!-- 										<option value="decorating">다이어리</option> -->
+<!-- 									</select> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- 							<tr> -->
+<!-- 								<td> -->
+<!-- 									<select name="bigSort3" id="bigSort3"> -->
+<!-- 										<option value="bigSort3">대분류</option> -->
+<!-- 										<option value="DIY">만들기</option> -->
+<!-- 										<option value="painting">그리기</option> -->
+<!-- 										<option value="decorating">꾸미기</option> -->
+<!-- 									</select> -->
+<!-- 								</td> -->
+<!-- 								<td>										 -->
+<!-- 									<select name="midSort3" id="midSort3"> -->
+<!-- 										<option value="midSort3">중분류</option> -->
+<!-- 										<option value="DIY">향초</option> -->
+<!-- 										<option value="painting">수채화</option> -->
+<!-- 										<option value="decorating">다이어리</option> -->
+<!-- 									</select> -->
+<!-- 								</td> -->
+<!-- 							</tr> -->
+<!-- 							</table> -->
+							<br>
+							<br>
+							<div class="form-group">
+								<label for="cate_etc">직접 입력</label>
+								<input type="text" class="form-control" id="cate_etc" name="cate_etc" value="${memberVo.cate_etc}" />
+							</div>
+
+							<br><br>
+							
 						<!-- 상단 폼전송 클릭에서 맞추는 부분 var div = $("#uploadedList .divUploaded");  -->
 						<div style ="display:none" class="divUploaded"> 
 							<img height = "100" src="/resources/img/default_image.png"

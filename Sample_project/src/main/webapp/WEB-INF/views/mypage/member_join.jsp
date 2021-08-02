@@ -11,26 +11,60 @@
 </head>
 <body> -->
 <script>
+function showErrorMsg(obj, msg) {
+    obj.attr("class", "error_next_box");
+    obj.html(msg);
+    obj.show();
+}
+
+// function setFocusToInputObject(obj) {
+//     if(submitFlag) {
+//         submitFlag = false;
+//         obj.focus();
+//     }
+//}
+
 $(document).ready(function(){
+	var msg = "${msg}";
+	if (msg == "success") {
+		alert("수정 완료");
+	}
+	
 	var isCheckDupId = false;
 	var checkId = "";
 	
 	// 회원 가입 폼 전송
 	$("#frmJoin").submit(function(){
+		if($("#user_id").val() == ""){
+			alert("아이디를  입력해주세요.");
+			$("#user_id").focus();
+			return false;
+		}		
+			
 		if($("#user_pw").val() != $("#user_pw2").val()) {
 			alert("비밀번호가 일치하지 않습니다.");
 			$("#user_pw").focus();
 			return false;
 		}
 		
-		if(isCheckDupId == false){
+		if(isCheckDupId == false || $("#user_id").val() != checkId){
 			alert("아이디 중복 체크를 해주세요.");
 			$("#btnCheckDupId").focus();
 			return false;
 		}
 	});
+	
 	// 아이디 중복 확인 버튼
 	$("#btnCheckDupId").click(function(){
+		
+		//var oMsg = $("#idMsg");
+		if($("#user_id").val() == ""){
+			//showErrorMsg(oMsg, "아이디를  입력해주세요.");
+			$("#checkDupIdResult").text("아이디를  입력해주세요.").css("color", "red");
+			$("#user_id").focus();
+			return false;
+		}
+		
 		var url = "/mypage/checkDupId";
 		var user_id = $("#user_id").val();
 		var sendData = {
@@ -40,32 +74,15 @@ $(document).ready(function(){
 			console.log(rData);
 			if(rData == "true"){
 				$("#checkDupIdResult").text("사용중인 아이디").css("color", "red");
+				isCheckDupId = false;
 			} else {
 				$("#checkDupIdResult").text("사용 가능한 아이디").css("color", "blue");
+				isCheckDupId = true;
 			}
-			isCheckDupId = true;
 			checkId = user_id;
 		});
 	});
 	
-// 	var selectBoxChange = function(value){
-// 		console.log("값 변경 테스트: " + value);
-// 		$("#changeInput").val(value);
-	$("#changeTest").change(function(){
-
-		var url = "/mypage/changeCate";
-		var parent_cate_no = $(this).val();
-		console.log("값 변경 테스트: " + parent_cate_no);
-		$("#changeInput").val(parent_cate_no);
-		
-		var sendData = {
-			"parent_cate_no" : parent_cate_no
-		};
-		
-		$.get(url, sendData, function(rData) {
-			console.log(rData);
-		});
-	});
 	
 });
 </script>
@@ -99,6 +116,7 @@ ${list}
 								<input type="text" class="form-control" id="user_id" name="user_id" /> 
 								<br />
 								<button type="button" class="btn btn-small btn-danger" id="btnCheckDupId">아이디 중복 확인</button>
+								 <span class="error_next_box" id="idMsg" style="display:none" aria-live="assertive"></span>
 								<span id="checkDupIdResult"></span>
 							</div>
 							<div class="form-group">
@@ -121,90 +139,6 @@ ${list}
 								<label for="user_tel">연락처</label>
 								<input type="text" class="form-control" id="user_tel" name="user_tel" />
 							</div>
-							<div class="form-group">
-								<label for="user_details">부가 정보</label>
-							</div>
-							
-							<div class="form-group">
-								<label for="user_hobbys">관심 취미 선택</label>
-							</div>
-							
-							<table>	
-							<tr>
-								<td>
-								<input type="text" id ="changeInput"/>
-								<c:if test ="${!empty list1}" >
-									<!-- <select id="changeTest" onchange="selectBoxChange(this.value)"> -->
-									<select id="changeTest">
-									<c:forEach var ="list1" items="${list1}">
-										<option value="${list1.cate_no}">${list1.cate_name}</option>
-									</c:forEach>
-									</select>
-								</c:if>									
-									&nbsp;<!-- ??? -->
-								</td>
-								
-								<td>
-<%-- 								<c:if test ="${!empty list2}">										 --%>
-									<select name="cate_no1" id="cate_no1">
-										<c:forEach var ="list2" items="${list2}">
-										<option value="${list2.cate_no}">${list2.cate_name}</option>
-									</c:forEach>
-									</select>
-<%-- 								</c:if> --%>
-								</td>
-								<td>
-								<!-- <label for="changeInput">대분류에서 선택한 내용 코드</label> -->
-							
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<select name="bigSort2" id="bigSort2">
-										<option value="bigSort2">대분류</option>
-										<option value="DIY">만들기</option>
-										<option value="painting">그리기</option>
-										<option value="decorating">꾸미기</option>
-									</select>
-								</td>
-								<td>										
-									<select name="midSort2" id="midSort2">
-										<option value="midSort2">중분류</option>
-										<option value="DIY">향초</option>
-										<option value="painting">수채화</option>
-										<option value="decorating">다이어리</option>
-									</select>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<select name="bigSort3" id="bigSort3">
-										<option value="bigSort3">대분류</option>
-										<option value="DIY">만들기</option>
-										<option value="painting">그리기</option>
-										<option value="decorating">꾸미기</option>
-									</select>
-								</td>
-								<td>										
-									<select name="midSort3" id="midSort3">
-										<option value="midSort3">중분류</option>
-										<option value="DIY">향초</option>
-										<option value="painting">수채화</option>
-										<option value="decorating">다이어리</option>
-									</select>
-								</td>
-							</tr>
-							</table>
-							<br>
-							<div class="form-group">
-								<label for="cate_etc">직접 입력</label>
-								<input type="text" class="form-control" id="cate_etc" name="cate_etc" />
-							</div>
-							
-<!-- 							<div class="form-group"> -->
-<!-- 								<label for="user_grade">회원 등급</label> -->
-<!-- 								<input type="text" class="form-control" id="user_grade" name="user_grade" /> -->
-<!-- 							</div> -->
 							
 							<br><br>
 							<div class="form-group">
