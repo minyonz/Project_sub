@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dp.ggomjirak.manager">
+
+	<!-- 회원 정보 목록 (활동중) -->
+	<select id="showMemberList" resultType="MemberVo">
+		select * from
+		(select rownum rnum, a.*, b.user_nick from
+		    (select * from tbl_memberinfo
+		    where is_del = 'N'
+		    and user_id not in(select user_id from tbl_manager_member)
+		    order by reg_date desc) a
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+            <include refid="search"></include>
+            )
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 회원 수(활동중) -->
+	<select id="getCountMemberList" resultType="int">
+		 select count (*) from
+		(select a.*, b.user_nick from
+		    (select * from tbl_memberinfo
+		    where is_del = 'N'
+		    and user_id not in(select user_id from tbl_manager_member)
+		    order by reg_date desc) a
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+		    <include refid="search"></include>)
+	</select>
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "i"'>
+					where a.user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "n"'>
+					where b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "m"'>
+					where a.user_name like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "in"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "inm"'>
+					where a.user_id like '%' || #{keyword} || '%'
+					or b.user_nick like '%' || #{keyword} || '%'
+					or a.user_name like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
+	
+	<!-- 회원 정보 목록 (탈퇴) -->
+	<select id="showMemberListLeave" resultType="MemberVo">
+		select * from
+		(select rownum rnum, a.*, b.user_nick from
+		    (select * from tbl_memberinfo
+		    where is_del = 'Y'
+		    and user_id not in(select user_id from tbl_manager_member)
+		    order by reg_date desc) a
+		    left join tbl_memberdetail b on a.user_id = b.user_id)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 회원 수(탈퇴) -->
+	<select id="getCountMemberListLeave" resultType="int">
+		select count(*)
+		from tbl_memberinfo
+		where is_del = 'Y'
+		and user_id not in(select user_id from tbl_manager_member)
+	</select>
+	
+	<!-- 회원 정보 조회 -->
+	<select id="selectMemberById" resultType="MemberVo">
+		select a.*, b.*
+		from tbl_memberinfo a
+		    left join tbl_memberdetail b on a.user_id = b.user_id
+		where a.user_id = #{user_id}
+		
+	</select>
+	
+	<!-- 회원 취미 정보 조회(텍스트) -->
+	<select id="selectCateStr" resultType="CateStrVo">
+		select w.user_id, b.cate_name as "cate_no1", c.cate_name as "cate_no2", d.cate_name as "cate_no3"
+		from tbl_memberdetail w
+		    left join tbl_hobby_cate b on w.cate_no1 = b.cate_no
+		    left join tbl_hobby_cate c on w.cate_no2 = c.cate_no
+		    left join tbl_hobby_cate d on w.cate_no3 = d.cate_no
+		where w.user_id = #{user_id}
+	</select>
+	
+		
+	<!-- 회원 등급정보 조회 -->
+	<select id="selectGradeById" resultType="String">
+		select b.name
+		from tbl_memberdetail a
+		    left join tbl_membergrade b on a.user_grade = b.cd
+		where a.user_id = #{user_id}
+	</select>
+	
+	<!-- 회원 활동정보 조회 -->
+	<select id="selectMemberActivById" resultType="MemberActivVo">
+		select * from tbl_member_activ
+		where user_id = #{user_id}
+	</select>
+	
+	<!-- 회원 소개글 조회 -->
+	<select id="selectMemberIntroById" resultType="String">
+		select wr_intro from tbl_workroom
+		where user_id = #{user_id}
+	</select>
+	
+	<!-- 회원 정보 수정 -->
+	<update id="updateMemberInfo">
+		update tbl_memberinfo set
+			user_pw = #{user_pw},
+			user_name = #{user_name},
+			user_email = #{user_email, jdbcType=VARCHAR},
+			user_tel = #{user_tel, jdbcType=VARCHAR}
+		where user_id = #{user_id}
+	</update>
+	<update id="updateMemberDetail">
+		update tbl_memberdetail set
+			user_nick = #{user_nick, jdbcType=VARCHAR},
+			cate_no1 = #{cate_no1, jdbcType=NUMERIC},
+			cate_no2 = #{cate_no2, jdbcType=NUMERIC},
+			cate_no3 = #{cate_no3, jdbcType=NUMERIC},
+			cate_etc = #{cate_etc, jdbcType=VARCHAR},
+			user_grade = #{user_grade}
+		where user_id = #{user_id}
+	</update>
+	<update id="updateMemberWorkroom">
+		update tbl_workroom set
+			wr_intro = #{wr_intro}
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 회원 탈퇴 -->
+	<update id="deleteMember">
+		update tbl_memberinfo set
+			is_del = 'Y',
+			del_date = sysdate
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 회원 탈퇴 취소 -->
+	<update id="cancleDeleteMember">
+		update tbl_memberinfo set
+			is_del = 'N'
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 관리자 회원 리스트 -->
+	<select id="showManagerList" resultType="ManagerVo">
+		select * from
+		(select rownum rnum, a.* from tbl_manager_member a
+		order by m_no desc)
+		where rnum between 1 and 10
+	</select>
+	
+	<!-- 관리자 회원 수 -->
+	<select id="getCountManager" resultType="int">
+		select count (*) from tbl_manager_member
+	</select>
+	
+	<!-- 관리자 회원 등록 -->
+	<insert id="insertManager">
+		insert into tbl_manager_member
+		values (seq_m_no.nextval, #{user_id}, 'manager', '꼼지락', sysdate, #{user_name})
+	</insert>
+	
+	<!-- 관리자 회원 삭제 -->
+	<delete id="deleteManager">
+		delete from tbl_manager_member
+		where user_id = #{user_id}
+	</delete>
+	
+	
+	<!-- 이벤트 글 목록 (전체) -->
+	<select id="showEventListAll" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.*, b.user_id from
+		        (select * from tbl_event
+		        <choose>
+				<when test="qCheck == 1">
+				where is_del = 'N'
+				and end_date > sysdate
+				</when>
+				<when test="qCheck == 2">
+				where is_del = 'N'
+				and sysdate > end_date
+				</when>
+				<when test="qCheck == 3">
+				where is_del = 'Y'
+				</when>
+			</choose>
+		        order by e_no desc) a
+		        left join tbl_manager_member b on a.m_no = b.m_no)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventAll" resultType="int">
+		select count (*) from tbl_event
+		 <choose>
+				<when test="qCheck == 1">
+				where is_del = 'N'
+				and end_date > sysdate
+				</when>
+				<when test="qCheck == 2">
+				where is_del = 'N'
+				and sysdate > end_date
+				</when>
+				<when test="qCheck == 3">
+				where is_del = 'Y'
+				</when>
+			</choose>
+	</select>
+
+	<!-- 이벤트 글 목록 (진행중) -->
+	<select id="showEventList" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where end_date > sysdate
+		        and is_del = 'N'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEvent" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'N'
+		and end_date > sysdate
+	</select>
+	
+	<!-- 이벤트 글 목록 (종료) -->
+	<select id="showEventListEnd" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where sysdate > end_date
+		        and is_del = 'N'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventEnd" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'N'
+		and sysdate > end_date
+	</select>
+	
+	<!-- 이벤트 글 목록 (삭제) -->
+	<select id="showEventListDelete" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where is_del = 'Y'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventDelete" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'Y'
+	</select>
+	
+	<!-- 이벤트 컨텐츠 들어가기 -->
+	<select id="selectByEno" resultType="EventVo">
+		select * from tbl_event
+		where e_no = #{e_no}
+	</select>
+
+	<!-- 이벤트글 작성 -->
+	<insert id="insertEvent">
+		insert into tbl_event
+		values(seq_e_no.nextval, #{m_no}, #{e_title}, #{e_content, jdbcType=VARCHAR}, 
+			#{e_img, jdbcType=VARCHAR}, sysdate, #{mod_date, jdbcType=TIMESTAMP}, 'N', 
+			#{start_date, jdbcType=DATE}, #{end_date, jdbcType=DATE})
+	</insert>
+	
+	<!-- 이벤트 글 수정 -->
+	<update id="updateEvent">
+		update tbl_event set
+			e_title = #{e_title},
+			e_content = #{e_content, jdbcType=VARCHAR},
+			e_img = #{e_img, jdbcType=VARCHAR},
+			mod_date = sysdate,
+			start_date = #{start_date, jdbcType=DATE},
+			end_date = #{end_date, jdbcType=DATE}
+		where e_no = #{e_no}	
+	</update>
+	
+	<!-- 이벤트 글 삭제 -->
+	<update id="deleteEvent">
+		update tbl_event set
+			is_del = 'Y'
+		where e_no = #{e_no}	
+	</update>
+	
+	<!-- 메인 이벤트 등록 -->
+	<insert id="insertMainEvent">
+		insert into tbl_main_event
+		values(#{e_no})
+	</insert>
+	<!-- 메인 이벤트 삭제 -->
+	<delete id="deleteMainEvent">
+		delete tbl_main_event
+		where e_no = #{e_no}
+	</delete>
+	<!-- 메인 이벤트 목록 -->
+	<select id="mainEventBannerList" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.*, b.user_id from
+		        (select * from tbl_event where e_no in (select * from tbl_main_event)
+		        and is_del = 'N'
+		        <choose>
+				<when test="qCheck == 1">
+				and end_date > sysdate
+				</when>
+				<when test="qCheck == 2">
+				and sysdate > end_date
+				</when>
+			</choose>
+             	) a
+		        left join tbl_manager_member b on a.m_no = b.m_no
+                order by e_no desc)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 메인 이벤트 목록 수 -->
+	<select id="getCountMainEventBanner" resultType="int">
+		select count (*) from
+		    (select * from tbl_event where e_no in (select * from tbl_main_event)
+		    and is_del = 'N'
+		        <choose>
+				<when test="qCheck == 1">
+				and end_date > sysdate
+				</when>
+				<when test="qCheck == 2">
+				and sysdate > end_date
+				</when>
+			</choose>)
+	</select>
+	
+	<!-- 메인 -->
+	<!-- 인기 작가 리스트 -->
+	<select id="selectPopularMemberList" resultType="MemberVo">
+		select * from
+		(select a.*, c.name, rownum rnum from
+		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N')
+                and user_id not in(select user_id from tbl_manager_member)) a 
+                left join tbl_membergrade c on a.user_grade = c.cd
+                order by a.follower_cnt desc, a.user_grade desc)
+		where rnum between 1 and 10
+	</select>
+	<!-- 가입 회원 수 -->
+	<select id="getMemberCount" resultType="int">
+		select count (*) from tbl_memberinfo
+		where is_del = 'N'
+		and user_id not in(select user_id from tbl_manager_member)
+	</select>
+	<!-- 회원 등급 그래프 -->
+	<select id="getAllUserGrade" resultType="int">
+		select * from (
+		select count(*) as from tbl_memberdetail
+		where user_grade = 4 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 3 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 2 union all
+		select count(*) as from tbl_memberdetail
+		where user_grade = 1)
+	</select>
+
+
+</mapper>

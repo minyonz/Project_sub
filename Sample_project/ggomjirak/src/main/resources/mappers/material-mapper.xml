@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+ <mapper namespace="com.dp.ggomjirak.material">
+ 
+ 	<!-- 준비물 삽입 -->
+	<insert id="insertMaterial2" parameterType="java.util.List">
+	    INSERT INTO tbl_material (MATERIAL_NO, MATERIAL_NAME)
+	    SELECT SEQ_MATERIAL_NO.NEXTVAL, A.* FROM (
+	    <foreach item="item" collection="list" separator="UNION ALL" >
+	        select #{item.material_name} MATERIAL_NO
+	        from dual
+	         WHERE NOT EXISTS
+			(
+			  SELECT
+			  MATERIAL_NAME
+			  FROM
+			  tbl_material
+			  WHERE
+			  MATERIAL_NAME = #{item.material_name}
+			)
+	    </foreach>) A
+	</insert>
+	
+	
+	<!-- 준비물 삽입 B타입 -->
+	<insert id="insertMaterial" parameterType="java.lang.String">
+		INSERT INTO tbl_material (MATERIAL_NO, MATERIAL_NAME)
+		SELECT seq_material_no.nextval, #{material_name}
+		FROM DUAL
+		WHERE NOT EXISTS
+		(
+		  SELECT
+		  material_name
+		  FROM
+		  tbl_material
+		  WHERE
+		  material_name = #{material_name}
+		)
+	</insert>
+	<!-- material테이블 pk값가지고 오기  -->
+	<select id="getMaterialNo" resultType="int">
+		SELECT MATERIAL_NO FROM tbl_material
+		WHERE MATERIAL_NAME = #{materialName}
+	</select>
+	
+		<!-- material테이블에서 materialVo가져오기-->
+	<select id="getMaterialVo" resultType="MaterialVo">
+		SELECT * FROM tbl_material
+		WHERE MATERIAL_NAME = #{materialName}
+	</select>
+	
+		<!-- 준비물명 중복체크 -->
+<!-- 	<select id="MaterialNameDupCheck" resultType="int"> -->
+<!-- 		SELECT COUNT(*) from MATERIAL -->
+<!-- 		WHERE MATERIAL_NAME = #{materialName} -->
+<!-- 	</select> -->
+ </mapper>

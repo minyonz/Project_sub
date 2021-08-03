@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.story">
+		
+	<!-- 입력 -->
+	<insert id="insertStory">
+		insert into tbl_story(st_no, user_id, st_content, st_img)
+		values(seq_story_no.nextval, #{user_id}, #{st_content}, #{st_img})
+	</insert>
+	
+	<!-- 목록 -->
+	<select id="listStory" resultType="StoryVo">
+		select * from 
+			(select rownum rnum, a.* from 
+				(select * from tbl_story
+				where user_id = #{user_id} and is_del = 'N'
+				order by st_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+
+	<!-- 수정 -->
+	<update id="updateStory">
+		update tbl_story set
+			st_content = #{st_content},
+			st_img = #{st_img},
+			mod_date = sysdate
+		where st_no = #{st_no}
+	</update>
+		
+	<!-- 삭제 -->
+	<update id="deleteStory">
+		update tbl_story set
+			is_del = 'Y',
+			del_date = sysdate
+		where st_no = #{st_no}
+	</update>
+		
+	<!-- 스토리 총 갯수 -->
+	<select id="storyCount" resultType="int">
+		select count(*) from tbl_story
+		where user_id = #{user_id} and is_del = 'N'
+	</select>
+	
+	<!-- 글조회 -->
+	<select id="selectStory" resultType="StoryVo">
+		select * from tbl_story
+		where st_no = #{st_no}
+	</select>
+	
+	<!-- 댓글 카운트 증가 -->
+	<update id="updateCommentCnt">
+		update tbl_story set
+			st_c_count = st_c_count + #{count}
+		where st_no = #{st_no}
+	</update>
+	
+	<!-- 좋아요 -->
+	<update id="updateLikeCount">
+		update tbl_story set
+			st_like_count = st_like_count + #{count}
+		where st_no = #{st_no}
+	</update>
+	
+	<!-- 좋아요 테이블 -->
+	<insert id="insertLike">
+		insert into tbl_story_like
+		values (#{st_no}, #{user_id})
+	</insert>
+	
+	<delete id="deleteLike">
+		delete from tbl_story_like
+		where st_no = #{st_no} and user_id = #{user_id}
+	</delete>
+	
+	<!-- 좋아요 여부 -->
+	<select id="likeCheck" resultType="int">
+		select count(*) from tbl_story_like
+		where st_no = #{st_no} and user_id = #{user_id}
+	</select>
+	
+	<!-- 좋아요 전체 갯수 -->
+	<select id="likeAll" resultType="int">
+		select st_like_count from tbl_story
+		where st_no = #{st_no}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+

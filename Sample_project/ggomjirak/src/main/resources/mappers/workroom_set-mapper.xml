@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.workroomset">
+	
+	<!-- 관심취미 불러오기 -->
+	<select id="getWrSet" resultType="WorkroomVo">
+		select wr.*, a.cate_name as "cate_no1", b.cate_name as "cate_no2", c.cate_name as "cate_no3"
+		from tbl_workroom wr
+		    left join tbl_memberdetail mem on wr.user_id = mem.user_id
+		    left join tbl_hobby_cate a on mem.cate_no1 = a.cate_no
+		    left join tbl_hobby_cate b on mem.cate_no2 = b.cate_no
+		    left join tbl_hobby_cate c on mem.cate_no3 = c.cate_no
+		where wr.user_id = #{user_id}
+	</select>
+	
+	<!-- 작업실 이름변경 -->
+	<update id="updateWrName">
+		update tbl_workroom set
+			wr_name = #{wr_name}
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 작업실 소개 변경 -->
+	<update id="updateWrIntro">
+		update tbl_workroom set
+			wr_intro = #{wr_intro}
+		where user_id = #{user_id}
+	</update>
+	
+	<!-- 팔로잉 목록 -->
+	<select id="followingList" resultType="FollowVo">
+		select f.following, m.user_nick, m.user_img
+			from tbl_follow f, tbl_memberdetail m
+		where f.following = m.user_id
+			and f.follower = #{follower}
+	</select>
+
+</mapper>
+
+
+
+
+
+
+

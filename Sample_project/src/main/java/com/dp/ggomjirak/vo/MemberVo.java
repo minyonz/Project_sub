@@ -42,6 +42,9 @@ public class MemberVo {
 	// 메시지 보내기 내용
 	private int notReadCount;
 	
+	// 번호 매기기
+	private int rnum;
+	
 	public int getNotReadCount() {
 		return notReadCount;
 	}
@@ -59,7 +62,7 @@ public class MemberVo {
 			Timestamp reg_date, String is_del, Timestamp del_date, String user_nick, int cate_no1, int cate_no2,
 			int cate_no3, String cate_etc, int follower_cnt, int following_cnt, String user_img, int user_grade, int cd,
 			String name, String onOff, Timestamp setup_save_time, String cate_name1, String cate_name2,
-			String cate_name3) {
+			String cate_name3, int notReadCount, int rnum) {
 		super();
 		this.user_id = user_id;
 		this.user_pw = user_pw;
@@ -85,6 +88,8 @@ public class MemberVo {
 		this.cate_name1 = cate_name1;
 		this.cate_name2 = cate_name2;
 		this.cate_name3 = cate_name3;
+		this.notReadCount = notReadCount;
+		this.rnum = rnum;
 	}
 
 	public String getUser_id() {
@@ -279,6 +284,14 @@ public class MemberVo {
 		this.cate_name3 = cate_name3;
 	}
 
+	public int getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+
 	@Override
 	public String toString() {
 		return "MemberVo [user_id=" + user_id + ", user_pw=" + user_pw + ", user_name=" + user_name + ", user_email="
@@ -288,9 +301,9 @@ public class MemberVo {
 				+ ", following_cnt=" + following_cnt + ", user_img=" + user_img + ", user_grade=" + user_grade + ", cd="
 				+ cd + ", name=" + name + ", onOff=" + onOff + ", setup_save_time=" + setup_save_time + ", cate_name1="
 				+ cate_name1 + ", cate_name2=" + cate_name2 + ", cate_name3=" + cate_name3 + ", notReadCount="
-				+ notReadCount + "]";
+				+ notReadCount + ", rnum=" + rnum + "]";
 	}
 
-	
+
 	
 }

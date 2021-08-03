@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.member">
+
+	<select id ="login" resultType="MemberVo">
+		select * from tbl_memberInfo 
+		where user_id = #{user_id} and user_pw = #{user_pw} and is_del = 'N'
+	</select>
+	
+	<select id ="info" resultType="MemberVo">
+		select a.user_id, a.user_pw, a.user_name, a.user_email, a.user_tel, a.reg_date, a.is_del, 
+			   b.user_nick, b.cate_no1, b.cate_no2, b.cate_no3, b.cate_etc, 
+			   b.follower_cnt, b.following_cnt, b.user_img, b.user_grade, 
+	 		   c.name, 
+	 		   d.onOff, d.setup_save_time,
+	 		   e.cate_name as "cate_name1", f.cate_name as "cate_name2", g.cate_name as "cate_name3"
+		from tbl_memberInfo a
+	    	left join tbl_memberDetail b on a.user_id = b.user_id
+	    	left join tbl_memberGrade c on b.user_grade = c.cd 
+	    	left join tbl_memberSetup d on a.user_id = d.user_id
+	    	left join tbl_hobby_cate e on b.cate_no1 = e.cate_no
+	    	left join tbl_hobby_cate f on b.cate_no2 = f.cate_no
+	    	left join tbl_hobby_cate g on b.cate_no3 = g.cate_no
+		where a.user_id = #{user_id}
+	</select>
+	
+	<update id="updateMemberInfo">
+		update tbl_memberInfo set
+			user_pw = #{user_pw},
+			user_name = #{user_name},
+			user_email = #{user_email, jdbcType=VARCHAR},
+			user_tel =  #{user_tel, jdbcType=VARCHAR}
+ 		where user_id = #{user_id}
+	</update>
+
+	<update id="updateMemberDetail">
+		update tbl_memberDetail set
+			cate_etc = #{cate_etc}
+ 		where user_id = #{user_id}
+	</update>
+	
+	<update id="updateMemberProfile">
+		update tbl_memberDetail set
+			user_nick = #{user_nick},
+			cate_no1 = #{cate_no1},
+			cate_etc = #{cate_etc},
+			reg_date = reg_date
+ 		where user_id = #{user_id}
+	</update>
+
+<!-- 첨부파일 추가 -->
+	<update id="updateAttach">
+		update tbl_memberDetail set
+			user_img = #{file_name},
+			reg_date = sysdate
+		where user_id = #{user_id}
+	</update>
+	
+	<update id="updateMemberSetup">
+		update tbl_memberSetup set 
+			onoff = #{onOff},
+			setup_save_time = sysdate
+		where user_id = #{user_id}
+	</update>
+	
+	<select id="checkDupId-0" resultType="int">
+		select count(*) from tbl_memberInfo
+		where user_id = #{user_id}
+	</select>
+
+	<select id="checkDupId" resultType="int">
+		select sum(user_id) from (
+			select count(USER_ID) as user_id from TBL_BOOKMARK where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_HOBBY where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_HOBBY_LIKE where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_LOGIN_TIME where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MANAGER_MEMBER where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERDETAIL where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERINFO where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBERSETUP where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_MEMBER_ACTIV where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_QNA where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY_COMMENT where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_STORY_LIKE where USER_ID=#{user_id}  union all 
+			select count(USER_ID) as user_id from TBL_WORKROOM where USER_ID=#{user_id}
+		)
+	</select>
+		
+	<select id="checkDupNick" resultType="int">
+		select count(*) from tbl_memberDetail
+		where user_nick = #{user_nick}
+	</select>
+	
+	<select id="checkDupNickProfile" resultType="int">
+		select count(*) from tbl_memberDetail 
+		where user_nick = #{user_nick, jdbcType=VARCHAR} and
+				user_nick not in
+				( select user_nick from tbl_memberDetail 
+				  where user_id = #{user_id} )
+	</select>
+	
+	
+	
+	<insert id="insertMember">
+		insert into tbl_memberInfo 
+			(user_id, user_pw, user_name, user_email, user_tel, reg_date) 
+		values 
+ 			(#{user_id}, #{user_pw}, #{user_name}, #{user_email, jdbcType=VARCHAR}, #{user_tel, jdbcType=VARCHAR}, sysdate)
+	</insert>
+	
+	<insert id="insertMemberDetail">
+		insert into tbl_memberDetail 
+			(user_id, user_nick, cate_no1, cate_no2, cate_no3, cate_etc, follower_cnt, following_cnt, user_grade, reg_date) 
+		values
+			(#{user_id}, #{user_nick, jdbcType=VARCHAR}, 
+			 #{cate_no1, jdbcType=NUMERIC}, #{cate_no2, jdbcType=NUMERIC}, #{cate_no3, jdbcType=NUMERIC}, #{cate_etc, jdbcType=VARCHAR}, 
+			 #{follower_cnt}, #{following_cnt}, 1, sysdate)
+	</insert>
+	
+	<insert id="insertMemberSetUp">
+		insert into tbl_memberSetup (user_id) values (#{user_id}) 
+	</insert>
+	
+	<insert id="insertWorkRoom">
+		insert into tbl_workroom (user_id, wr_name, wr_intro) values (#{user_id}, #{user_id} || '의 작업실','안녕하세요~')
+	</insert>
+	
+	<insert id="insertWorkRoom-추가했던">
+		insert into tbl_workroom (wr_no, user_id, wr_name, wr_intro) 
+ 			values 
+ 		( seq_wr_no.nextval, 
+ 		  #{user_id}, 
+ 		  nvl((select user_nick  from tbl_memberdetail where user_id=#{user_id}),
+ 		  #{user_id}) || '의 작업실', '안녕하세요~'
+ 		)
+	</insert>
+	
+	
+	<!-- 카테고리 셀렉트 -->
+	<select id="selectCate" resultType="CateVo">
+		select * from tbl_hobby_cate
+	</select>
+	
+	<!-- 카테고리 메뉴 -->
+	<select id="cateBigSort" resultType="CateVo">
+		select * from tbl_hobby_cate
+		where cate_level = 1
+		order by cate_no
+	</select>
+	
+	<select id="cateSmallSort" resultType="CateVo">
+		select * from tbl_hobby_cate
+		where cate_level = 2
+		order by cate_no
+	</select>
+</mapper>

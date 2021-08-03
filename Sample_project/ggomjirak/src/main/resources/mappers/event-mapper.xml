@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dp.ggomjirak.event">
+
+		
+	<!-- 이벤트 베너 리스트 -->
+	<select id="getEventBannerList" resultType="EventVo">
+		select rownum rnum, a.* from
+		    (select * from tbl_event where e_no in (select * from tbl_main_event)
+		    and is_del = 'N'
+		    and end_date > sysdate
+		    order by e_no desc) a
+	</select>
+	<select id="getCountBanner" resultType="int">
+		select count (*) from
+		    (select * from tbl_event where e_no in (select * from tbl_main_event)
+		    and is_del = 'N'
+		    and end_date > sysdate)
+	</select>
+	
+	<!-- 이벤트 글 목록 (전체) -->
+	<select id="showEventListAll" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.*, b.user_id, c.e_no "BANNER" from
+		        (select * from tbl_event
+		        <choose>
+				<when test="qCheck == 1">
+				where is_del = 'N'
+				and end_date + 1 > sysdate
+				</when>
+				<when test="qCheck == 2">
+				where is_del = 'N'
+				and sysdate > end_date + 1
+				</when>
+				<when test="qCheck == 3">
+				where is_del = 'Y'
+				</when>
+			</choose>
+		        ) a
+		        left join tbl_manager_member b on a.m_no = b.m_no
+		        left join tbl_main_event c on a.e_no = c.e_no
+		        order by a.e_no desc)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventAll" resultType="int">
+		select count (*) from tbl_event
+		 <choose>
+				<when test="qCheck == 1">
+				where is_del = 'N'
+				and end_date + 1 > sysdate
+				</when>
+				<when test="qCheck == 2">
+				where is_del = 'N'
+				and sysdate > end_date + 1
+				</when>
+				<when test="qCheck == 3">
+				where is_del = 'Y'
+				</when>
+			</choose>
+	</select>
+
+	<!-- 이벤트 글 목록 (진행중) -->
+	<select id="showEventList" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where end_date + 1 > sysdate
+		        and is_del = 'N'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEvent" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'N'
+		and end_date + 1 > sysdate
+	</select>
+	
+	<!-- 이벤트 글 목록 (종료) -->
+	<select id="showEventListEnd" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where sysdate > end_date + 1
+		        and is_del = 'N'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventEnd" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'N'
+		and sysdate > end_date + 1
+	</select>
+	
+	<!-- 이벤트 글 목록 (삭제) -->
+	<select id="showEventListDelete" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.* from
+		        (select * from tbl_event
+		        where is_del = 'Y'
+		        order by e_no desc) a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 글갯수 -->
+	<select id="getCountEventDelete" resultType="int">
+		select count (*) from tbl_event
+		where is_del = 'Y'
+	</select>
+	
+	<!-- 이벤트 컨텐츠 들어가기 -->
+	<select id="selectByEno" resultType="EventVo">
+		select a.*, b.e_no "BANNER" from
+			(select * from tbl_event) a
+			left join tbl_main_event b on a.e_no = b.e_no
+		where a.e_no = #{e_no}
+	</select>
+
+	<!-- 이벤트글 작성 -->
+	<insert id="insertEvent">
+		insert into tbl_event
+		values(seq_e_no.nextval, #{m_no, jdbcType=NUMERIC}, #{e_title}, #{e_content, jdbcType=VARCHAR}, 
+			#{e_img, jdbcType=VARCHAR}, sysdate, #{mod_date, jdbcType=TIMESTAMP}, 'N', 
+			#{start_date, jdbcType=DATE}, #{end_date, jdbcType=DATE}, #{del_date, jdbcType=TIMESTAMP})
+	</insert>
+	
+	<!-- 이벤트 글 수정 -->
+	<update id="updateEvent">
+		update tbl_event set
+			m_no = #{m_no, jdbcType=NUMERIC},
+			e_title = #{e_title},
+			e_content = #{e_content, jdbcType=VARCHAR},
+			e_img = #{e_img, jdbcType=VARCHAR},
+			mod_date = sysdate,
+			start_date = #{start_date, jdbcType=DATE},
+			end_date = #{end_date, jdbcType=DATE}
+		where e_no = #{e_no}	
+	</update>
+	
+	<!-- 이벤트 글 삭제 -->
+	<update id="deleteEvent">
+		update tbl_event set
+			is_del = 'Y',
+			del_date = sysdate
+		where e_no = #{e_no}	
+	</update>
+	
+	<!-- 메인 이벤트 등록 -->
+	<insert id="insertMainEvent">
+		insert into tbl_main_event
+		values(#{e_no})
+	</insert>
+	<!-- 메인 이벤트 삭제 -->
+	<delete id="deleteMainEvent">
+		delete tbl_main_event
+		where e_no = #{e_no}
+	</delete>
+	<!-- 메인 이벤트 목록 -->
+	<select id="mainEventBannerList" resultType="EventVo">
+		select * from
+		    (select rownum rnum, a.*, b.user_id from
+		        (select * from tbl_event where e_no in (select * from tbl_main_event)
+		        and is_del = 'N'
+		        <choose>
+				<when test="qCheck == 1">
+				and end_date + 1 > sysdate
+				</when>
+				<when test="qCheck == 2">
+				and sysdate > end_date + 1
+				</when>
+			</choose>
+             	) a
+		        left join tbl_manager_member b on a.m_no = b.m_no
+                order by e_no desc)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 메인 이벤트 목록 수 -->
+	<select id="getCountMainEventBanner" resultType="int">
+		select count (*) from
+		    (select * from tbl_event where e_no in (select * from tbl_main_event)
+		    and is_del = 'N'
+		        <choose>
+				<when test="qCheck == 1">
+				and end_date + 1 > sysdate
+				</when>
+				<when test="qCheck == 2">
+				and sysdate > end_date + 1
+				</when>
+			</choose>)
+	</select>
+	
+
+</mapper>

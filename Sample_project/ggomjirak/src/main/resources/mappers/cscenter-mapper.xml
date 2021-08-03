@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.cscenter">
+
+	<select id="getNextVal" resultType="int">
+		select seq_QnA_no.nextval from dual
+	</select>
+	
+	<!-- 글쓰기 -->
+	<insert id="insertArticle">
+		insert into tbl_QnA 
+			(qna_no, user_id, qna_type, qna_sort_cd, title, content, save_time, 
+			 input_name, input_tel, input_email, is_email_receive)
+		values 
+			(#{qna_no}, #{user_id}, #{qna_type}, #{qna_sort_cd}, #{title}, #{content}, sysdate, 
+			 #{input_name}, #{input_tel}, #{input_email}, #{is_email_receive})
+	</insert>
+	
+	<!-- 글 수정 -->
+	<update id="updateArticle">
+		update tbl_QnA set 
+			title = #{title}, 
+			content = #{content}, 
+			update_time = sysdate 
+		where qna_no = #{qna_no}
+	</update>
+	
+	
+	<!-- 글 삭제 같은 수정 -->
+	<update id="deleteArticle">
+		update tbl_QnA set 
+			is_del = 'Y',
+			delete_time = sysdate
+		where qna_no = #{qna_no}
+	</update>
+	
+	
+	<!-- 글목록 -->
+	<select id="userlistAll-이전내용" resultType="QnAVo">
+		select * from tbl_QnA where user_id= #{userID}
+	</select>
+
+	<select id="userlistAll" resultType="QnAVo">
+		select qna_no, title, to_char(save_time, 'yyyy-mm-dd hh24:mi') as save_time, 
+ 			   case nvl(to_char(a_no), '0') when '0' then '답변미완료' else '답변완료' end  as "a_state" 
+ 		  from tbl_QnA 
+ 		 where user_id = #{userID} and is_del = 'N'
+ 		order by save_time desc
+	</select>
+	
+	<!--  1:1 문의 내용 답변 있을 경우 답변이랑 같이 보이는 부분 -->
+	<select id="selectByQnAno" resultType="QnAVo">
+		select q.qna_no, c.user_id, c.user_name, d.user_nick, c.user_tel, c.user_email,
+    		   q.qna_sort_cd, b.qna_type_nm,
+     		   q.title, q.content, to_char(nvl(q.update_time, q.save_time), 'YYYY-MM-DD HH24:MI') as q_save_time,
+     		   case nvl(to_char(q.a_no), '0') when '0' then '답변미완료' else '답변완료' end  as "a_state",
+     		   q.a_no,
+     		   a.title as a_title, a.content as a_content, e.m_nik, to_char(a.save_time, 'YYYY-MM-DD HH24:MI') as a_save_time
+			from tbl_qna q 
+		    	left join tbl_QnASort b on q.qna_sort_cd = b.qna_sort_cd
+		    	left join tbl_memberinfo c on q.user_id = c.user_id
+		    	left join tbl_memberdetail d on q.user_id = d.user_id
+		    	left join tbl_QnA a on q.a_no = a.qna_no
+		    	left join tbl_manager_member e on a.user_id = e.user_id
+		where q.qna_no= #{qna_no}
+	</select>
+
+	
+</mapper>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.dp.ggomjirak.ask">
+
+	
+	<!-- 문의 -->
+	<!-- 문의글 목록 -->
+	<select id="selectQnAList" resultType="QnAVo">
+		select * from
+		(select rownum rnum, a.* from tbl_QnA a
+		where qna_type = 'Q'
+			<choose>
+				<when test="qCheck == 1">
+					and is_del = 'N'
+					and a_no = 0
+				</when>
+				<when test="qCheck == 2">
+					and is_del = 'N'
+					and a_no != 0
+				</when>
+				<when test="qCheck == 3">
+					and is_del = 'Y'
+				</when>
+			</choose>
+		order by qna_no desc)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	<!-- 문의글 수 -->
+	<select id="getCountQnA" resultType="int">
+		select count (*) from tbl_QnA 
+		where qna_type = 'Q'
+			<choose>
+				<when test="qCheck == 1">
+				and is_del = 'N'
+					and a_no = 0
+				</when>
+				<when test="qCheck == 2">
+				and is_del = 'N'
+					and a_no != 0
+				</when>
+				<when test="qCheck == 3">
+				and is_del = 'Y'
+				</when>
+			</choose>
+	</select>
+	
+	<!-- 답변 필요 문의글 수 -->
+	<select id="getCountQnAMain" resultType="int">
+		select count (*) from tbl_QnA 
+		where qna_type = 'Q'
+		and is_del = 'N'
+		and a_no = 0
+	</select>
+		
+	<!-- 문의글, 답변 찾기 -->
+	<select id="selectQnaByNo" resultType="QnAVo">
+		select a.*, b.qna_type_nm, c.qna_no "a_qna_no", c.user_id "m_user_id", c.title "a_title", c.content "a_content", c.save_time "a_save_time" from tbl_qna a
+            left join tbl_qnasort b on a.qna_sort_cd = b.qna_sort_cd
+			left join tbl_qna c on a.qna_no = c.a_no
+		where a.qna_no = #{qna_no}
+	</select>
+	<!-- 답변하기 -->
+	<select id="getNextVal" resultType="int" >
+		select seq_qna_no.nextval from dual
+		</select>
+	<insert id="insertAnswer">
+		insert into tbl_qna
+		values(#{qna_no}, #{a_no, jdbcType=NUMERIC}, 'A', #{qna_sort_cd, jdbcType=VARCHAR}, '답변: ' || #{title}, #{content}, #{user_id}, sysdate, null, 'N', null, null, null, null, null)
+	</insert>
+	<update id="updateAno">
+		update tbl_qna set
+			a_no = #{a_no, jdbcType=NUMERIC}
+		where qna_no = #{qna_no}
+	</update>
+
+</mapper>

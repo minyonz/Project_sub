@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.workroom">
+		
+	<!-- 취미목록 -->
+	<select id="listHobby" resultType="HobbyVo">
+		select * from(select rownum rnum, a.* from 
+		    (select * from tbl_hobby
+		    where user_id = #{user_id} 
+		    order by hobby_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<!-- 취미 총 갯수 -->
+	<select id="hobbyCount" resultType="int">
+		select count(*) from tbl_hobby
+		where user_id = #{user_id}
+	</select>
+	
+	<!-- 프로필카드 -->
+	<select id="getMemInfo" resultType="MemberVo">
+		select md.*, mg.name
+			from tbl_memberdetail md, tbl_membergrade mg
+			where md.user_grade = mg.cd
+			and md.user_id = #{user_id}
+	</select>
+	
+	<!-- 검색 -->
+	<select id="searchHobby" resultType="HobbyVo">
+		select * from
+		(select rownum rnum, a.* from 
+			(select * from tbl_hobby
+				where hobby_title like '%' || #{keyword} || '%'
+				and user_id = #{user_id} and is_del = 'N'
+				order by hobby_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<select id="searchStory" resultType="StoryVo">
+		select * from
+		(select rownum rnum, a.* from 
+			(select * from tbl_story
+			where st_content like '%'|| #{keyword} || '%'
+			and user_id = #{user_id} and is_del = 'N'
+			order by st_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<!-- 검색 후 취미 총 갯수 -->
+	<select id="searchHobbyCount" resultType="int">
+		select count(*) from tbl_hobby
+		where user_id = #{user_id}
+		and hobby_title like '%' || #{keyword} || '%'
+		and is_del = 'N'
+	</select>
+	
+	<!-- 검색 후 스토리 총 갯수 -->
+	<select id="searchStoryCount" resultType="int">
+		select count(*) from tbl_story
+		where user_id = #{user_id} 
+		and st_content like '%' || #{keyword} || '%'
+		and is_del = 'N'
+	</select>
+		
+</mapper>
+
+
+
+
+
+
+

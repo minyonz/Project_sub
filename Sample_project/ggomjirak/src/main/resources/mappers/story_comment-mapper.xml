@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.storyComment">
+		
+	<!-- 댓글작성 -->
+	<insert id="insertComment">
+		insert into tbl_story_comment(st_c_no, user_id, st_no, st_c_content, st_c_parent_no, st_c_order)
+		values (seq_story_c_no.nextval, #{user_id}, #{st_no}, #{st_c_content}, seq_story_c_no.nextval, seq_story_c_no.nextval)
+	</insert>
+	
+	<!-- 댓글목록 -->
+	<select id="listComment" resultType="StoryCommentVo">
+		select * from tbl_story_comment
+		where st_no = #{st_no} 
+		and is_del = 'N'
+		order by st_c_no desc
+	</select>
+	
+	<!-- 댓글수정 -->
+	<update id="updateComment">
+		update tbl_story_comment set
+			st_c_content = #{st_c_content},
+			mod_date = sysdate
+		where st_c_no = #{st_c_no} 
+	</update>
+	
+	<!-- 댓글삭제 -->
+	<update id="deleteComment">
+		update tbl_story_comment set
+			is_del = 'Y',
+			del_date = sysdate
+		where st_c_no = #{st_c_no}
+	</update>
+	
+	<!-- 댓글 수 -->
+	<select id="commentCount" resultType="int">
+		select st_c_count from tbl_story
+		where st_no = #{st_no}
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
