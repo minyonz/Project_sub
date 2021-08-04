@@ -23,7 +23,11 @@ $(document).ready(function() {
 				$("#follow").attr("class", "btn btn-outline-primary");
 				$("#follow").text("언팔로우");
 			} else if (rData.unFollow) {
+<<<<<<< HEAD
 				$("#follow").attr("class", "btn btn-primary");
+=======
+				$("#follow").attr("class", "green_background white_color");
+>>>>>>> 64826e94719a49a7001e3dc4c3d6e0b2c5530d99
 				$("#follow").text("팔로우");
 			}
 			$("#follower_cnt").text(rData.countFollow);
