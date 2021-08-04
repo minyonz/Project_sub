@@ -18,7 +18,7 @@ public class MainServiceImpl implements MainService {
 	@Inject
 	private MainDao mainDao;
 
-
+	
 	@Override
 	public List<CateVo> selectCate() {
 		List<CateVo> list = mainDao.selectCate();
@@ -133,6 +133,7 @@ public class MainServiceImpl implements MainService {
 		int count = mainDao.getCountHobbyCate(pagingDto);
 		return count;
 	}
+
 
 
 	

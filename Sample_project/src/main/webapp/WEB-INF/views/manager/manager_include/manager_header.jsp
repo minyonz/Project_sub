@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,6 +13,10 @@
     <meta name="author" content="">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     
+    <!-- 모달  -->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
+	<script src="${contextPath}/resources/js/sweetalert2.min.js"></script>
+	<link rel="stylesheet" href="${contextPath}/resources/css/sweetalert2.min.css">
 
     
 
@@ -59,10 +64,9 @@
 
             <!-- Sidebar - Brand -->
             <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/main/mainHome" target="_blank">
-                <div class="sidebar-brand-icon rotate-n-15">
-                    <i class="fas fa-laugh-wink"></i>
+                <div class="sidebar-brand-icon">
+                    <img src="/resources/img/logo06.png" alt="..." width="100px" >
                 </div>
-                <div class="sidebar-brand-text mx-3">꼼지락</div>
             </a>
 
             <!-- Divider -->
@@ -79,15 +83,19 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-                회원 관리
-            </div>
+            <div class="sidebar-heading">회원 관리</div>
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
+                    <i class="fas fa-fw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+					  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+					  <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216z"/>
+					  <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+					</svg>
+                    </i>
                     <span>회원 관리</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -103,7 +111,12 @@
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
                     aria-expanded="true" aria-controls="collapseUtilities">
-                    <i class="fas fa-fw fa-wrench"></i>
+                    <i class="fas fa-fw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-check-fill" viewBox="0 0 16 16">
+					  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+					  <path d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+					</svg>
+                    </i>
                     <span>관리자 회원 관리</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
@@ -120,44 +133,41 @@
             <hr class="sidebar-divider">
 
             <!-- Heading -->
-            <div class="sidebar-heading">
-                Addons
-            </div>
+            <div class="sidebar-heading">문의 & 이벤트</div>
 
-            <!-- Nav Item - Pages Collapse Menu -->
+            
+			<!-- Nav Item - QnA -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
+                <a class="nav-link" href="/ask/managerAsk">
+                    <i class="fas fa-fw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-left-text-fill" viewBox="0 0 16 16">
+					  <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4.414a1 1 0 0 0-.707.293L.854 15.146A.5.5 0 0 1 0 14.793V2zm3.5 1a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h9a.5.5 0 0 0 0-1h-9zm0 2.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>
+					</svg>
+                    </i>
+                    <span>1:1문의 관리</span></a>
+            </li>
+            
+            <!-- Nav Item - Event -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseEvents"
                     aria-expanded="true" aria-controls="collapsePages">
-                    <i class="fas fa-fw fa-folder"></i>
-                    <span>-</span>
-                </a>
-                <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+                    <i class="fas fa-fw">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
+					  <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+					  <path d="M14.002 13a2 2 0 0 1-2 2h-10a2 2 0 0 1-2-2V5A2 2 0 0 1 2 3a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v8a2 2 0 0 1-1.998 2zM14 2H4a1 1 0 0 0-1 1h9.002a2 2 0 0 1 2 2v7A1 1 0 0 0 15 11V3a1 1 0 0 0-1-1zM2.002 4a1 1 0 0 0-1 1v8l2.646-2.354a.5.5 0 0 1 .63-.062l2.66 1.773 3.71-3.71a.5.5 0 0 1 .577-.094l1.777 1.947V5a1 1 0 0 0-1-1h-10z"/>
+					</svg>
+                    </i>
+                    <span>이벤트</span></a>
+                    <div id="collapseEvents" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Login Screens:</h6>
-                        <a class="collapse-item" href="#">-</a>
-                        <a class="collapse-item" href="#">-</a>
-                        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
-                        <div class="collapse-divider"></div>
-                        <h6 class="collapse-header">Other Pages:</h6>
-                        <a class="collapse-item" href="404.html">404 Page</a>
-                        <a class="collapse-item" href="blank.html">Blank Page</a>
+                        <h6 class="collapse-header">이벤트 목록 관리</h6>
+                        <a class="collapse-item" href="/event/managerEvent">이벤트 목록</a>
+                        <a class="collapse-item" href="/event/managerMainEvent">이벤트 배너</a>
                     </div>
                 </div>
             </li>
 
-            <!-- Nav Item - Charts -->
-            <li class="nav-item">
-                <a class="nav-link" href="/manager/managerEvent">
-                    <i class="fas fa-fw fa-chart-area"></i>
-                    <span>이벤트</span></a>
-            </li>
-
-            <!-- Nav Item - Tables -->
-            <li class="nav-item">
-                <a class="nav-link" href="/manager/managerAsk">
-                    <i class="fas fa-fw fa-table"></i>
-                    <span>1:1문의 관리</span></a>
-            </li>
+            
 
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">

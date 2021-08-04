@@ -3,12 +3,14 @@ package com.dp.ggomjirak.jh.controller;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.dp.ggomjirak.jh.service.EventService;
 import com.dp.ggomjirak.jh.service.MainService;
 import com.dp.ggomjirak.jh.service.ManagerService;
 import com.dp.ggomjirak.vo.CateStrVo;
@@ -29,11 +31,29 @@ public class MainController {
 	
 	@Inject
 	private ManagerService managerService;
+	
+	@Inject
+	private EventService eventService;
+	
 
 	@RequestMapping(value="/mainHome", method=RequestMethod.GET)
-	public String mainHome(Model model) throws Exception {
+	public String mainHome(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
+//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+//		String user_id = memberVo.getUser_id();
+		String user_id = "hong";
 		List<CateVo> category = mainService.selectCate();
-		String user_id = "cat";
+
+
+		int count = eventService.getCountBanner(pagingDto);
+		pagingDto.setCount(count);
+		
+		
+		System.out.println("count: " + count);
+		System.out.println("pagingDto: " + pagingDto);
+		List<EventVo> mainEvent = eventService.getEventBannerList();
+		model.addAttribute("mainEvent", mainEvent);
+		model.addAttribute("pagingDto", pagingDto);
+		
 		List<HobbyVo> suggestHobby = mainService.getSuggestHobby(user_id);
 		List<HobbyVo> popularHobby = mainService.getPopularHobbyList();
 		List<HobbyVo> monthHobby = mainService.getMonthHobbyList();
@@ -43,8 +63,6 @@ public class MainController {
 		List<MemberVo> popularMember4 = mainService.getPopularMemberList4();
 		CateStrVo cateStrVo = managerService.selectCateStr(user_id);
 
-		// 추가한부분
-		model.addAttribute("user_id", user_id);
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		model.addAttribute("suggestHobby", suggestHobby);
 		model.addAttribute("popularHobby", popularHobby);
@@ -54,6 +72,7 @@ public class MainController {
 		model.addAttribute("popularMember3", popularMember3);
 		model.addAttribute("popularMember4", popularMember4);
 		model.addAttribute("cateStrVo", cateStrVo);
+		model.addAttribute("user_id", user_id);
 		return "main/main_home";
 	}
 	
@@ -92,12 +111,12 @@ public class MainController {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
-		int count = managerService.getCountEvent(pagingDto);
+		int count = eventService.getCountEvent(pagingDto);
 		pagingDto.setCount(count);
 		
 		System.out.println("count: " + count);
 		System.out.println("pagingDto: " + pagingDto);
-		List<EventVo> eventList = managerService.showEventList(pagingDto);
+		List<EventVo> eventList = eventService.showEventList(pagingDto);
 		model.addAttribute("eventList", eventList);
 		return "main/main_event";
 	}
@@ -107,12 +126,12 @@ public class MainController {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
-		int count = managerService.getCountEventAll(pagingDto);
+		int count = eventService.getCountEventAll(pagingDto);
 		pagingDto.setCount(count);
 		
 		System.out.println("count: " + count);
 		System.out.println("pagingDto: " + pagingDto);
-		List<EventVo> eventListAll = managerService.showEventListAll(pagingDto);
+		List<EventVo> eventListAll = eventService.showEventListAll(pagingDto);
 		model.addAttribute("eventListAll", eventListAll);
 		return "main/main_event_all";
 	}
@@ -123,12 +142,12 @@ public class MainController {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		
-		int count = managerService.getCountEventEnd(pagingDto);
+		int count = eventService.getCountEventEnd(pagingDto);
 		pagingDto.setCount(count);
 		
 		System.out.println("count: " + count);
 		System.out.println("pagingDto: " + pagingDto);
-		List<EventVo> eventListEnd = managerService.showEventListEnd(pagingDto);
+		List<EventVo> eventListEnd = eventService.showEventListEnd(pagingDto);
 		model.addAttribute("eventListEnd", eventListEnd);
 		return "main/main_event_end";
 	}
@@ -138,7 +157,7 @@ public class MainController {
 	public String mainEventContent(int e_no, Model model) throws Exception {
 		List<CateVo> category = mainService.selectCate();
 		model.addAttribute("cates", JSONArray.fromObject(category));
-		EventVo eventVo = managerService.selectByEno(e_no);
+		EventVo eventVo = eventService.selectByEno(e_no);
 		model.addAttribute("eventVo", eventVo);
 		return "main/main_event_content";
 	}

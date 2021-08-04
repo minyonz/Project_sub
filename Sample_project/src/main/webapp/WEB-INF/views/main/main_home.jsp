@@ -18,48 +18,50 @@
 		<div class="row"  style="position: relative; top: -400px;">
 			<div class="col-md-2"></div>
 			<div class="col-md-8">
+			
+							
 				<div class="carousel slide" id="carousel-313760">
-					<ol class="carousel-indicators">
-						<li data-slide-to="0" data-target="#carousel-313760"
-							class="active"></li>
-						<li data-slide-to="1" data-target="#carousel-313760"></li>
-						<li data-slide-to="2" data-target="#carousel-313760"></li>
+					<ol class="carousel-indicators" style="bottom: 6rem;">
+					<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.count}">
+						<li data-slide-to="${v}" data-target="#carousel-313760"
+							<c:if test="${v == pagingDto.page}">
+								class="active"
+						 	</c:if>
+							></li>
+					</c:forEach>
 					</ol>
+					
 					<div class="carousel-inner">
-						<div class="carousel-item active">
-							<img class="d-block w-100" alt="Carousel Bootstrap First"
-								src="/resources/img/event01.jpg" height="500"/>
+					
+					<c:forEach var="event" items="${mainEvent}">
+						<div 
+						<c:choose>
+							<c:when test="${pagingDto.page == event.rnum}">
+								class="carousel-item active"
+						 	</c:when>
+						 	<c:otherwise>
+						 		class="carousel-item"
+							</c:otherwise>
+						</c:choose>
+						>
+							<a href="/main/mainEventContent?e_no=${event.e_no}">
+							<img class="d-block w-100" alt="Event Banner"
+								src="/eventImg/displayImage?filePath=${event.e_img}" height="500"/></a>
 							<div class="carousel-caption">
-								<h4 class="white_color">First Thumbnail label</h4>
-								<p  class="white_color">Cras justo odio, dapibus ac facilisis in, egestas eget
-									quam. Donec id elit non mi porta gravida at eget metus. Nullam
-									id dolor id nibh ultricies vehicula ut id elit.</p>
+							<div style="display: flex;" >
+								<h4><a href="/main/mainEventContent?e_no=${event.e_no}">${event.e_title}</a></h4>
+								<p style="margin-left: auto;">${event.start_date} ~ ${event.end_date}</p>
+							</div>
+								
 							</div>
 						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" alt="Carousel Bootstrap Second"
-								src="https://www.layoutit.com/img/sports-q-c-1600-500-2.jpg" />
-							<div class="carousel-caption">
-								<h4>Second Thumbnail label</h4>
-								<p>Cras justo odio, dapibus ac facilisis in, egestas eget
-									quam. Donec id elit non mi porta gravida at eget metus. Nullam
-									id dolor id nibh ultricies vehicula ut id elit.</p>
-							</div>
-						</div>
-						<div class="carousel-item">
-							<img class="d-block w-100" alt="Carousel Bootstrap Third"
-								src="https://www.layoutit.com/img/sports-q-c-1600-500-3.jpg" />
-							<div class="carousel-caption">
-								<h4>Third Thumbnail label</h4>
-								<p>Cras justo odio, dapibus ac facilisis in, egestas eget
-									quam. Donec id elit non mi porta gravida at eget metus. Nullam
-									id dolor id nibh ultricies vehicula ut id elit.</p>
-							</div>
-						</div>
+					</c:forEach>
+						
+						
 					</div>
 					<a class="carousel-control-prev" href="#carousel-313760"
-						data-slide="prev"><span class="carousel-control-prev-icon"></span>
-						<span class="sr-only">Previous</span></a> <a
+						data-slide="prev" style="height: 500px"><span class="carousel-control-prev-icon"></span>
+						<span class="sr-only">Previous</span></a> <a  style="height: 500px"
 						class="carousel-control-next" href="#carousel-313760"
 						data-slide="next"><span class="carousel-control-next-icon"></span>
 						<span class="sr-only">Next</span></a>
@@ -188,7 +190,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member1.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member1.user_id}">${member1.user_nick}</a></h6>
                             <h5>${member1.name}</h5>
                         </div>
                     </div>
@@ -207,7 +209,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member2.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member2.user_id}">${member2.user_nick}</a></h6>
                             <h5>${member2.name}</h5>
                         </div>
                     </div>
@@ -226,7 +228,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member3.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member3.user_id}">${member3.user_nick}</a></h6>
                             <h5>${member3.name}</h5>
                         </div>
                     </div>
@@ -245,7 +247,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="#">${member4.user_nick}</a></h6>
+                            <h6><a href="/workroom/main/${member4.user_id}">${member4.user_nick}</a></h6>
                             <h5>${member4.name}</h5>
                         </div>
                     </div>

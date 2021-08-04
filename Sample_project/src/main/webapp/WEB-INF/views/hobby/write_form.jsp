@@ -6,8 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -18,14 +16,11 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
 <!-- 모달  -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
 <script src="${contextPath}/resources/js/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="${contextPath}/resources/css/sweetalert2.min.css">
 
 <script defer>
 	$(document).ready(function() {
-		$("[data-toggle=tooltip").tooltip();
-
 		//* 카테고리 부분
 		var jsonData = JSON.parse('${cates}');
 		var cate1Arr = new Array();
@@ -46,6 +41,7 @@
 			 cate1Select.append("<option value='" + cate1Arr[i].cate_no + "'>"
 		      + cate1Arr[i].cate_name + "</option>"); 
 		}
+		
 		$(document).on("change", "select.cate1", function(){
 		
 			 var cate2Arr = new Array();
@@ -141,8 +137,6 @@
 // 				ui.item.data('start_pos', ui.item.index());
 // 			},
 			stop : function(event, ui) {
-// 				var spos = ui.item.data('start_pos');
-// 				var epos = ui.item.index();
 				reorder();
 			}
 		});
@@ -156,34 +150,37 @@
 			}
 		);
 		
+		
 	});
 	
+	
+	
 	function showNote(seq) {
-		$("#stepNote_" + seq).toggle();
+		$("#divStepNote_" + seq).toggle();
 		reorder();
 	}
 	
 	function showTip(seq) {
-		$("#stepTip_" + seq).toggle();
+		$("#divStepTip_" + seq).toggle();
 		reorder();
 	}
 	
 	function showLink(seq) {
-		$("#stepLink_" + seq).toggle();
+		$("#divStepLink_" + seq).toggle();
 		reorder();
 	}
 	
 	function showAll(seq) {
 		// 셋중하나라도 안보이는 상태에 전체보기 누르면 -> 다보여주기
-		if($("#stepNote_" + seq).css("display") == "none" || $("#stepTip_" + seq).css("display") == "none" || $("#stepLink_" + seq).css("display") == "none") {
-			$("#stepNote_" + seq).show();
-			$("#stepTip_" + seq).show();
-			$("#stepLink_" + seq).show();
+		if($("#divStepNote_" + seq).css("display") == "none" || $("#divStepTip_" + seq).css("display") == "none" || $("#divStepLink_" + seq).css("display") == "none") {
+			$("#divStepNote_" + seq).show();
+			$("#divStepTip_" + seq).show();
+			$("#divStepLink_" + seq).show();
 		} else {
 			// 셋중하나라도 보이는 상태에 전체보기 누르면 -> 전부다 숨기기
-			$("#stepNote_" + seq).hide();
-			$("#stepTip_" + seq).hide();
-			$("#stepLink_" + seq).hide();
+			$("#divStepNote_" + seq).hide();
+			$("#divStepTip_" + seq).hide();
+			$("#divStepLink_" + seq).hide();
 		}
 		
 		reorder();
@@ -259,34 +256,56 @@
 	function reorder() {
 	    $(".stepBox").each(function(i, box) {
 	    	$(box).attr("id", "stepBox_" + (i + 1));
+	    	
+	    	// divStpNum 부분
 	        $(box).find(".stepNum_span").html(i + 1);
-	        $(box).find(".stepNum_input").attr("name", "makeSteps[" + i + "].make_step_num").val(i+1);
-	        $(box).find(".stepText").attr("name", "makeSteps[" + i + "].make_step_text");
-	        $(box).find(".divStepUpload").attr("id", "divStepUpload_" + (i + 1));
-	        $(box).find(".stepImg_label").attr("for", "stepImg_file_" + (i+1));
-	        $(box).find(".previewImg_step").attr("id", "previewImg_step_" + (i+1));
-	        $(box).find(".stepImg_file").attr("id", "stepImg_file_" + (i+1));
-	        $(box).find(".stepImg_file").attr("onchange", "previewMakeStepImg(this," + (i + 1) + ")");
-	        $(box).find(".stepImg_hidden").attr("name", "makeSteps[" + i + "].make_step_img");
-	        $(box).find(".stepImg_hidden").attr("id", "makeSteps[" + i + "].make_step_img");
-	        $(box).find(".stepImg_hidden").attr("data-seq", (i + 1));
-	        $(box).find(".btn_delStepImg").attr("id", "btnDelStepImg_" + (i + 1));
-	        $(box).find(".btn_delStepImg").attr("href", "javascript:delStepImg("+ (i + 1) + ")");
-	        $(box).find(".showNote").attr("href", "javascript:showNote("+ (i + 1) + ")");
-	        $(box).find(".divStepNote").attr("id", "stepNote_" + (i + 1));
-	        $(box).find(".stepNote").attr("name", "makeSteps[" + i + "].note");
-	        $(box).find(".showTip").attr("href", "javascript:showTip("+ (i + 1) + ")");
-	        $(box).find(".divStepTip").attr("id", "stepTip_" + (i + 1));
-	        $(box).find(".stepTip").attr("name", "makeSteps[" + i + "].tip");
-	        $(box).find(".showLink").attr("href", "javascript:showLink("+ (i + 1) + ")");
-	        $(box).find(".divStepLink").attr("id", "stepLink_" + (i + 1));
-	        $(box).find(".stepLink_url").attr("name", "makeSteps[" + i + "].link_url");
-	        $(box).find(".stepLink_desc").attr("name", "makeSteps[" + i + "].link_desc");
-	        $(box).find(".showAll").attr("href", "javascript:showAll("+ (i + 1) + ")");
+	        $(box).find(".stepNum_hidden").attr("name", "makeSteps[" + i + "].make_step_num").val(i + 1);
+	        
+	        //divStepUpload부분
+	        $(box).find(".stepImg_label").attr("for", "stepImg_file_" + (i + 1));
+	        $(box).find(".previewImg_step").attr("id", "previewImg_step_" + (i + 1));
+	        $(box).find(".stepImg_file").attr({
+	        	id : "stepImg_file_" + (i + 1),
+	        	onchange : "previewMakeStepImg(this," + (i + 1) + ")"
+	        });
+// 	        $(box).find(".stepImg_file").attr("id", "stepImg_file_" + (i+1));
+// 	        $(box).find(".stepImg_file").attr("onchange", "previewMakeStepImg(this," + (i + 1) + ")");
+ 			$(box).find(".stepImg_hidden").attr({
+ 				id : "makeSteps[" + i + "].make_step_img",
+ 				name : "makeSteps[" + i + "].make_step_img"
+	        });
+// 	        $(box).find(".stepImg_hidden").attr("name", "makeSteps[" + i + "].make_step_img");
+// 	        $(box).find(".stepImg_hidden").attr("id", "makeSteps[" + i + "].make_step_img");
+ 			$(box).find(".btn_delStepImg").attr({
+ 				id : "btnDelStepImg_" + (i + 1),
+ 				href : "javascript:delStepImg("+ (i + 1) + ")"
+	        });
+// 	        $(box).find(".btn_delStepImg").attr("id", "btnDelStepImg_" + (i + 1));
+// 	        $(box).find(".btn_delStepImg").attr("href", "javascript:delStepImg("+ (i + 1) + ")");
+	       
+	       	//divStepText부분
+			$(box).find(".stepText").attr("name", "makeSteps[" + i + "].make_step_text");
+	       	
+	       	//divStepBtn 부분
 	        $(box).find(".moveUp").attr("href", "javascript:moveUp("+ (i + 1) + ")");
 	        $(box).find(".moveDown").attr("href", "javascript:moveDown("+ (i + 1) + ")");
 	        $(box).find(".addStepBox").attr("href", "javascript:addStepBox("+ (i + 1) + ")");
 	        $(box).find(".delStepBox").attr("href", "javascript:delStepBox("+ (i + 1) + ")");
+	        
+	        //노트,팁,링크 부분
+	        $(box).find(".showNote").attr("href", "javascript:showNote("+ (i + 1) + ")");
+	        $(box).find(".divStepNote").attr("id", "divStepNote_" + (i + 1));
+	        $(box).find(".stepNoteText").attr("name", "makeSteps[" + i + "].note");
+	       
+	        $(box).find(".showTip").attr("href", "javascript:showTip("+ (i + 1) + ")");
+	        $(box).find(".divStepTip").attr("id", "divStepTip_" + (i + 1));
+	        $(box).find(".stepTipText").attr("name", "makeSteps[" + i + "].tip");
+	       
+	        $(box).find(".showLink").attr("href", "javascript:showLink("+ (i + 1) + ")");
+	        $(box).find(".divStepLink").attr("id", "divStepLink_" + (i + 1));
+	        $(box).find(".stepLink_url").attr("name", "makeSteps[" + i + "].link_url");
+	        $(box).find(".stepLink_desc").attr("name", "makeSteps[" + i + "].link_desc");
+	        $(box).find(".showAll").attr("href", "javascript:showAll("+ (i + 1) + ")");
 	    });
 	}
 	
@@ -302,9 +321,9 @@
 				$(this).find('.divStepBtn').hide();
 			}		
 		);
-		// 숫자를 다시 붙인다.
 		reorder();
 	}
+	
 	//stepBox반환
 	function createBox() {
 		var box = $(".stepBox:eq(0)").clone();
@@ -319,7 +338,6 @@
 		$(box).find(".divStepNote").hide();
 		$(box).find(".divStepTip").hide();
 		$(box).find(".divStepLink").hide();
-		$(box).find(".stepImg_hidden").attr("data-exist", 0);
 		return box;
 	}
 	
@@ -375,6 +393,7 @@
 		width:160px; height:160px; cursor: pointer;
 /* 		border: 4px solid rgb(31, 94, 67); */
 		border: 1px solid #e1e1e1;
+		object-fit: cover; 
 	}
 	
 	.container-fluid {
@@ -501,18 +520,6 @@ margin-right: 15px;
 	background:#1f5e43; 
 	color:#fff;
 	}
-/* 	.btn_delMainImg { */
-/*     right: 1rem; */
-/*     top: 0; */
-/* 	} */
-	
-/* 	.btn_delStepImg { */
-/*     left: 8rem; */
-/*     bottom: 10.5rem; */
-/*     position: relative; */
-/*     display: block; */
-/* 	} */
-
 
 @media screen and (min-width: 1300px) {
 .myContainer {
@@ -531,6 +538,8 @@ margin-right: 15px;
 .body { grid-area: body; }
 .side-right { grid-area: side-right; }
  }
+ 
+ 
 </style>
 <title>취미 글쓰기</title>
 </head>
@@ -542,12 +551,12 @@ margin-right: 15px;
 		<div class="side side-left">
 	  	</div>
   	    <div class="body">
-  				<form method="post" action="/insertRun" onsubmit="return validate();">
-				<input type="hidden" name="hobby_writer" value="wendy"/>
+  				<form id="istFrm" method="post" action="${contextPath}/hobby/insertRun">
 				<div style="background: #f8f8f8; border-bottom: 1px solid #e6e7e8; 
 					padding: 14px 18px; position: relative;">
 					<span class="lg_tit">취미 작성</span>
 					<span class="star">*</span><span style="font-size:15px; font-weight:550;">필수입력</span>
+					<input type="text" name="user_id"  placeholder="로그인했다고 가정할아이디 입력" style="width:300px;"/>
 				</div>
 			<!-- 취미 메인 정보 박스 -->			
 				<div class="cont_box" >
@@ -568,7 +577,7 @@ margin-right: 15px;
 								</div>
 								<div class="row">
 									<input type="text" class="form-control main_input" 
-										id="hobby_title" name="hobby_title" required maxlength="40" minlength="2" autocomplete="off"/>
+										id="hobby_title" name="hobby_title" maxlength="40" minlength="2" autocomplete="off"/>
 								</div>
 								<div class="row float-right" 
 									 style="
@@ -595,7 +604,7 @@ margin-right: 15px;
 								</div>
 								<div class="row">
 									<textarea class="form-control main_input" style="height:80px; resize:none;" 
-											 name="hobby_intro" id="hobby_intro" required maxlength="300" minlength="2" autocomplete="off"></textarea>
+											 name="hobby_intro" id="hobby_intro"  maxlength="300" minlength="2" autocomplete="off"></textarea>
 								</div>
 								<div class="row float-right" 
 									 style="
@@ -786,17 +795,17 @@ margin-right: 15px;
 										<!-- 이미지는 눌허용 -->
 										<div class="divStepItem">
 											<div class="divStepNum">
-												<input class="stepNum_input" type="hidden" name="makeSteps[0].make_step_num" value="1"/>
+												<input class="stepNum_hidden" type="hidden" name="makeSteps[0].make_step_num" value="1"/>
 												Step<span class="stepNum_span">1</span>
 											</div>
-											<div class="divStepUpload" id="divStepUpload_1">
+											<div class="divStepUpload">
 												<label class="stepImg_label" for="stepImg_file_1">
 													<img id="previewImg_step_1" class="previewImg_step" src="${contextPath}/resources/images/preview_img.jpg" >
 												</label>
 												<input type="file" class="stepImg_file" 
 													 id="stepImg_file_1" accept=".gif, .jpg, .png" onchange="previewMakeStepImg(this, 1);"
 													style="display:none;width:0px;height:0px;font-size:0px;">
-												<input type="hidden" class="stepImg_hidden" data-exist="0" data-seq="1"
+												<input type="hidden" class="stepImg_hidden" 
 													id="makeSteps[0].make_step_img" name="makeSteps[0].make_step_img"/>
 												<div style="position: relative; bottom: 10.4rem; right:0.1rem">
 													<a id="btnDelStepImg_1" href="javascript:delStepImg(1)" class="btn_del btn_delStepImg" style="display:none; float:right"></a>
@@ -814,7 +823,7 @@ margin-right: 15px;
 												<a class="delStepBox" href="javascript:delStepBox(1)"><span class="fa fa-times"></span></a>
 											</div>
 											<!-- 노트, 팁 부분 -->
-											<div style="width:594px;border:3px solid rgba(31, 94, 67, .75);;margin-left: 123px">
+											<div style="width:594px;border:3px solid rgba(31, 94, 67, .75); margin-left: 123px">
 												<div style="padding:5px; text-align:center">
 													<!-- 노트보기 -->
 													<a href="javascript:showNote(1);"
@@ -839,29 +848,28 @@ margin-right: 15px;
 													class="extraBtn showAll" style="width:90px;height:26px;"> 전 체 </a>
 													<!-- //전체보기 -->
 													<!-- 가이드보기 -->
-													<a href="javascript:openStepGuide();" id="stepBtn_guide_1" 
-													class="extraBtn" 
-													style="width:160px;height:26px; border:none; 
-													background:#1F5E43; color:#fff; padding:6px 7px 4px;">추가기능 가이드</a>
+													<a href="javascript:openStepGuide();" class="extraBtn" 
+														style="width:160px;height:26px; border:none; 
+														background:#1F5E43; color:#fff; padding:6px 7px 4px;">추가기능 가이드</a>
 													<!-- //가이드보기 -->
 													<!-- 노트영역 -->
-												<div id="stepNote_1" class="divStepNote" style="display:none; margin:5px 5px;">
+												<div id="divStepNote_1" class="divStepNote" style="display:none; margin:5px 5px;">
 													<img src="${contextPath}/resources/images/note.png"
 													style="width:24px;height:24px; vertical-align:top;"/> 
-													<textarea name="makeSteps[0].note" class="form-control stepNote" autocomplete="off"
+													<textarea name="makeSteps[0].note" class="form-control stepNoteText" autocomplete="off"
 														style="width:500px;height:50px;resize:none; display: inline-block;"></textarea>
 												</div>
 												<!--// 노트영역 -->
 												<!-- 팁영역 -->
-												<div id="stepTip_1" class="divStepTip" style="display:none; margin:5px 5px;">
+												<div id="divStepTip_1" class="divStepTip" style="display:none; margin:5px 5px;">
 													<img src="${contextPath}/resources/images/lamp.png"
 														style="width:24px;height:24px;vertical-align:top;"> 
-													<textarea name="makeSteps[0].tip" class="form-control stepTip" autocomplete="off"
+													<textarea name="makeSteps[0].tip" class="form-control stepTipText" autocomplete="off"
 														 style="width:500px;height:50px;resize:none; display: inline-block;"></textarea>
 												</div>
 												<!-- //팁영역 -->
 												<!-- 링크영역 -->
-												<div id="stepLink_1" class="divStepLink" style="display:none; margin:5px 5px;">
+												<div id="divStepLink_1" class="divStepLink" style="display:none; margin:5px 5px;">
 													<img src="${contextPath}/resources/images/link.png"
 														style="width:24px;height:24px;vertical-align:top;"> 
 													<input type="text" name="makeSteps[0].link_url"
@@ -901,12 +909,12 @@ margin-right: 15px;
 									<div class="divCompleteImg" style="margin-right:20px; height: 140px;">
 									<label class="complImg_label" for="complImg_file_${v }" style="border: 1px solid #e1e1e1;">
 										<img id="previewImg_compl_${v }" class="previewImg_compl" 
-											src="${contextPath}/resources/images/preview_img.jpg" style="width:140px; height:140px;  cursor: pointer;">
+											src="${contextPath}/resources/images/preview_img.jpg" style="width:140px; height:140px; object-fit: cover; cursor: pointer;">
 									</label>
 									<input type="file" class="complImg_file" 
 										 id="complImg_file_${v }" accept=".gif, .jpg, .png" onchange="previewComplImg(this, ${v });"
 										style="display:none;width:0px;height:0px;font-size:0px;">
-									<input type="hidden" class="complImg_hidden" data-exist="0" 
+									<input type="hidden" class="complImg_hidden" 
 										id="completeImgs[${v - 1}].img_name" name="completeImgs[${v - 1 }].img_name"/>
 									<input type="hidden" class="complImg_num" name="completeImgs[${v - 1 }].num" value="${v }"/>
 									<div style="position: relative;bottom: 9.3rem;">
@@ -924,31 +932,11 @@ margin-right: 15px;
 					</div>
 				 </div>
 				 <!-- //만들기 부분 -->
-				 <!-- 태그  -->
-<!-- 				 <div class="cont_box"> -->
-<!-- 					<div class="row"> -->
-<!-- 						<div class="col-md-1"> -->
-<!-- 						</div> -->
-<!-- 						태그 내용 -->
-<!-- 						<div class="col-md-10"> -->
-<!-- 							<div class="cont_tit"> -->
-<!-- 								태그  -->
-<!-- 							</div> -->
-<!-- 							<div> -->
-<!-- 								<input type="text" class="form-control" placeholder="태그1, 태그2, 태그3 쉼표로 구분해주세요"/> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 						// 태그 내용 -->
-<!-- 						<div class="col-md-1"> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				 </div> -->
-				 <!-- //태그  -->
 				 <!-- 저장/완료/닫기 버튼 부분 -->
 				 <div class="cont_box">
 						<div style="text-align: center;">
-							<button type="submit" class="btn btn-outline-light btn-lg green_background">완료</button>
-							<button type="button" class="btn btn-outline-light btn-lg green_background">닫기</button>
+							<button type="button" onclick="doSubmit();" class="btn btn-outline-light btn-lg green_background">완료</button>
+							<button type="button" onclick="history.back();" class="btn btn-outline-light btn-lg green_background">닫기</button>
 						</div>
 				 </div>
 				 <!-- //저장/완료/닫기 버튼 -->
@@ -1007,50 +995,48 @@ $("#hobby_intro").on("input", function(){
 	}
 });
 
-function calcFileName(thumbPath) {
-	// var rootIndex;
-	// const home = 21;
-	// const yj = 12;
-	// const team;
-	var rootIndex = 12;
-	// -> /test ~ 이런식으로 대쉬부터 시작하는 값으로 설정해놔야함 ! 
-	
-	console.log(thumbPath);
-	var str = thumbPath.substring(rootIndex);
-	var prefix = str.substring(0, str.lastIndexOf("/") + 1);
-	console.log(prefix);
-	console.log("str", str);
-	var thumbName = str.substring(str.lastIndexOf("/") + 1);
-	var splits = thumbName.split("_");
-	console.log(splits);
-	var suffix = "";
-	for (var v = 1; v < splits.length; v++) {
-		if (v == (splits.length - 1)) {
-			suffix += splits[v];
-			break;
-		}
-		suffix += splits[v] + "_";
-	}
-	var fileName = prefix + suffix;
-	
-	return fileName;
-}
-//ajax
+//ajax (이미지들)
 function previewMainImg(targetObj) {
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("$('#main_img').val()", $('#main_img').val());
 		return false;
 	}
 	
 	var file = targetObj.files[0];
-	console.log("파일존재");
+	
+	// 이미지파일체크, 파일 사이즈 체크
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+	    
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "mainImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1058,15 +1044,18 @@ function previewMainImg(targetObj) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log("fileName:" + fileName);
+		"success" : function(filePath) {
+			console.log("filePath:" + filePath);
 			// 1. hidden에 값 넣기 
-			$("#main_img").val(fileName);
+			$("#main_img").val(filePath);
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_main").attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("$('#main_img').val()", $('#main_img').val());
-			$("#btnDelMainImg").show();
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_main").attr("src", e.target.result);
+				console.log("$('#main_img').val()", $('#main_img').val());
+				$("#btnDelMainImg").show();
+			}
 		},
 		"error" : function() {
 			alert("파일 업로드 실패!");
@@ -1082,33 +1071,61 @@ function previewMainImg(targetObj) {
 	
 function delMainImg() {
 	console.log("삭제")
-	var fileName = $("#main_img").val();
-	console.log(fileName);
-	var url = "/deleteFile?fileName=" + fileName;
+	var filePath = $("#main_img").val();
+	console.log(filePath);
+	var url = "/deleteFile?filePath=" + filePath;
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#main_img").val("");
 			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
-			$("#btnDelMainImg").css("display", "none");
+			$("#btnDelMainImg").hide();
 		}
 	})
 }
+
 function previewMakeStepImg(targetObj, seq) {
 	
 	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("val", $(el).val());
 		return false;
 	}
 	var file = targetObj.files[0];
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+ 	
 	console.log("파일존재");
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "stepImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1116,17 +1133,18 @@ function previewMakeStepImg(targetObj, seq) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log(fileName);
+		"success" : function(filePath) {
 			// 1. hidden에 값 넣기 
-			$(el).val(fileName);
-			$(el).attr("data-exist", 1);
+			$(el).val(filePath);
 			$("#stepBox_" + seq).removeClass("none_img");
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_step_" + seq).attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("val", $(el).val());
-			$("#btnDelStepImg_" + seq).show();
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_step_" + seq).attr("src", e.target.result);
+				console.log("val", $(el).val());
+				$("#btnDelStepImg_" + seq).show();
+			}
 			
 		},
 		"error" : function() {
@@ -1138,24 +1156,7 @@ function previewMakeStepImg(targetObj, seq) {
 	});
     
 }
-function delStepImg(seq) {
-	console.log("삭제")
-	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
-	var fileName = $(el).val();
-	console.log(fileName);
-	var url = "/deleteFile?fileName=" + fileName;
-	$.get(url, function(rData) {
-		if (rData == "success") {
-			$(el).val("");
-			$(el).attr("data-exist", 0);
-			$("#stepBox_" + seq).addClass("none_img");
-			
-			$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-			$("#btnDelStepImg_" + seq).css("display", "none");
-// 			console.log($("#previewImg_step_" + seq).parent().parent());
-		}
-	})
-}
+
 // 다중파일 업로드
 var multifile_step = document.querySelector('#multifile_step');
 multifile_step.onchange = function () {
@@ -1164,21 +1165,55 @@ multifile_step.onchange = function () {
 	if (files.length == 0) {
 		return false;
 	}
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(files);
+	for (var v = 0; v < files.length; v++) {
+		console.log("이름:", files[v].name);
+		console.log("크기:", files[v].size);
+	    if(!files[v].name.match(imgJ)) {
+	    	Swal.fire({
+				text: '이미지 파일만 업로드 가능합니다.', 
+				allowOutsideClick: false,
+				iconColor: "#1f5e43",
+				icon: 'warning', 
+				confirmButtonText: "확인",
+				confirmButtonColor: "#1f5e43",
+			});
+	        return;
+	    } else if(files[v].size > maxSize) {
+	    	Swal.fire({
+				text: '파일 크기는 10MB까지 가능합니다.', 
+				allowOutsideClick: false,
+				iconColor: "#1f5e43",
+				icon: 'warning', 
+				confirmButtonText: "확인",
+				confirmButtonColor: "#1f5e43",
+			});
+	        return;
+	    }
+	}
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+ 	
 	console.log("사용자가 올리려고 선택한 파일들", files);
-	var emptys = $("#stepBoxWrap").find('input[data-exist="0"]');
+	var emptys = $("#stepBoxWrap").find('.none_img');
 	// 멀티파일개수 - 사진 안올라간거 > 0 때만 박스 생성
 	console.log("파일개수", files.length);
 	console.log("사진안올라가있는 스탭박스 개수", emptys.length);
 	console.log("생성해야할 박스개수", files.length - emptys.length);
 	if (files.length - emptys.length > 0) {
 		for (var v = 1; v <= files.length - emptys.length; v++) {
+			console.log("박스생성" + v)
 			createStepBox();
 		}
 	}
 	
 		$(".none_img").each(function(i, box) {
 			console.log("i: ", i);
-			var seq = $(box).find(".stepImg_hidden").attr("data-seq");
+			var seq = $(box).find(".stepNum_hidden").val();
 			var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
 			var formData = new FormData();
 			if (typeof files[i] == "undefined") {
@@ -1187,7 +1222,7 @@ multifile_step.onchange = function () {
 			formData.append("file", files[i]);
 			formData.append("sort", "stepImg");
 			
-			var url = "/uploadImg";
+			var url = "/uploadImage";
 			
 			$.ajax({
 				"processData" : false,
@@ -1195,17 +1230,19 @@ multifile_step.onchange = function () {
 				"url" : url,
 				"method" : "post",
 				"data" : formData,
-				"success" : function(thumbPath) {
-					var fileName = calcFileName(thumbPath);
-					console.log(fileName);
+				"success" : function(filePath) {
+					console.log(filePath);
 					// 1. hidden에 값 넣기 
-					$(el).val(fileName);
-					$(el).attr("data-exist", 1);
+					$(el).val(filePath);
 					$("#stepBox_" + seq).removeClass("none_img");
 					//2. 프리뷰이미지 보여주기 
-					$("#previewImg_step_" + seq).attr("src", "/displayImage?filePath=" + thumbPath);
-					console.log("val", $(el).val());
-					$("#btnDelStepImg_" + seq).show();
+					var reader = new FileReader();
+					reader.readAsDataURL(files[i]);
+					reader.onload = function(e) {
+						$("#previewImg_step_" + seq).attr("src", e.target.result);
+						console.log("val", $(el).val());
+						$("#btnDelStepImg_" + seq).show();
+					}
 				},
 				"error" : function() {
 					alert("파일 업로드 실패!");
@@ -1217,22 +1254,67 @@ multifile_step.onchange = function () {
 		});
 	
 }
+
+function delStepImg(seq) {
+	console.log("삭제")
+	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
+	var filePath = $(el).val();
+	console.log(filePath);
+	var url = "/deleteFile?filePath=" + filePath;
+	$.get(url, function(rData) {
+		console.log(rData)
+		if (rData == "success") {
+			$(el).val("");
+			$("#stepBox_" + seq).addClass("none_img");
+			$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+			$("#btnDelStepImg_" + seq).hide();
+		}
+	})
+}
+
 function previewComplImg(targetObj, num) {
 	
 	var el = document.getElementById("completeImgs["+ (num - 1) +"].img_name");
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("val", $(el).val());
 		return false;
 	}
 	var file = targetObj.files[0];
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+	
 	console.log("파일존재");
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "complImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1240,17 +1322,18 @@ function previewComplImg(targetObj, num) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log(fileName);
+		"success" : function(filePath) {
+			console.log(filePath);
 			// 1. hidden에 값 넣기 
-			$(el).val(fileName);
-			$(el).attr("data-exist", 1);
+			$(el).val(filePath);
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_compl_" + num).attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("val", $(el).val());
-			$("#btnDelComplImg_" + num).show();
-			
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_compl_" + num).attr("src", e.target.result);
+				console.log("val", $(el).val());
+				$("#btnDelComplImg_" + num).show();
+			}
 		},
 		"error" : function() {
 			alert("파일 업로드 실패!");
@@ -1261,21 +1344,22 @@ function previewComplImg(targetObj, num) {
 	});
     
 }
+
 function delComplImg(num) {
 	console.log("삭제")
 	var el = document.getElementById("completeImgs["+ (num - 1) +"].img_name");
-	var fileName = $(el).val();
-	console.log(fileName);
-	var url = "/deleteFile?fileName=" + fileName;
+	var filePath = $(el).val();
+	console.log(filePath);
+	var url = "/deleteFile?filePath=" + filePath;
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$(el).val("");
-			$(el).attr("data-exist", 0);
 			$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-			$("#btnDelComplImg_" + num).css("display", "none");
+			$("#btnDelComplImg_" + num).hide();
 		}
 	})
 }
+
 //* 준비물 부분
 $("#materialBoxWrap").sortable({
 	stop : function(event, ui) {
@@ -1360,6 +1444,7 @@ function validate() {
 	// 1. 메인정보들 
 	var hobby_title = $("#hobby_title").val();
 	if (typeof hobby_title == "undefined" || hobby_title.trim() == "" || hobby_title ==  null) {
+		console.log("제목입력");
 		$("#msgTitle").text("제목을 입력해주세요.");
 		$("#hobby_title").focus();
 		return false;
@@ -1553,8 +1638,35 @@ function validate() {
 		return false;
 	}
 	
-	
-	
+	return true;
+}
+
+function doSubmit() {
+	valResult = validate();
+	console.log(valResult);
+    if (!valResult) {
+        return false;
+    } 
+    console.log("확인");
+    
+ 	//등록하시겠습니까?
+	Swal.fire({
+		text: '등록하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			 $("#istFrm").submit();
+		} else {
+			return false;
+		}
+	});
+    
 }
 </script>
 </body>

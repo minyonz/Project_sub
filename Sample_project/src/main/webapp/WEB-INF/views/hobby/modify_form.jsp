@@ -6,8 +6,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
@@ -18,7 +16,6 @@
 <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" ></script>
 
 <!-- 모달  -->
-<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script> -->
 <script src="${contextPath}/resources/js/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="${contextPath}/resources/css/sweetalert2.min.css">
 
@@ -174,12 +171,16 @@
 		
 		// * 만들기 부분
 		$("#stepBoxWrap").sortable({
+// 			placeholder : "placeholder",
+// 			start : function(event, ui) {
+// 				ui.item.data('start_pos', ui.item.index());
+// 			},
 			stop : function(event, ui) {
 				reorder();
 			}
 		});
 		
-		$(".stepBox").hover(
+		$(".existStepBox").hover(
 			function() {
 				$(this).find('.divStepBtn').show();
 			},
@@ -191,31 +192,31 @@
 	});
 	
 	function showNote(seq) {
-		$("#stepNote_" + seq).toggle();
+		$("#divStepNote_" + seq).toggle();
 		reorder();
 	}
 	
 	function showTip(seq) {
-		$("#stepTip_" + seq).toggle();
+		$("#divStepTip_" + seq).toggle();
 		reorder();
 	}
 	
 	function showLink(seq) {
-		$("#stepLink_" + seq).toggle();
+		$("#divStepLink_" + seq).toggle();
 		reorder();
 	}
 	
 	function showAll(seq) {
 		// 셋중하나라도 안보이는 상태에 전체보기 누르면 -> 다보여주기
-		if($("#stepNote_" + seq).css("display") == "none" || $("#stepTip_" + seq).css("display") == "none" || $("#stepLink_" + seq).css("display") == "none") {
-			$("#stepNote_" + seq).show();
-			$("#stepTip_" + seq).show();
-			$("#stepLink_" + seq).show();
+		if($("#divStepNote_" + seq).css("display") == "none" || $("#divStepTip_" + seq).css("display") == "none" || $("#divStepLink_" + seq).css("display") == "none") {
+			$("#divStepNote_" + seq).show();
+			$("#divStepTip_" + seq).show();
+			$("#divStepLink_" + seq).show();
 		} else {
 			// 셋중하나라도 보이는 상태에 전체보기 누르면 -> 전부다 숨기기
-			$("#stepNote_" + seq).hide();
-			$("#stepTip_" + seq).hide();
-			$("#stepLink_" + seq).hide();
+			$("#divStepNote_" + seq).hide();
+			$("#divStepTip_" + seq).hide();
+			$("#divStepLink_" + seq).hide();
 		}
 		
 		reorder();
@@ -226,7 +227,7 @@
 	}
 	
 	function getMakeSteplength() {
-		var length = $(".stepBox").length;
+		var length = $(".existStepBox").length;
 		// 삭제하기전 남아있는 요소 개수 리턴
 		return length;
 	}
@@ -258,6 +259,7 @@
 		}
 		
 		var thisStepBox = $("#stepBox_" + seq);
+		
 		if (thisStepBox.find(".stepText").val() != "") {
 			Swal.fire({
 				text: '입력하신 내용이 있습니다 삭제하시겠습니까?', 
@@ -271,7 +273,18 @@
 			}).then(function(result) {
 				if(result.isConfirmed) {
 					thisStepBox.fadeOut(200,function() {
-				        $(this).remove();
+				        var step_no = thisStepBox.find(".step_no").val();
+				        var step_text = thisStepBox.find(".stepText").val();
+						if (step_no > 0) { // 원래 있던 박스이면 (db에있던거면)
+							var deletedBox = 
+								'<div class="stepBox" >'
+									+'<input type="hidden" class="step_no" name="makeSteps['+ (seq - 1) +'].step_no" value="'+ step_no +'"/>'
+									+'<input type="hidden" class="is_del" name="makeSteps['+ (seq - 1) +'].is_del" value="Y"/>'
+								+'</div>'
+								$("#stepBoxWrap").append(deletedBox);
+								console.log(deletedBox);
+						}
+						thisStepBox.remove();
 				    	reorder();
 				    });
 				} else {
@@ -290,35 +303,69 @@
 	
 	function reorder() {
 	    $(".stepBox").each(function(i, box) {
+	    	//step_no
+	    	$(box).find(".step_no").attr({
+				"data-index" : i,
+				name : "makeSteps[" + i + "].step_no"
+       	    });
+	    	//is_del
+	    	$(box).find(".is_del").attr("name", "makeSteps[" + i + "].is_del");
+	    	
+	    });
+	    
+	    $(".existStepBox").each(function(i, box) {
 	    	$(box).attr("id", "stepBox_" + (i + 1));
+			var index = $(box).find(".step_no").attr("data-index");
+	    	
+	    	// divStpNum 부분
 	        $(box).find(".stepNum_span").html(i + 1);
-	        $(box).find(".stepNum_input").attr("name", "makeSteps[" + i + "].make_step_num").val(i+1);
-	        $(box).find(".stepText").attr("name", "makeSteps[" + i + "].make_step_text");
-	        $(box).find(".divStepUpload").attr("id", "divStepUpload_" + (i + 1));
-	        $(box).find(".stepImg_label").attr("for", "stepImg_file_" + (i+1));
-	        $(box).find(".previewImg_step").attr("id", "previewImg_step_" + (i+1));
-	        $(box).find(".stepImg_file").attr("id", "stepImg_file_" + (i+1));
-	        $(box).find(".stepImg_file").attr("onchange", "previewMakeStepImg(this," + (i + 1) + ")");
-	        $(box).find(".stepImg_hidden").attr("name", "makeSteps[" + i + "].make_step_img");
-	        $(box).find(".stepImg_hidden").attr("id", "makeSteps[" + i + "].make_step_img");
-	        $(box).find(".stepImg_hidden").attr("data-seq", (i + 1));
-	        $(box).find(".btn_delStepImg").attr("id", "btnDelStepImg_" + (i + 1));
-	        $(box).find(".btn_delStepImg").attr("href", "javascript:delStepImg("+ (i + 1) + ")");
-	        $(box).find(".showNote").attr("href", "javascript:showNote("+ (i + 1) + ")");
-	        $(box).find(".divStepNote").attr("id", "stepNote_" + (i + 1));
-	        $(box).find(".stepNote").attr("name", "makeSteps[" + i + "].note");
-	        $(box).find(".showTip").attr("href", "javascript:showTip("+ (i + 1) + ")");
-	        $(box).find(".divStepTip").attr("id", "stepTip_" + (i + 1));
-	        $(box).find(".stepTip").attr("name", "makeSteps[" + i + "].tip");
-	        $(box).find(".showLink").attr("href", "javascript:showLink("+ (i + 1) + ")");
-	        $(box).find(".divStepLink").attr("id", "stepLink_" + (i + 1));
-	        $(box).find(".stepLink_url").attr("name", "makeSteps[" + i + "].link_url");
-	        $(box).find(".stepLink_desc").attr("name", "makeSteps[" + i + "].link_desc");
-	        $(box).find(".showAll").attr("href", "javascript:showAll("+ (i + 1) + ")");
+	        $(box).find(".stepNum_hidden").attr("name", "makeSteps[" + index + "].make_step_num").val(i + 1);
+	        
+	        //divStepUpload부분
+	        $(box).find(".stepImg_label").attr("for", "stepImg_file_" + (i + 1));
+	        $(box).find(".previewImg_step").attr("id", "previewImg_step_" + (i + 1));
+	        $(box).find(".stepImg_file").attr({
+	        	id : "stepImg_file_" + (i + 1),
+	        	onchange : "previewMakeStepImg(this," + (i + 1) + ")"
+	        });
+// 	        $(box).find(".stepImg_file").attr("id", "stepImg_file_" + (i+1));
+// 	        $(box).find(".stepImg_file").attr("onchange", "previewMakeStepImg(this," + (i + 1) + ")");
+ 			$(box).find(".stepImg_hidden").attr({
+ 				id : "makeSteps[" + index + "].make_step_img",
+ 				name : "makeSteps[" + index + "].make_step_img"
+	        });
+// 	        $(box).find(".stepImg_hidden").attr("name", "makeSteps[" + i + "].make_step_img");
+// 	        $(box).find(".stepImg_hidden").attr("id", "makeSteps[" + i + "].make_step_img");
+ 			$(box).find(".btn_delStepImg").attr({
+ 				id : "btnDelStepImg_" + (i + 1),
+ 				href : "javascript:delStepImg("+ (i + 1) + ")"
+	        });
+// 	        $(box).find(".btn_delStepImg").attr("id", "btnDelStepImg_" + (i + 1));
+// 	        $(box).find(".btn_delStepImg").attr("href", "javascript:delStepImg("+ (i + 1) + ")");
+	       
+	       	//divStepText부분
+			$(box).find(".stepText").attr("name", "makeSteps[" + index + "].make_step_text");
+	       	
+	       	//divStepBtn 부분
 	        $(box).find(".moveUp").attr("href", "javascript:moveUp("+ (i + 1) + ")");
 	        $(box).find(".moveDown").attr("href", "javascript:moveDown("+ (i + 1) + ")");
 	        $(box).find(".addStepBox").attr("href", "javascript:addStepBox("+ (i + 1) + ")");
 	        $(box).find(".delStepBox").attr("href", "javascript:delStepBox("+ (i + 1) + ")");
+	        
+	        //노트,팁,링크 부분
+	        $(box).find(".showNote").attr("href", "javascript:showNote("+ (i + 1) + ")");
+	        $(box).find(".divStepNote").attr("id", "divStepNote_" + (i + 1));
+	        $(box).find(".stepNoteText").attr("name", "makeSteps[" + index + "].note");
+	       
+	        $(box).find(".showTip").attr("href", "javascript:showTip("+ (i + 1) + ")");
+	        $(box).find(".divStepTip").attr("id", "divStepTip_" + (i + 1));
+	        $(box).find(".stepTipText").attr("name", "makeSteps[" + index + "].tip");
+	       
+	        $(box).find(".showLink").attr("href", "javascript:showLink("+ (i + 1) + ")");
+	        $(box).find(".divStepLink").attr("id", "divStepLink_" + (i + 1));
+	        $(box).find(".stepLink_url").attr("name", "makeSteps[" + index + "].link_url");
+	        $(box).find(".stepLink_desc").attr("name", "makeSteps[" + index + "].link_desc");
+	        $(box).find(".showAll").attr("href", "javascript:showAll("+ (i + 1) + ")");
 	    });
 	}
 	
@@ -334,9 +381,9 @@
 				$(this).find('.divStepBtn').hide();
 			}		
 		);
-		// 숫자를 다시 붙인다.
 		reorder();
 	}
+	
 	//stepBox반환
 	function createBox() {
 		var box = $(".stepBox:eq(0)").clone();
@@ -351,10 +398,13 @@
 		$(box).find(".divStepNote").hide();
 		$(box).find(".divStepTip").hide();
 		$(box).find(".divStepLink").hide();
-		$(box).find(".stepImg_hidden").attr("data-exist", 0);
+		
+		//수정
+		$(box).find(".step_no").val("0");
+		console.log($(box).find(".step_no"));
+		$(box).find(".is_del").val("N");
 		return box;
 	}
-	
 	
 	
 </script>
@@ -407,6 +457,7 @@
 		width:160px; height:160px; cursor: pointer;
 /* 		border: 4px solid rgb(31, 94, 67); */
 		border: 1px solid #e1e1e1;
+		object-fit: cover;
 	}
 	
 	.container-fluid {
@@ -567,7 +618,6 @@ margin-right: 15px;
 <title>수정하기</title>
 </head>
 <body>
-${hobbyVo }
 <%@ include file="../include/header.jsp" %>
 <div class="container-fluid">
 	<div class="myContainer">
@@ -575,8 +625,9 @@ ${hobbyVo }
 	  
 	  	</div>
   	    <div class="body">
-  				<form method="post" action="/updateRun" onsubmit="return validate();">
-				<input type="hidden" name="hobby_writer" value="wendy"/>
+  			<form id="modFrm" method="post" action="/hobby/updateRun">
+  				<input type="hidden" name="hobby_no" value="${hobbyVo.hobby_no}"/>
+<%-- 				<input type="hidden" name="user_id" value="${hobbyVo.user_id}"/> --%>
 				<div style="background: #f8f8f8; border-bottom: 1px solid #e6e7e8; 
 					padding: 14px 18px; position: relative;">
 					<span class="lg_tit">취미 작성</span>
@@ -662,7 +713,7 @@ ${hobbyVo }
 											<label for="mainImg_file" id="mainImg_label"
 												style="width: 350px; height: 230px; overflow: hidden;">
 												<img id="previewImg_main" 
-													src="/displayImage?filePath=${rootPath}${hobbyVo.main_img}"
+													src="/displayImage?filePath=${hobbyVo.main_img}"
 													style="width:100%; height:100%; object-fit:cover; cursor:pointer; border: 1px solid #e1e1e1;" >
 											</label>
 											<input type="file" class="mainImg_file" name="mainImg_file" 
@@ -769,12 +820,12 @@ ${hobbyVo }
 								</div>
 							<div id="materialBoxWrap">
 								<c:forEach var="hobbyMaterialVo" items="${hobbyVo.hobbyMaterials}" varStatus="vs">
-									<div class="materialBox" id="materialBox_${vs.count}" style="cursor:pointer; margin: 0 0 7px 50px;">
+									<div class="materialBox existMaterialBox" id="materialBox_${vs.count}" style="cursor:pointer; margin: 0 0 7px 50px;">
+									<input type="hidden" class="hm_no" name="hobbyMaterials[${vs.count -1}].hm_no" value="${hobbyMaterialVo.hm_no}" data-index="${vs.index}" />
+									<input type="hidden" class="is_del" name="hobbyMaterials[${vs.count -1}].is_del" value="${hobbyMaterialVo.is_del}"/>
 										<img src = "${contextPath}/resources/images/double-arrow.png"
 											style="width:15px; height:20px; opacity:0.75;"/>
 										<div class="divMaterialItem" style="display:inline-block;">
-											<input type="hidden" class="hm_no" name="hobbyMaterials[${vs.count -1}].hm_no" 
-												value="${hobbyMaterialVo.hm_no}"/>
 											<input type="hidden" class="seq" name="hobbyMaterials[${vs.count -1}].seq" 
 												value="${hobbyMaterialVo.seq}"/>
 											<input type="text" value="${hobbyMaterialVo.materialName}"
@@ -807,8 +858,8 @@ ${hobbyVo }
 					</div>
 				 </div>
 				 <!-- //재료 부분 -->
-				<!-- 만들기 완성 사진 부분 -->
-					<div class="cont_box">
+				 <!-- 만들기 부분 -->
+				<div class="cont_box">
 					<div class="row">
 						<div class="col-md-1">
 						</div>
@@ -831,164 +882,162 @@ ${hobbyVo }
 							<div class="row">
 								<div id="stepBoxWrap">
 									<c:forEach var="makeStepVo" items="${hobbyVo.makeSteps}" varStatus="vs">
-									<!-- stepBox -->
-										<div class="stepBox ${empty makeStepVo.make_step_img ? 'none_img' : ''}" id="stepBox_${vs.count}"> 
-										<!-- divStepItem -->
-										<!-- 이미지는 눌허용 -->
-										<div class="divStepItem">
-											<div class="divStepNum">
-												<input class="stepNum_input" type="hidden" name="makeSteps[${vs.count - 1}].make_step_num" value="${vs.count}"/>
-												Step<span class="stepNum_span">${vs.count}</span>
-											</div>
-											<div class="divStepUpload" id="divStepUpload_${vs.count}">
-													<c:choose>
-														<c:when test="${not empty makeStepVo.make_step_img}">
-															<label class="stepImg_label" for="stepImg_file_${vs.count}">
-																<img id="previewImg_step_${vs.count}" class="previewImg_step" 
-																	src="/displayImage?filePath=${rootPath}${makeStepVo.make_step_img}" >
-															</label>
-															<input type="hidden" class="stepImg_hidden" 
-																value="${makeStepVo.make_step_img }"
-																data-exist="1" data-seq="${vs.count}"
-																id="makeSteps[${vs.count - 1}].make_step_img"
-																 name="makeSteps[${vs.count - 1}].make_step_img"/>
-															 <input type="file" class="stepImg_file"
-																 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
-																 onchange="previewMakeStepImg(this, ${vs.count});"
-																style="display:none;width:0px;height:0px;font-size:0px;">
-															<input type="hidden" class="stepImg_hidden" 
-																value="${makeStepVo.make_step_img }"
-																data-exist="1" data-seq="${vs.count}"
-																id="makeSteps[${vs.count - 1}].make_step_img"
-																 name="makeSteps[${vs.count - 1}].make_step_img"/>
-															<div style="position: relative; bottom: 10.4rem; right:0.1rem">
-																<a id="btnDelStepImg_${vs.count}" 
-																href="javascript:delStepImg(${vs.count})"
-																 class="btn_del btn_delStepImg" style="float:right"></a>
-															</div>
-														</c:when>
-														<c:otherwise>
-															<label class="stepImg_label" for="stepImg_file_${vs.count}">
-																<img id="previewImg_step_${vs.count}" class="previewImg_step" src="${contextPath}/resources/images/preview_img.jpg" >
-															</label>
-															<input type="file" class="stepImg_file" 
-																 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
-																 onchange="previewMakeStepImg(this, ${vs.count});"
-																style="display:none;width:0px;height:0px;font-size:0px;">
-															<input type="hidden" class="stepImg_hidden" data-exist="0" data-seq="${vs.count}"
-																id="makeSteps[${vs.count - 1}].make_step_img" name="makeSteps[${vs.count - 1}].make_step_img"/>
-															<div style="position: relative; bottom: 10.4rem; right:0.1rem">
-																<a id="btnDelStepImg_${vs.count}" href="javascript:delStepImg(${vs.count})" 
-																class="btn_del btn_delStepImg" style="display:none; float:right"></a>
-															</div>
-														</c:otherwise>
-													</c:choose>
-											</div>
-											<div class="divStepText">
-												<textarea 
-													name="makeSteps[${vs.count - 1}].make_step_text"
-													class="form-control stepText" 
-													placeholder="순서에 맞는 설명을 입력해 주세요" 
-													style="height:160px; width:430px; resize:none;" 
-													autocomplete="off">${makeStepVo.make_step_text }</textarea>
-											</div>
-											<div class="divStepBtn" style="display:inline-block; display:none;">
-												<a class="moveUp" href="javascript:moveUp(${vs.count})"><span class="fa fa-chevron-up"></span></a>
-												<a class="moveDown" href="javascript:moveDown(${vs.count})"><span class="fa fa-chevron-down"></span></a>
-												<a class="addStepBox" href="javascript:addStepBox(${vs.count})"><span class="fa fa-plus"></span></a>
-												<a class="delStepBox" href="javascript:delStepBox(${vs.count})"><span class="fa fa-times"></span></a>
-											</div>
-											<!-- 노트, 팁 부분 -->
-											<div style="width:594px;border:3px solid rgba(31, 94, 67, .75);;margin-left: 123px">
-												<div style="padding:5px; text-align:center">
-													<!-- 노트보기 -->
-													<a href="javascript:showNote(${vs.count});"
-													class="extraBtn showNote" style="width:90px;height:26px;">
-													<img src="${contextPath}/resources/images/note.png" 
-													style="width:16px;height:16px;"/> 노트</a>
-													<!-- //노트보기 -->
-													<!-- 팁보기 -->
-													<a href="javascript:showTip(${vs.count});" 
-													class="extraBtn showTip" style="width:90px;height:26px;">
-													<img src="${contextPath}/resources/images/lamp.png" 
-													style="width:16px;height:16px;"/> 팁</a>
-													<!-- //팁보기 -->
-													<!-- 링크보기 -->
-													<a href="javascript:showLink(${vs.count});" 
-													class="extraBtn showLink" style="width:90px;height:26px;">
-													<img src="${contextPath}/resources/images/link.png" 
-													style="width:16px;height:16px;"/> 참조</a>
-													<!-- //링크보기 -->
-													<!-- 전체보기 -->
-													<a href="javascript:showAll(${vs.count});"
-													class="extraBtn showAll" style="width:90px;height:26px;"> 전 체 </a>
-													<!-- //전체보기 -->
-													<!-- 가이드보기 -->
-													<a href="javascript:openStepGuide();" id="stepBtn_guide_${vs.count}" 
-													class="extraBtn" 
-													style="width:160px;height:26px; border:none; 
-													background:#1F5E43; color:#fff; padding:6px 7px 4px;">추가기능 가이드</a>
-													<!-- //가이드보기 -->
-													<!-- 노트영역 -->
-												<div id="stepNote_${vs.count}" class="divStepNote" 
-													style="${empty makeStepVo.note  ? 'display:none;' : ''} 
-														margin:5px 5px;">
-													<img src="${contextPath}/resources/images/note.png"
-													style="width:24px;height:24px; vertical-align:top;"/> 
-													<textarea name="makeSteps[${vs.count - 1}].note" 
-														class="form-control stepNote" autocomplete="off"
-														style="width:500px;height:50px;
-														resize:none; display: inline-block;">${makeStepVo.note}</textarea>
+										<!-- stepBox -->
+											<div class="stepBox ${empty makeStepVo.make_step_img ? 'none_img' : ''} existStepBox" id="stepBox_${vs.count}"> 
+											<input type="hidden" class="step_no" name="makeSteps[${vs.count -1}].step_no" value="${makeStepVo.step_no}"  data-index="${vs.index}"/>
+											<input type="hidden" class="is_del" name="makeSteps[${vs.count -1}].is_del" value="${makeStepVo.is_del}"/>
+											<!-- divStepItem -->
+											<!-- 이미지는 눌허용 -->
+											<div class="divStepItem" style="width:800px;">
+												<div class="divStepNum">
+													<input class="stepNum_hidden" type="hidden" name="makeSteps[${vs.count - 1}].make_step_num" value="${vs.count}"/>
+													Step<span class="stepNum_span">${vs.count}</span>
 												</div>
-												<!--// 노트영역 -->
-												<!-- 팁영역 -->
-												<div id="stepTip_${vs.count}" class="divStepTip" 
-													style="${empty makeStepVo.tip  ? 'display:none;' : ''}
-														 margin:5px 5px;">
-													<img src="${contextPath}/resources/images/lamp.png"
-														style="width:24px;height:24px;vertical-align:top;"> 
-													<textarea name="makeSteps[${vs.count - 1}].tip" 
-														class="form-control stepTip" autocomplete="off"
-														 style="width:500px;height:50px;
-															 resize:none; display: inline-block;">${makeStepVo.tip}</textarea>
+												<div class="divStepUpload" id="divStepUpload_${vs.count}">
+														<c:choose>
+															<c:when test="${not empty makeStepVo.make_step_img}">
+																<label class="stepImg_label" for="stepImg_file_${vs.count}">
+																	<img id="previewImg_step_${vs.count}" class="previewImg_step" 
+																		src="/displayImage?filePath=${makeStepVo.make_step_img}" >
+																</label>
+																 <input type="file" class="stepImg_file" 
+																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
+																	onchange="previewMakeStepImg(this, ${vs.count});"
+																	style="display:none;width:0px;height:0px;font-size:0px;">
+																<input type="hidden" class="stepImg_hidden" 
+																	value="${makeStepVo.make_step_img}"
+																	id="makeSteps[${vs.count - 1}].make_step_img" 
+																	name="makeSteps[${vs.count - 1}].make_step_img"/>
+																<div style="position: relative; bottom: 10.4rem; right:0.1rem">
+																	<a id="btnDelStepImg_${vs.count}" 
+																		href="javascript:delStepImg(${vs.count})" 
+																		class="btn_del btn_delStepImg" 
+																		style="float:right"></a>
+																</div>
+															</c:when>
+															<c:otherwise>
+																<label class="stepImg_label" for="stepImg_file_${vs.count}">
+																	<img id="previewImg_step_${vs.count}" class="previewImg_step" src="${contextPath}/resources/images/preview_img.jpg"/>
+																</label>
+																 <input type="file" class="stepImg_file" 
+																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
+																	onchange="previewMakeStepImg(this, ${vs.count});"
+																	style="display:none;width:0px;height:0px;font-size:0px;">
+																<input type="hidden" class="stepImg_hidden" 
+																	id="makeSteps[${vs.count - 1}].make_step_img" 
+																	name="makeSteps[${vs.count - 1}].make_step_img"/>
+																<div style="position: relative; bottom: 10.4rem; right:0.1rem">
+																	<a id="btnDelStepImg_${vs.count}" 
+																		href="javascript:delStepImg(${vs.count})" 
+																		class="btn_del btn_delStepImg" 
+																		style="display:none; float:right"></a>
+																</div>
+															</c:otherwise>
+														</c:choose>
 												</div>
-												<!-- //팁영역 -->
-												<!-- 링크영역 -->
-												<div id="stepLink_${vs.count}" class="divStepLink" 
-													style="${empty makeStepVo.link_url  ? 'display:none;' : ''}
-													margin:5px 5px;">
-													<img src="${contextPath}/resources/images/link.png"
-														style="width:24px;height:24px;vertical-align:top;"> 
-													<input type="text" value="${makeStepVo.link_url}"
-														 name="makeSteps[${vs.count - 1}].link_url"
-														 placeholder="사이트 주소를 입력해주세요."
-														 class="form-control stepLink_url" autocomplete="off"
-														 style="width:500px;resize:none; display: inline-block;">
+												<div class="divStepText">
 													<textarea 
-														name="makeSteps[${vs.count - 1}].link_desc" 
-														placeholder="url에 대한 설명을 입력해 주세요"
-														class="form-control stepLink_desc" autocomplete="off"
-														style="width:500px;height:50px;
-															resize:none; display: inline-block; 
-															margin-left: 28px;">${makeStepVo.link_desc}</textarea>
+														name="makeSteps[${vs.count - 1}].make_step_text"
+														class="form-control stepText" 
+														placeholder="순서에 맞는 설명을 입력해 주세요" 
+														style="height:160px; width:430px; resize:none;" 
+														autocomplete="off">${makeStepVo.make_step_text }</textarea>
 												</div>
-												<!-- //링크영역 -->
+												<div class="divStepBtn" style="display:inline-block; display:none;">
+													<a class="moveUp" href="javascript:moveUp(${vs.count})"><span class="fa fa-chevron-up"></span></a>
+													<a class="moveDown" href="javascript:moveDown(${vs.count})"><span class="fa fa-chevron-down"></span></a>
+													<a class="addStepBox" href="javascript:addStepBox(${vs.count})"><span class="fa fa-plus"></span></a>
+													<a class="delStepBox" href="javascript:delStepBox(${vs.count})"><span class="fa fa-times"></span></a>
 												</div>
-											</div>						
+												<!-- 노트, 팁 부분 -->
+												<div style="width:594px;border:3px solid rgba(31, 94, 67, .75); margin-left: 123px">
+													<div style="padding:5px; text-align:center">
+														<!-- 노트보기 -->
+														<a href="javascript:showNote(${vs.count});"
+														class="extraBtn showNote" style="width:90px;height:26px;">
+														<img src="${contextPath}/resources/images/note.png" 
+														style="width:16px;height:16px;"/> 노트</a>
+														<!-- //노트보기 -->
+														<!-- 팁보기 -->
+														<a href="javascript:showTip(${vs.count});" 
+														class="extraBtn showTip" style="width:90px;height:26px;">
+														<img src="${contextPath}/resources/images/lamp.png" 
+														style="width:16px;height:16px;"/> 팁</a>
+														<!-- //팁보기 -->
+														<!-- 링크보기 -->
+														<a href="javascript:showLink(${vs.count});" 
+														class="extraBtn showLink" style="width:90px;height:26px;">
+														<img src="${contextPath}/resources/images/link.png" 
+														style="width:16px;height:16px;"/> 참조</a>
+														<!-- //링크보기 -->
+														<!-- 전체보기 -->
+														<a href="javascript:showAll(${vs.count});"
+														class="extraBtn showAll" style="width:90px;height:26px;"> 전 체 </a>
+														<!-- //전체보기 -->
+														<!-- 가이드보기 -->
+														<a href="javascript:openStepGuide();" class="extraBtn" 
+														style="width:160px;height:26px; border:none; 
+														background:#1F5E43; color:#fff; padding:6px 7px 4px;">추가기능 가이드</a>
+														<!-- //가이드보기 -->
+														<!-- 노트영역 -->
+													<div id="divStepNote_${vs.count}" class="divStepNote" 
+														style="${empty makeStepVo.note  ? 'display:none;' : ''} 
+															margin:5px 5px;">
+														<img src="${contextPath}/resources/images/note.png"
+														style="width:24px;height:24px; vertical-align:top;"/> 
+														<textarea name="makeSteps[${vs.count - 1}].note" 
+															class="form-control stepNoteText" autocomplete="off"
+															style="width:500px;height:50px;
+															resize:none; display: inline-block;">${makeStepVo.note}</textarea>
+													</div>
+													<!--// 노트영역 -->
+													<!-- 팁영역 -->
+													<div id="divStepTip_${vs.count}" class="divStepTip" 
+														style="${empty makeStepVo.tip  ? 'display:none;' : ''}
+															 margin:5px 5px;">
+														<img src="${contextPath}/resources/images/lamp.png"
+															style="width:24px;height:24px;vertical-align:top;"> 
+														<textarea name="makeSteps[${vs.count - 1}].tip" 
+															class="form-control stepTipText" autocomplete="off"
+															 style="width:500px;height:50px;
+																 resize:none; display: inline-block;">${makeStepVo.tip}</textarea>
+													</div>
+													<!-- //팁영역 -->
+													<!-- 링크영역 -->
+													<div id="divStepLink_${vs.count}" class="divStepLink" 
+														style="${empty makeStepVo.link_url  ? 'display:none;' : ''}
+														margin:5px 5px;">
+														<img src="${contextPath}/resources/images/link.png"
+															style="width:24px;height:24px;vertical-align:top;"> 
+														<input type="text" value="${makeStepVo.link_url}"
+															 name="makeSteps[${vs.count - 1}].link_url"
+															 placeholder="사이트 주소를 입력해주세요."
+															 class="form-control stepLink_url" autocomplete="off"
+															 style="width:500px;resize:none; display: inline-block;">
+														<textarea 
+															name="makeSteps[${vs.count - 1}].link_desc" 
+															placeholder="url에 대한 설명을 입력해 주세요"
+															class="form-control stepLink_desc" autocomplete="off"
+															style="width:500px;height:50px;
+																resize:none; display: inline-block; 
+																margin-left: 28px;">${makeStepVo.link_desc}</textarea>
+													</div>
+													<!-- //링크영역 -->
+													</div>
+												</div>						
+											</div>
+											<!-- //divStepItem -->
 										</div>
-										<!-- //divStepItem -->
-									</div>
-									<!-- //stepBox -->
-									</c:forEach>			
+										<!-- //stepBox -->
+										</c:forEach>			
+									</div>								
 								</div>
 								<!-- //stepBoxWrap -->
 								<div style="padding:0 0 20px 180px; width:820px; text-align: center; margin: 27px 0 40px 0;"> <!-- stepBox추가 버튼 -->
 									<button type="button" class="btnAdd"
 									 onclick="createStepBox();">순서추가</button>
 								</div>
-							</div>
-							<!-- // 둘째줄 -->
-							<!-- 셋째줄 -->
+								<!-- 셋째줄 -->
 							<div class="row">
 								<div class="cont_tit">
 									<span>완성사진</span>
@@ -1003,7 +1052,7 @@ ${hobbyVo }
 										<c:choose>
 											<c:when test="${not empty completeImgVo.img_name}">
 												<img id="previewImg_compl_${vs.count}" class="previewImg_compl" 
-													src="/displayImage?filePath=${rootPath}${completeImgVo.img_name}" style="width:140px; height:140px;  cursor: pointer;">
+													src="/displayImage?filePath=${rootPath}${completeImgVo.img_name}" style="width:140px; height:140px; object-fit: cover; cursor: pointer;">
 											</c:when>
 											<c:otherwise>
 												<img id="previewImg_compl_${vs.count}" class="previewImg_compl" 
@@ -1018,12 +1067,11 @@ ${hobbyVo }
 										<c:when test="${not empty completeImgVo.img_name}">
 											<input type="hidden" class="complImg_hidden" 
 												value="${completeImgVo.img_name}"
-												data-exist="1" 
 												id="completeImgs[${vs.count - 1}].img_name"
 												name="completeImgs[${vs.count - 1}].img_name"/>
 										</c:when>
 										<c:otherwise>
-											<input type="hidden" class="complImg_hidden" data-exist="0" 
+											<input type="hidden" class="complImg_hidden" 
 												id="completeImgs[${vs.count - 1}].img_name" name="completeImgs[${vs.count - 1}].img_name"/>
 										</c:otherwise>
 									</c:choose>
@@ -1036,38 +1084,18 @@ ${hobbyVo }
 								</c:forEach>
 							</div>
 							<!--// 넷째줄 줄 -->
-						</div>
-						<!--// 만들기 , 완성사진 내용-->
-						<div class="col-md-1">
+							</div>
+							<!--// 만들기 , 완성사진 내용-->
+							<div class="col-md-1">
+							</div>
 						</div>
 					</div>
-				 </div>
-				 <!-- //만들기 완성사진 부분 -->
-				 <!-- 태그  -->
-<!-- 				 <div class="cont_box"> -->
-<!-- 					<div class="row"> -->
-<!-- 						<div class="col-md-1"> -->
-<!-- 						</div> -->
-<!-- 						태그 내용 -->
-<!-- 						<div class="col-md-10"> -->
-<!-- 							<div class="cont_tit"> -->
-<!-- 								태그  -->
-<!-- 							</div> -->
-<!-- 							<div> -->
-<!-- 								<input type="text" class="form-control" placeholder="태그1, 태그2, 태그3 쉼표로 구분해주세요"/> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
-<!-- 						// 태그 내용 -->
-<!-- 						<div class="col-md-1"> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				 </div> -->
-				 <!-- //태그  -->
+				 <!-- //만들기 부분 -->
 				 <!-- 저장/완료/닫기 버튼 부분 -->
 				 <div class="cont_box">
 						<div style="text-align: center;">
-							<button type="submit" class="btn btn-outline-light btn-lg green_background">완료</button>
-							<button type="button" class="btn btn-outline-light btn-lg green_background">닫기</button>
+							<button type="button" onclick="doSubmit();" class="btn btn-outline-light btn-lg green_background">완료</button>
+							<button type="button" onclick="history.back();" class="btn btn-outline-light btn-lg green_background">닫기</button>
 						</div>
 				 </div>
 				 <!-- //저장/완료/닫기 버튼 -->
@@ -1140,50 +1168,48 @@ $("#hobby_intro").on("input", function(){
 	}
 });
 
-function calcFileName(thumbPath) {
-	// var rootIndex;
-	// const home = 21;
-	// const yj = 12;
-	// const team;
-	var rootIndex = 12;
-	// -> /test ~ 이런식으로 대쉬부터 시작하는 값으로 설정해놔야함 ! 
-	
-	console.log(thumbPath);
-	var str = thumbPath.substring(rootIndex);
-	var prefix = str.substring(0, str.lastIndexOf("/") + 1);
-	console.log(prefix);
-	console.log("str", str);
-	var thumbName = str.substring(str.lastIndexOf("/") + 1);
-	var splits = thumbName.split("_");
-	console.log(splits);
-	var suffix = "";
-	for (var v = 1; v < splits.length; v++) {
-		if (v == (splits.length - 1)) {
-			suffix += splits[v];
-			break;
-		}
-		suffix += splits[v] + "_";
-	}
-	var fileName = prefix + suffix;
-	
-	return fileName;
-}
-//ajax
+//ajax (이미지들)
 function previewMainImg(targetObj) {
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("$('#main_img').val()", $('#main_img').val());
 		return false;
 	}
 	
 	var file = targetObj.files[0];
-	console.log("파일존재");
+	
+	// 이미지파일체크, 파일 사이즈 체크
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+ 	
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "mainImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1191,15 +1217,18 @@ function previewMainImg(targetObj) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log("fileName:" + fileName);
+		"success" : function(filePath) {
+			console.log("filePath:" + filePath);
 			// 1. hidden에 값 넣기 
-			$("#main_img").val(fileName);
+			$("#main_img").val(filePath);
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_main").attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("$('#main_img').val()", $('#main_img').val());
-			$("#btnDelMainImg").show();
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_main").attr("src", e.target.result);
+				console.log("$('#main_img').val()", $('#main_img').val());
+				$("#btnDelMainImg").show();
+			}
 		},
 		"error" : function() {
 			alert("파일 업로드 실패!");
@@ -1215,15 +1244,16 @@ function previewMainImg(targetObj) {
 	
 function delMainImg() {
 	console.log("삭제")
-	var fileName = $("#main_img").val();
+	var filePath = $("#main_img").val();
+	console.log(filePath);
 	$.get("/selectMainImg?hobby_no=${hobbyVo.hobby_no}", function(main_img) {
 		console.log("메인사진", main_img)
-		if(main_img == fileName) {
+		if(main_img == filePath) {
 			$("#main_img").val("");
 			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
 			$("#btnDelMainImg").css("display", "none");
 		} else {
-			$.get("/deleteFile?fileName=" + fileName, function(rData) {
+			$.get("/deleteFile?filePath=" + filePath, function(rData) {
 				if (rData == "success") {
 					$("#main_img").val("");
 					$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
@@ -1234,22 +1264,50 @@ function delMainImg() {
 	});
 	
 }
+
 function previewMakeStepImg(targetObj, seq) {
-	
-	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
+	var index = $("#stepBox_" + seq).find(".step_no").attr("data-index");
+	var el = document.getElementById("makeSteps["+ index +"].make_step_img");
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("val", $(el).val());
 		return false;
 	}
 	var file = targetObj.files[0];
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+ 	
 	console.log("파일존재");
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "stepImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1257,17 +1315,18 @@ function previewMakeStepImg(targetObj, seq) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log(fileName);
+		"success" : function(filePath) {
 			// 1. hidden에 값 넣기 
-			$(el).val(fileName);
-			$(el).attr("data-exist", 1);
+			$(el).val(filePath);
 			$("#stepBox_" + seq).removeClass("none_img");
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_step_" + seq).attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("val", $(el).val());
-			$("#btnDelStepImg_" + seq).show();
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_step_" + seq).attr("src", e.target.result);
+				console.log("val", $(el).val());
+				$("#btnDelStepImg_" + seq).show();
+			}
 			
 		},
 		"error" : function() {
@@ -1279,54 +1338,7 @@ function previewMakeStepImg(targetObj, seq) {
 	});
     
 }
-function delStepImg(seq) {
-	console.log("삭제")
-	var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
-	var fileName = $(el).val();
-	console.log(fileName);
-	var makeStepVo = {
-			"hobby_no" : "${hobbyVo.hobby_no}",
-			"make_step_num" : seq,
-	}
-	console.log(makeStepVo);
-	$.ajax({
-		"url" : "/selectMakeStepImg",
-		"headers" : {
-			"Content-Type" : "application/json"
-		},
-		"method" : "post",
-		"dataType" : "text",
-		"data" : JSON.stringify(makeStepVo),
-		"success" : function(string) {
-			console.log("스탭사진 db", string);
-			// 디비 저장된게 아니라면 서버에서 삭제
-			if (string == "" || string == null) {
-				$.get("/deleteFile?fileName=" + fileName, function(rData) {
-					if (rData == "success") {
-						$(el).val("");
-						$(el).attr("data-exist", 0);
-						$("#stepBox_" + seq).addClass("none_img");
-		
-						$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-						$("#btnDelStepImg_" + seq).css("display", "none");
-					}
-				})
-			} else {
-				// 디비에 있다면
-// 				서버에서 사진 삭제하지말고
-// 				프리뷰이미지만 없애기
-				$(el).val("");
-				$(el).attr("data-exist", 0);
-				$("#stepBox_" + seq).addClass("none_img");
 
-				$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-				$("#btnDelStepImg_" + seq).css("display", "none");
-			} 
-			
-			
-		}
-	});
-}
 // 다중파일 업로드
 var multifile_step = document.querySelector('#multifile_step');
 multifile_step.onchange = function () {
@@ -1335,22 +1347,57 @@ multifile_step.onchange = function () {
 	if (files.length == 0) {
 		return false;
 	}
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(files);
+	for (var v = 0; v < files.length; v++) {
+		console.log("이름:", files[v].name);
+		console.log("크기:", files[v].size);
+	    if(!files[v].name.match(imgJ)) {
+	    	Swal.fire({
+				text: '이미지 파일만 업로드 가능합니다.', 
+				allowOutsideClick: false,
+				iconColor: "#1f5e43",
+				icon: 'warning', 
+				confirmButtonText: "확인",
+				confirmButtonColor: "#1f5e43",
+			});
+	        return;
+	    } else if(files[v].size > maxSize) {
+	    	Swal.fire({
+				text: '파일 크기는 10MB까지 가능합니다.', 
+				allowOutsideClick: false,
+				iconColor: "#1f5e43",
+				icon: 'warning', 
+				confirmButtonText: "확인",
+				confirmButtonColor: "#1f5e43",
+			});
+	        return;
+	    }
+	}
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+	
 	console.log("사용자가 올리려고 선택한 파일들", files);
-	var emptys = $("#stepBoxWrap").find('input[data-exist="0"]');
+	var emptys = $("#stepBoxWrap").find('.none_img');
 	// 멀티파일개수 - 사진 안올라간거 > 0 때만 박스 생성
 	console.log("파일개수", files.length);
 	console.log("사진안올라가있는 스탭박스 개수", emptys.length);
 	console.log("생성해야할 박스개수", files.length - emptys.length);
 	if (files.length - emptys.length > 0) {
 		for (var v = 1; v <= files.length - emptys.length; v++) {
+			console.log("박스생성" + v)
 			createStepBox();
 		}
 	}
 	
 		$(".none_img").each(function(i, box) {
 			console.log("i: ", i);
-			var seq = $(box).find(".stepImg_hidden").attr("data-seq");
-			var el = document.getElementById("makeSteps["+ (seq - 1) +"].make_step_img");
+			var seq = $(box).find(".stepNum_hidden").val();
+			var index = $("#stepBox_" + seq).find(".step_no").attr("data-index");
+			var el = document.getElementById("makeSteps["+ index +"].make_step_img");
 			var formData = new FormData();
 			if (typeof files[i] == "undefined") {
 				return false;
@@ -1358,7 +1405,7 @@ multifile_step.onchange = function () {
 			formData.append("file", files[i]);
 			formData.append("sort", "stepImg");
 			
-			var url = "/uploadImg";
+			var url = "/uploadImage";
 			
 			$.ajax({
 				"processData" : false,
@@ -1366,17 +1413,19 @@ multifile_step.onchange = function () {
 				"url" : url,
 				"method" : "post",
 				"data" : formData,
-				"success" : function(thumbPath) {
-					var fileName = calcFileName(thumbPath);
-					console.log(fileName);
+				"success" : function(filePath) {
+					console.log(filePath);
 					// 1. hidden에 값 넣기 
-					$(el).val(fileName);
-					$(el).attr("data-exist", 1);
+					$(el).val(filePath);
 					$("#stepBox_" + seq).removeClass("none_img");
 					//2. 프리뷰이미지 보여주기 
-					$("#previewImg_step_" + seq).attr("src", "/displayImage?filePath=" + thumbPath);
-					console.log("val", $(el).val());
-					$("#btnDelStepImg_" + seq).show();
+					var reader = new FileReader();
+					reader.readAsDataURL(files[i]);
+					reader.onload = function(e) {
+						$("#previewImg_step_" + seq).attr("src", e.target.result);
+						console.log("val", $(el).val());
+						$("#btnDelStepImg_" + seq).show();
+					}
 				},
 				"error" : function() {
 					alert("파일 업로드 실패!");
@@ -1388,22 +1437,76 @@ multifile_step.onchange = function () {
 		});
 	
 }
+
+function delStepImg(seq) {
+	console.log("삭제")
+	var index = $("#stepBox_" + seq).find(".step_no").attr("data-index");
+	var step_no = $("#stepBox_" + seq).find(".step_no").val();
+	var el = document.getElementById("makeSteps["+ index +"].make_step_img");
+	var filePath = $(el).val();
+	console.log(filePath);
+	
+	if (step_no > 0) { //db에 있는 것 -> 폼전송되기전까지 서버에서 사진 삭제하면안됨
+		$(el).val("");
+		$("#stepBox_" + seq).addClass("none_img");
+		$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+		$("#btnDelStepImg_" + seq).hide();
+	} else {
+		$.get("/deleteFile?filePath=" + filePath, function(rData) {
+			if (rData == "success") {
+				$(el).val("");
+				$("#stepBox_" + seq).addClass("none_img");
+				$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+				$("#btnDelStepImg_" + seq).hide();
+			}
+		});
+	}
+	
+}
+
 function previewComplImg(targetObj, num) {
 	
 	var el = document.getElementById("completeImgs["+ (num - 1) +"].img_name");
 	if (targetObj.files.length == 0){
-		// hidden에 값변화 없게하기 (그대로 두기 일단 값 확인해보고)
-		// 보여주는건(미리보기) 파일선택취소 누르기전이미지로 
-		console.log("val", $(el).val());
 		return false;
 	}
 	var file = targetObj.files[0];
+	
+	// 이미지파일체크, 파일 사이즈 체크   
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+ 	// 이미지파일체크, 파일 사이즈 체크   end
+	
 	console.log("파일존재");
 	var formData = new FormData();
 	formData.append("file", file);
 	formData.append("sort", "complImg");
 	
-	var url = "/uploadImg";
+	var url = "/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -1411,17 +1514,18 @@ function previewComplImg(targetObj, num) {
 		"url" : url,
 		"method" : "post",
 		"data" : formData,
-		"success" : function(thumbPath) {
-			var fileName = calcFileName(thumbPath);
-			console.log(fileName);
+		"success" : function(filePath) {
+			console.log(filePath);
 			// 1. hidden에 값 넣기 
-			$(el).val(fileName);
-			$(el).attr("data-exist", 1);
+			$(el).val(filePath);
 			//2. 프리뷰이미지 보여주기 
-			$("#previewImg_compl_" + num).attr("src", "/displayImage?filePath=" + thumbPath);
-			console.log("val", $(el).val());
-			$("#btnDelComplImg_" + num).show();
-			
+			var reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onload = function(e) {
+				$("#previewImg_compl_" + num).attr("src", e.target.result);
+				console.log("val", $(el).val());
+				$("#btnDelComplImg_" + num).show();
+			}
 		},
 		"error" : function() {
 			alert("파일 업로드 실패!");
@@ -1432,11 +1536,12 @@ function previewComplImg(targetObj, num) {
 	});
     
 }
+
 function delComplImg(num) {
 	console.log("삭제")
 	var el = document.getElementById("completeImgs["+ (num - 1) +"].img_name");
-	var fileName = $(el).val();
-	console.log(fileName);
+	var filePath = $(el).val();
+	console.log(filePath);
 	var completeImgVo = {
 			"hobby_no" : "${hobbyVo.hobby_no}",
 			"num" : num,
@@ -1454,12 +1559,11 @@ function delComplImg(num) {
 			console.log("완성사진 db", string);
 			// 디비 저장된게 아니라면 서버에서 삭제
 			if (string == "" || string == null) {
-				$.get("/deleteFile?fileName=" + fileName, function(rData) {
+				$.get("/deleteFile?filePath=" + filePath, function(rData) {
 					if (rData == "success") {
 						$(el).val("");
-						$(el).attr("data-exist", 0);
 						$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-						$("#btnDelComplImg_" + num).css("display", "none");
+						$("#btnDelComplImg_" + num).hide();
 					}
 				})
 			} else {
@@ -1467,9 +1571,8 @@ function delComplImg(num) {
 // 				서버에서 사진 삭제하지말고
 // 				프리뷰이미지만 없애기
 				$(el).val("");
-				$(el).attr("data-exist", 0);
 				$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.jpg");
-				$("#btnDelComplImg_" + num).css("display", "none");
+				$("#btnDelComplImg_" + num).hide();
 			} 
 			
 			
@@ -1484,10 +1587,26 @@ $("#materialBoxWrap").sortable({
 	}
 });
 function createMaterialBox() {
-	var box = $(".materialBox:eq(0)").clone();
-	console.log($(".materialBox:eq(0)"));
-	$(box).find("input[type=text]").val("");
-	$(box).find("input[type=text]").attr("placeholder", "");
+	var box = '<div class="materialBox existMaterialBox" id="materialBox_1" style="cursor:pointer; margin: 0 0 7px 50px;">'
+		+	'<input type="hidden" class="hm_no" name="hobbyMaterials[0].hm_no" value="0"/>'
+		+	'<input type="hidden" class="is_del" name="hobbyMaterials[0].is_del" value="N"/>'
+	  +	'<img src = "${contextPath}/resources/images/double-arrow.png"'
+		+	'style="width:15px; height:20px; opacity:0.75;"/>'
+	  +	'<div class="divMaterialItem" style="display:inline-block;">'
+		+	'<input type="hidden" class="seq" name="hobbyMaterials[0].seq" value="1"/>'
+		+	'<input type="text" style="width:200px; display: inline-block; margin-left:3px; margin-right:4px;" class="materialName form-control"' 
+		+		'name="hobbyMaterials[0].materialName" placeholder=""  autocomplete="off"/>'
+		+	'<input type="text" style="width:200px; display: inline-block; margin-right: 4px;" class="material_detail form-control"' 
+		+		'name="hobbyMaterials[0].material_detail"placeholder="" autocomplete="off"/>'
+		+	'<a  href="javascript:delMaterial(1)"'
+		+		 'class="btnDelMaterial" style="display:none;"></a>'
+		+ '</div>'
+	+ '</div>';
+	console.log("클론박스", $(box));
+	console.log(".hm_no", $(box).find(".hm_no").val());
+	console.log(".is_del", $(box).find(".is_del").val());
+	console.log(".materialName", $(box).find(".materialName").val());
+	console.log(".material_detail", $(box).find(".material_detail").val());
 	$(box)
 	.appendTo("#materialBoxWrap")
 	.hover(
@@ -1503,12 +1622,21 @@ function createMaterialBox() {
 }
 function reorderMaterial() {
 	$(".materialBox").each(function(i, box) {
-	  	$(box).attr("id", "materialBox_" + (i + 1));
-        $(box).find(".seq").attr("name", "hobbyMaterials[" + i + "].seq").val(i + 1);
-        $(box).find(".materialName").attr("name", "hobbyMaterials[" + i + "].materialName");
-        $(box).find(".material_detail").attr("name", "hobbyMaterials[" + i + "].material_detail");
-        $(box).find(".btnDelMaterial").attr("href", "javascript:delMaterial("+ (i + 1) + ")");
+		$(box).find(".hm_no").attr({
+				"data-index" : i,
+				name : "hobbyMaterials[" + i + "].hm_no"
+        });
+	  	$(box).find(".is_del").attr("name", "hobbyMaterials[" + i + "].is_del");
    });
+	$(".existMaterialBox").each(function(i, box) {
+		$(box).attr("id", "materialBox_" + (i + 1));
+		var index = $(box).find(".hm_no").attr("data-index");
+        $(box).find(".seq").attr("name", "hobbyMaterials[" + index + "].seq").val(i + 1);
+        $(box).find(".materialName").attr("name", "hobbyMaterials[" + index + "].materialName");
+        $(box).find(".material_detail").attr("name", "hobbyMaterials[" + index + "].material_detail");
+        $(box).find(".btnDelMaterial").attr("href", "javascript:delMaterial("+ (i + 1) + ")");
+	});
+	
 }
 function getMaterialLength() {
 	var length = $(".materialBox").length;
@@ -1529,6 +1657,16 @@ function delMaterial(seq) {
 		return false;
 	}
     $("#materialBox_" + seq).fadeOut(200,function() {
+ 	   	var hm_no = $(this).find(".hm_no").val();
+		if (hm_no > 0) { // 원래 있던 박스이면 (db에있던거면)
+			var deletedBox = 
+				'<div class="materialBox" >'
+					+'<input type="hidden" class="hm_no" name="hobbyMaterials['+ (seq - 1) +'].hm_no" value="'+ hm_no +'"/>'
+					+'<input type="hidden" class="is_del" name="hobbyMaterials['+ (seq - 1) +'].is_del" value="Y"/>'
+				+'</div>'
+				$("#materialBoxWrap").append(deletedBox);
+				console.log(hm_no);
+		}
         $(this).remove();
     	reorderMaterial();
     });
@@ -1637,7 +1775,7 @@ function validate() {
 	} 
 
 	// 2. 준비물 
-	for (var v = 0; v < $(".materialBox").length; v++) {
+	for (var v = 0; v < $(".existMaterialBox").length; v++) {
 		var materialName = $("#materialBox_" + (v + 1)).find(".materialName").val();
 		if (typeof materialName == "undefined" ||
 				materialName.trim() == "" ||
@@ -1660,7 +1798,7 @@ function validate() {
 	}
 	
 	//3. 만들기 부분
-	for (var v = 0; v < $(".stepBox").length; v++) {
+	for (var v = 0; v < $(".existStepBox").length; v++) {
 		// 3-1. 스탭내용
 		var step_text = $("#stepBox_" + (v + 1)).find(".stepText").val();
 		if (typeof step_text == "undefined" || step_text.trim() == "" || step_text ==  null) {
@@ -1686,7 +1824,7 @@ function validate() {
 		
 		var stepUrlJ = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}/g; //기본 url패턴인지 검사
 		var httpJ = /^(https?:\/\/)(.*)/g;
-		console.log(link_url);
+// 		console.log(link_url);
 		if (typeof link_url != "undefined" && link_url.trim() != "" && link_url !=  null) {
 			if(!link_url.match(empJ)) {
 				if(!link_url.match(stepUrlJ)) {
@@ -1754,8 +1892,37 @@ function validate() {
 		return false;
 	}
 	
+	return true;
 	
-	
+}
+// validate끝
+
+function doSubmit() {
+	valResult = validate();
+	console.log(valResult);
+    if (!valResult) {
+        return false;
+    } 
+    console.log("확인");
+    
+ 	//수정하시겠습니까?
+	Swal.fire({
+		text: '수정하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			 $("#modFrm").submit();
+		} else {
+			return false;
+		}
+	});
+    
 }
 </script>
 </body>

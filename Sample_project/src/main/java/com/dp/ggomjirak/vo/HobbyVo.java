@@ -36,13 +36,12 @@ public class HobbyVo {
 	private String level_name;
 	private String cost_name;
 	private String time_name;
-	private String user_name;
+	private String user_nick;
 	private String user_img;
 	
 	// 나중에 합치고나서...
 	private int workroom;
 	
-	private String user_nick;
 	
 	public HobbyVo() {
 		super();
@@ -249,12 +248,12 @@ public class HobbyVo {
 		this.time_name = time_name;
 	}
 
-	public String getUser_name() {
-		return user_name;
+	public String getUser_nick() {
+		return user_nick;
 	}
 
-	public void setUser_name(String user_name) {
-		this.user_name = user_name;
+	public void setUser_nick(String user_nick) {
+		this.user_nick = user_nick;
 	}
 
 	public String getUser_img() {
@@ -273,14 +272,6 @@ public class HobbyVo {
 		this.workroom = workroom;
 	}
 
-	public String getUser_nick() {
-		return user_nick;
-	}
-
-	public void setUser_nick(String user_nick) {
-		this.user_nick = user_nick;
-	}
-
 	@Override
 	public String toString() {
 		return "HobbyVo [hobby_no=" + hobby_no + ", hobby_title=" + hobby_title + ", user_id=" + user_id + ", main_img="
@@ -290,9 +281,10 @@ public class HobbyVo {
 				+ ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", del_date=" + del_date + ", makeSteps="
 				+ makeSteps + ", hobbyMaterials=" + hobbyMaterials + ", completeImgs=" + completeImgs + ", l_cate_name="
 				+ l_cate_name + ", m_cate_name=" + m_cate_name + ", level_name=" + level_name + ", cost_name="
-				+ cost_name + ", time_name=" + time_name + ", user_name=" + user_name + ", user_img=" + user_img
-				+ ", workroom=" + workroom + ", user_nick=" + user_nick + "]";
+				+ cost_name + ", time_name=" + time_name + ", user_nick=" + user_nick + ", user_img=" + user_img
+				+ ", workroom=" + workroom + "]";
 	}
+
 
 
 

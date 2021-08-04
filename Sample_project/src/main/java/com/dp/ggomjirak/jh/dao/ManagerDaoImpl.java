@@ -8,14 +8,10 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.dp.ggomjirak.vo.CateStrVo;
-import com.dp.ggomjirak.vo.EventVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
-import com.dp.ggomjirak.vo.MemberDetailVo;
-import com.dp.ggomjirak.vo.MemberInfoVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
-import com.dp.ggomjirak.vo.QnAVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
 @Repository
@@ -137,97 +133,7 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 		sqlSession.delete(NAMESPACE + "deleteManager", user_id);
 		
 	}
-	
-	
-	@Override
-	public List<EventVo> showEventListAll(PagingDto pagingDto) {
-		List<EventVo> list = sqlSession.selectList(NAMESPACE + "showEventListAll", pagingDto);
-		return list;
-	}
-	
-	@Override
-	public List<EventVo> showEventList(PagingDto pagingDto) {
-		List<EventVo> list = sqlSession.selectList(NAMESPACE + "showEventList", pagingDto);
-		return list;
-	}
-
-	@Override
-	public List<EventVo> showEventListEnd(PagingDto pagingDto) {
-		List<EventVo> list = sqlSession.selectList(NAMESPACE + "showEventListEnd", pagingDto);
-		return list;
-	}
-
-	@Override
-	public List<EventVo> showEventListDelete(PagingDto pagingDto) {
-		List<EventVo> list = sqlSession.selectList(NAMESPACE + "showEventListDelete", pagingDto);
-		return list;
-	}
-
-	@Override
-	public int getCountEventAll(PagingDto pagingDto) {
-		int count = sqlSession.selectOne(NAMESPACE + "getCountEventAll", pagingDto);
-		return count;
-	}
-
-	@Override
-	public int getCountEvent(PagingDto pagingDto) {
-		int count = sqlSession.selectOne(NAMESPACE + "getCountEvent", pagingDto);
-		return count;
-	}
-
-	@Override
-	public int getCountEventEnd(PagingDto pagingDto) {
-		int count = sqlSession.selectOne(NAMESPACE + "getCountEventEnd", pagingDto);
-		return count;
-	}
-
-	@Override
-	public int getCountEventDelete(PagingDto pagingDto) {
-		int count = sqlSession.selectOne(NAMESPACE + "getCountEventDelete", pagingDto);
-		return count;
-	}
-	@Override
-	public EventVo selectByEno(int e_no) {
-		EventVo eventVo = sqlSession.selectOne(NAMESPACE + "selectByEno", e_no);
-		return eventVo;
-	}
-
-	@Override
-	public void insertEvent(EventVo eventVo) {
-		sqlSession.insert(NAMESPACE + "insertEvent", eventVo);
-		
-	}
-
-	@Override
-	public void updateEvent(EventVo eventVo) {
-		sqlSession.update(NAMESPACE + "updateEvent", eventVo);
-		
-	}
-
-	@Override
-	public void deleteEvent(int e_no) {
-		sqlSession.update(NAMESPACE + "deleteEvent", e_no);
-		
-	}
-	
-	// 문의
-	@Override
-	public List<QnAVo> selectQnAList(PagingDto pagingDto) {
-		List<QnAVo> list = sqlSession.selectList(NAMESPACE + "selectQnAList", pagingDto);
-		return list;
-	}
-
-	@Override
-	public int getCountQnA(PagingDto pagingDto) {
-		int count = sqlSession.selectOne(NAMESPACE + "getCountQnA", pagingDto);
-		return count;
-	}
-
-	@Override
-	public QnAVo selectQnaByNo(int qna_no) {
-		QnAVo qnaVo = sqlSession.selectOne(NAMESPACE + "selectQnaByNo", qna_no);
-		return qnaVo;
-	}
+			
 
 	// 메인
 	@Override
@@ -240,6 +146,12 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 	public int getMemberCount() {
 		int count = sqlSession.selectOne(NAMESPACE + "getMemberCount");
 		return count;
+	}
+
+	@Override
+	public List<Integer> getAllUserGrade() {
+		List<Integer> list = sqlSession.selectList(NAMESPACE + "getAllUserGrade");
+		return list;
 	}
 
 

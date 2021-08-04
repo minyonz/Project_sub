@@ -1,24 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <script>
 $(document).ready(function() {
-	// 애니메이션 효과 사용 보류
-	// 스토리 더보기
-	var txt = $(".story_detail").text().substring(0,100) + ". . .";
-// 	console.log(txt);
-// 	var txt_short = "<a href='/workroom/story_detail style='color: #666666;'>" + txt + "</a>"
-	var text = $("#story_detail").text().length;
-	if (text >= 100) {
-		$(".story_detail").text(txt);
-// 		$("#story_detail").hover(function() {
-// 			$(this).animate({fontSize: "16px"});}, function() {
-// 				$(this).animate({fontSize: "14px"});});
-	}
-	
 	$("#btnStSearch").click(function() {
 		var keyword = $("#txtStSearch").val();
 		console.log(txtStSearch);	
-		location.href = "/workroom/search?keyword=" + keyword;
+		location.href = "/workroom/search/${page_id}?keyword=" + keyword;
 	});
 	
 	if ("${checkFollow}" == 1) {
@@ -35,7 +23,7 @@ $(document).ready(function() {
 				$("#follow").attr("class", "btn btn-outline-primary");
 				$("#follow").text("언팔로우");
 			} else if (rData.unFollow) {
-				$("#follow").attr("class", "btn green_background white_color");
+				$("#follow").attr("class", "btn btn-primary");
 				$("#follow").text("팔로우");
 			}
 			$("#follower_cnt").text(rData.countFollow);
@@ -54,12 +42,12 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<!-- 유저 카드 프로필 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png"
+							<a href="/workroom/main/${page_id}"><img class="profile" src="/resources/img/test/littleduck.png"
 								alt="profile image" style="width: 100%; text-align: center"></a>
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
-							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4><a href="/workroomset/main" class="fa fa-cog" style="margin-top:5px; margin-left:3px"></a>
+							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4>
 							</div>
 							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberInfo.name}</p>
 							<!-- memberInfo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
@@ -84,9 +72,15 @@ $(document).ready(function() {
 								</div>
 							</div>
 							<div style="text-align: center;">
-								<button type="button" id="follow" class="btn btn-primary">팔로우</button> 
-								<a href="#" class="btn btn-primary">쪽지</a> 
-								<a href="/story/write" class="btn btn-primary">글쓰기</a>
+							<c:choose>
+								<c:when test="${user_id == page_id}">
+									<a href="/workroomset/main" class="site-btn">작업실 설정</a>
+								</c:when> 							
+								<c:otherwise>
+									<button type="button" id="follow" class="btn green_background white_color">팔로우</button>
+									<a href="#" class="btn green_background white_color">쪽지</a>
+								</c:otherwise>
+							</c:choose> 
 							</div>
 						</div>
 

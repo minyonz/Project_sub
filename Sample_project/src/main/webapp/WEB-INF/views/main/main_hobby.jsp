@@ -37,7 +37,6 @@ $(document).ready(function() {
 <input type="hidden" name="parent_cate_no" value="${pagingDto.parent_cate_no}"/>
 <input type="hidden" name="m_cate_no" value="${pagingDto.m_cate_no}"/>
 </form>
-${pagingDto }
 <div class="row">
 	<div class="col-md-12">
 		<div class="row">

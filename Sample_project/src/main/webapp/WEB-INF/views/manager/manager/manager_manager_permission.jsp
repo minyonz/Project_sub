@@ -93,6 +93,7 @@ $(document).ready(function() {
 				<table class="table" id="dataTable" width="100%" cellspacing="0">
 					<thead>
 						<tr>
+							<th>#</th>
 							<th>이름</th>
 							<th>아이디</th>
 							<th>비밀번호</th>
@@ -109,6 +110,7 @@ $(document).ready(function() {
 					
 						<tr>
 						
+							<td>${member.rnum}</td>
 							<td>${member.user_name}</td>
 							<td><a href="/manager/managerMemberContent?user_id=${member.user_id}">${member.user_id}</a></td>
 							<td>${member.user_pw}</td>

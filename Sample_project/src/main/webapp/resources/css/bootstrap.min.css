@@ -2821,7 +2821,8 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
 .dropdown-item.active,.dropdown-item:active {
 	color:#fff;
 	text-decoration:none;
-	background-color:#007bff
+/* 	윤지 수정 */
+	background-color:#1f5e43;
 }
 .dropdown-item.disabled,.dropdown-item:disabled {
 	color:#6c757d;
