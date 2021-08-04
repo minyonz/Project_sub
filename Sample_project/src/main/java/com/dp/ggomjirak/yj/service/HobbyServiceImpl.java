@@ -121,6 +121,9 @@ public class HobbyServiceImpl implements HobbyService {
 			}
 			List<CompleteImgVo> completeImgs = hobbyDao.selectCompleteImgListNotNull(hobby_no);
 			hobbyVo.setCompleteImgs(completeImgs);
+			
+			//조회수 증가
+			hobbyDao.updateViewCnt(hobby_no);
 		} else {
 			List<CompleteImgVo> completeImgs = hobbyDao.selectCompleteImgListAll(hobby_no);
 			hobbyVo.setCompleteImgs(completeImgs);

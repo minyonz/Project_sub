@@ -556,7 +556,7 @@ margin-right: 15px;
 					padding: 14px 18px; position: relative;">
 					<span class="lg_tit">취미 작성</span>
 					<span class="star">*</span><span style="font-size:15px; font-weight:550;">필수입력</span>
-					<input type="text" name="user_id"  placeholder="로그인했다고 가정할아이디 입력" style="width:300px;"/>
+<!-- 					<input type="text" name="user_id"  placeholder="로그인했다고 가정할아이디 입력" style="width:300px;"/> -->
 				</div>
 			<!-- 취미 메인 정보 박스 -->			
 				<div class="cont_box" >

@@ -4,15 +4,19 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dp.ggomjirak.vo.CommentVo;
+import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.yj.service.CommentService;
 
+@SessionAttributes({"loginVo"})
 @RestController
 @RequestMapping("/comment")
 public class CommentController {
@@ -29,16 +33,20 @@ public class CommentController {
 	
 	//댓글 쓰기 
 	@RequestMapping(value="/insertComment", method=RequestMethod.POST)
-	public String insertComment(@RequestBody CommentVo commentVo) throws Exception {
+	public String insertComment(@RequestBody CommentVo commentVo, 
+				@ModelAttribute("loginVo") MemberVo loginVo) throws Exception {
 		System.out.println(commentVo);
+		commentVo.setUser_id(loginVo.getUser_id());
 		commentService.insertComment(commentVo);
 		return "success";
 	}
 	
 	//답댓글 쓰기 
 	@RequestMapping(value="/insertRecomment", method=RequestMethod.POST)
-	public String insertRecomment(@RequestBody CommentVo commentVo) throws Exception {
+	public String insertRecomment(@RequestBody CommentVo commentVo,
+			@ModelAttribute("loginVo") MemberVo loginVo) throws Exception {
 		System.out.println(commentVo);
+		commentVo.setUser_id(loginVo.getUser_id());
 		commentService.insertRecomment(commentVo);
 		return "success";
 	}
@@ -50,9 +58,9 @@ public class CommentController {
 		return "success";
 	}
 		
-	@RequestMapping(value="/deleteComment/{c_no}", method=RequestMethod.GET)
-	public int deleteComment(@PathVariable("c_no") int c_no) throws Exception {
-		System.out.println("c_no:" + c_no); 
-		return commentService.deleteComment(c_no);
+	@RequestMapping(value="/deleteComment", method=RequestMethod.POST)
+	public int deleteComment(@RequestBody CommentVo commentVo) throws Exception {
+		System.out.println(commentVo);
+		return commentService.deleteComment(commentVo);
 	}
 }

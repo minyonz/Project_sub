@@ -46,12 +46,12 @@
 	</update>
 	
 	<!-- 댓글 삭제 -->
-	<update id="deleteComment" parameterType="int">
+	<update id="deleteComment" parameterType="CommentVo">
 		UPDATE tbl_comment
 		SET is_del = 'Y',
    		    del_date = sysdate
- 		WHERE c_no = #{c_no} 
- 		 AND NOT EXISTS ( SELECT * FROM tbl_comment
+ 		WHERE c_no = #{c_no} AND h_no = #{h_no}
+ 		AND NOT EXISTS ( SELECT * FROM tbl_comment
                  		  WHERE parent_c_no = #{c_no})
 	</update>
  </mapper>

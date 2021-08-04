@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dp.ggomjirak.vo.CommentVo;
 import com.dp.ggomjirak.yj.dao.CommentDao;
+import com.dp.ggomjirak.yj.dao.HobbyDao;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -15,14 +16,19 @@ public class CommentServiceImpl implements CommentService {
 	@Inject
 	private CommentDao commentDao;
 	
+	@Inject
+	private HobbyDao hobbyDao;
+	
 	@Override
 	public void insertComment(CommentVo commentVo) {
 		commentDao.insertComment(commentVo);
+		hobbyDao.updateCmtCnt(commentVo.getH_no(), 1);
 	}
 
 	@Override
 	public void insertRecomment(CommentVo commentVo) {
 		commentDao.insertRecomment(commentVo);
+		hobbyDao.updateCmtCnt(commentVo.getH_no(), 1);
 	}
 
 	@Override
@@ -36,8 +42,9 @@ public class CommentServiceImpl implements CommentService {
 	}
 
 	@Override
-	public int deleteComment(int c_no) {
-		return commentDao.deleteComment(c_no);
+	public int deleteComment(CommentVo commentVo) {
+		hobbyDao.updateCmtCnt(commentVo.getH_no(), -1);
+		return commentDao.deleteComment(commentVo);
 	}
 
 }

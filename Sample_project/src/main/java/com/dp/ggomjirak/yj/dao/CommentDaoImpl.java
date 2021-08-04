@@ -1,6 +1,8 @@
 package com.dp.ggomjirak.yj.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -40,8 +42,8 @@ public class CommentDaoImpl implements CommentDao {
 	}
 
 	@Override
-	public int deleteComment(int c_no) {
-		return sqlSession.update(NAMESPACE + "deleteComment", c_no);
+	public int deleteComment(CommentVo commentVo) {
+		return sqlSession.update(NAMESPACE + "deleteComment", commentVo);
 	}
 
 }

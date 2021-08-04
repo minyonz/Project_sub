@@ -22,5 +22,5 @@ public interface CommentDao {
 	 * @param c_no
 	 * @return 삭제된(업데이트) 행 개수
 	 */
-	public int deleteComment(int c_no); 
+	public int deleteComment(CommentVo commentVo); 
 }

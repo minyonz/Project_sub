@@ -1369,7 +1369,6 @@ function updateComment(c_no) {
 function deleteComment(c_no) {
 	var url = "/comment/deleteComment";
 	if(confirm("삭제 하시겠습니까?")) {
-		var url = "/comment/updateComment";
 		var sendData = {
 				"h_no" : "${hobbyVo.hobby_no}",
 				"c_no"	: c_no

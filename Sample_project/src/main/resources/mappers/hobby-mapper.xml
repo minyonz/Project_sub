@@ -286,4 +286,20 @@
 			del_date = sysdate
 		WHERE hobby_no = #{hobby_no}
 	</update>
+	
+	
+	<!-- 조회수, 댓글수 hobby테이블에 반영하기 -->
+	<!-- 조회수 증가-->
+	<update id="updateViewCnt" parameterType="int">
+		UPDATE tbl_hobby
+		SET view_cnt = view_cnt + 1
+		WHERE hobby_no = #{hobby_no} 
+	</update>
+	<!-- 해당 게시글의 댓글 개수 변경 -->
+	<update id="updateCmtCnt">
+		UPDATE tbl_hobby
+		SET cmt_cnt = cmt_cnt + #{count}
+		WHERE hobby_no = #{hobby_no} 
+	</update>
+ 
  </mapper>

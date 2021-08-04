@@ -1,6 +1,8 @@
 package com.dp.ggomjirak.yj.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -121,6 +123,19 @@ public class HobbyDaoImpl implements HobbyDao {
 	@Override
 	public int deleteHobby(int hobby_no) {
 		return sqlSession.update(NAMESPACE + "deleteHobby", hobby_no);
+	}
+
+	@Override
+	public int updateViewCnt(int hobby_no) {
+		return sqlSession.update(NAMESPACE + "updateViewCnt", hobby_no);
+	}
+
+	@Override
+	public int updateCmtCnt(int hobby_no, int count) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("hobby_no", hobby_no);
+		map.put("count", count);
+		return sqlSession.update(NAMESPACE + "updateCmtCnt", map);
 	}
 
 

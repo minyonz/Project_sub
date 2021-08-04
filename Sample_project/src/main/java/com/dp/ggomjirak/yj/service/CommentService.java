@@ -18,5 +18,5 @@ public interface CommentService {
 	public void updateComment(CommentVo commentVo);
 	
 	//댓글 삭제 
-	public int deleteComment(int c_no);
+	public int deleteComment(CommentVo commentVo);
 }

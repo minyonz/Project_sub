@@ -20,6 +20,7 @@ public class HobbyVo {
 	private int time_no;
 	private int view_cnt;
 	private int like_cnt;
+	private int cmt_cnt;
 	private String is_del;
 	private Timestamp reg_date;
 	private Timestamp mod_date;
@@ -39,8 +40,6 @@ public class HobbyVo {
 	private String user_nick;
 	private String user_img;
 	
-	// 나중에 합치고나서...
-	private int workroom;
 	
 	
 	public HobbyVo() {
@@ -264,12 +263,12 @@ public class HobbyVo {
 		this.user_img = user_img;
 	}
 
-	public int getWorkroom() {
-		return workroom;
+	public int getCmt_cnt() {
+		return cmt_cnt;
 	}
 
-	public void setWorkroom(int workroom) {
-		this.workroom = workroom;
+	public void setCmt_cnt(int cmt_cnt) {
+		this.cmt_cnt = cmt_cnt;
 	}
 
 	@Override
@@ -277,14 +276,13 @@ public class HobbyVo {
 		return "HobbyVo [hobby_no=" + hobby_no + ", hobby_title=" + hobby_title + ", user_id=" + user_id + ", main_img="
 				+ main_img + ", hobby_video=" + hobby_video + ", hobby_intro=" + hobby_intro + ", l_cate_no="
 				+ l_cate_no + ", m_cate_no=" + m_cate_no + ", level_no=" + level_no + ", cost_no=" + cost_no
-				+ ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt=" + like_cnt + ", is_del=" + is_del
-				+ ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", del_date=" + del_date + ", makeSteps="
-				+ makeSteps + ", hobbyMaterials=" + hobbyMaterials + ", completeImgs=" + completeImgs + ", l_cate_name="
-				+ l_cate_name + ", m_cate_name=" + m_cate_name + ", level_name=" + level_name + ", cost_name="
-				+ cost_name + ", time_name=" + time_name + ", user_nick=" + user_nick + ", user_img=" + user_img
-				+ ", workroom=" + workroom + "]";
+				+ ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt=" + like_cnt + ", cmt_cnt=" + cmt_cnt
+				+ ", is_del=" + is_del + ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", del_date=" + del_date
+				+ ", makeSteps=" + makeSteps + ", hobbyMaterials=" + hobbyMaterials + ", completeImgs=" + completeImgs
+				+ ", l_cate_name=" + l_cate_name + ", m_cate_name=" + m_cate_name + ", level_name=" + level_name
+				+ ", cost_name=" + cost_name + ", time_name=" + time_name + ", user_nick=" + user_nick + ", user_img="
+				+ user_img + "]";
 	}
-
 
 
 

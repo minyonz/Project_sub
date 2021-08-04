@@ -21,7 +21,6 @@ import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.CostVo;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.LevelVo;
-import com.dp.ggomjirak.vo.MemberDetailVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.TimeVo;
 import com.dp.ggomjirak.yj.service.CateService;
@@ -58,6 +57,7 @@ public class HobbyController {
 		MemberVo loginVo = (MemberVo)session.getAttribute("loginVo");
 		if (loginVo != null) {
 			model.addAttribute("loginVo", loginVo);
+			model.addAttribute("user_id", loginVo.getUser_id());
 			int likeCheck = likeBmService.likeCheck(hobby_no, loginVo.getUser_id());
 			int bookmarkCheck = likeBmService.bookmarkCheck(hobby_no, loginVo.getUser_id());
 			model.addAttribute("likeCheck", likeCheck);
@@ -73,7 +73,7 @@ public class HobbyController {
 	public String update(Model model,
 			@ModelAttribute("loginVo") MemberVo loginVo,
 			@PathVariable("hobby_no") int hobby_no) throws Exception {
-		
+		model.addAttribute("user_id", loginVo.getUser_id());
 		HobbyVo hobbyVo = hobbyService.selectHobbyArticle(hobby_no, true);
 		model.addAttribute("hobbyVo", hobbyVo);
 		
@@ -120,6 +120,7 @@ public class HobbyController {
 		List<TimeVo> times = cateService.getTimeList();
 		List<LevelVo> levels = cateService.getLevelList();
 		List<CostVo> costs = cateService.getCostList();
+		model.addAttribute("user_id", loginVo.getUser_id());
 		model.addAttribute("cates", JSONArray.fromObject(cates));
 		model.addAttribute("times", JSONArray.fromObject(times));
 		model.addAttribute("levels", JSONArray.fromObject(levels));

@@ -67,13 +67,19 @@
 	
 	<!-- 북마크 목록 -->
 	<select id="listBookmark" resultType="LikeBookmarkVo">
-		select hb.user_id, hb.hobby_title, hb.main_img, mp.image_file, md.user_nick
-			from tbl_bookmark bm, tbl_hobby hb, tbl_memberprofile mp, tbl_memberdetail md
+		select bm.hobby_no, hb.user_id, hb.hobby_title, hb.main_img, md.user_img, md.user_nick
+			from tbl_bookmark bm, tbl_hobby hb, tbl_memberdetail md
 		where bm.hobby_no = hb.hobby_no 
-		and hb.user_id = mp.user_id
 		and hb.user_id = md.user_id
 		and bm.user_id = #{user_id}
 	</select>
+	
+	<!-- 북마크 총 갯수 -->
+	<select id="bookmarkCount" resultType="int">
+		select count(*) from tbl_bookmark
+		where user_id = #{user_id}
+	</select>
+	
 		
 </mapper>
 
