@@ -3,6 +3,7 @@ package com.dp.ggomjirak.my.dao;
 import java.util.List;
 
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.LikeBookmarkVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -21,4 +22,6 @@ public interface WorkRoomDao {
 	// 검색 후 총 갯수
 	public int searchHobbyCount(PagingDto pagingDto);
 	public int searchStoryCount(PagingDto pagingDto);
+	// 북마크 목록 불러오기
+	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto);
 }

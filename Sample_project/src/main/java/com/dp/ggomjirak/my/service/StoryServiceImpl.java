@@ -68,7 +68,6 @@ public class StoryServiceImpl implements StoryService{
 	@Override
 	public int likeAll(int st_no) {
 		int likeCount = storyDao.likeAll(st_no);
-//		System.out.println("service count:" + likeCount);
 		return likeCount;
 	}
 

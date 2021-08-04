@@ -35,7 +35,7 @@ public class ImageController {
 	private static final String MAIN_IMG_UPLOAD_PATH = "test/main_img";
 	private static final String STEP_IMG_UPLOAD_PATH = "test/make_step";
 	private static final String COMPLETE_IMG_UPLOAD_PATH = "test/complete_img";
-	private static final String STORY_IMG_UPLOAD_PATH = "test/story_img";
+	private static final String STORY_IMG_UPLOAD_PATH = "story/story_img";
 	
 	@Inject
 	private HobbyService hobbyService;

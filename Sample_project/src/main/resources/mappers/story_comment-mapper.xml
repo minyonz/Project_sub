@@ -13,10 +13,9 @@
 	
 	<!-- 댓글목록 -->
 	<select id="listComment" resultType="StoryCommentVo">
-		select * from tbl_story_comment
-		where st_no = #{st_no} 
-		and is_del = 'N'
-		order by st_c_no desc
+		select sc.*, mb.user_nick
+			from tbl_story_comment sc, tbl_memberdetail mb
+		where  sc.user_id = mb.user_id and st_no = #{st_no} and is_del = 'N'
 	</select>
 	
 	<!-- 댓글수정 -->

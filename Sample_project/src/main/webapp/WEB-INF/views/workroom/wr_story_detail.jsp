@@ -8,12 +8,12 @@
 <script>
 $(document).ready(function() {
 	// 스토리 삭제
-	$("#storyDel").click(function(e) {
-		e.preventDefault();
-		if (confirm("삭제하시겠습니까?")) {
-			location.href = "/story/delete_run?st_no=${storyVo.st_no}";
-		}
-	});
+// 	$("#storyDel").click(function(e) {
+// 		e.preventDefault();
+// 		if (confirm("삭제하시겠습니까?")) {
+// 			location.href = "/story/delete_run?st_no=${storyVo.st_no}";
+// 		}
+// 	});
 	
 	// 댓글 입력 
 	$("#btnCommentInsert").click(function() {
@@ -45,7 +45,7 @@ $(document).ready(function() {
 							commentHtml += "			<div class='blog__details__author__pic'>";
 							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'><img src='/resources/img/test/littleduck.png' alt=''></a></div>"
 							commentHtml += "					<div class='blog__details__author__text'>";
-							commentHtml += "						<h6>" + this.user_id + " " + changeDateString(this.reg_date) + "</h6>";
+							commentHtml += "						<h6>" + this.user_nick + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span class='st_c_content'>" + this.st_c_content + "</span></div></div></div>";
 							commentHtml += "	<div class='col-md-2'><div style='text-align: right'>";
 							commentHtml += "		<a href='#' style='margin-right: 5px; font-size:13px;' id='commentMod'>수정</a>"
@@ -159,6 +159,9 @@ $(document).ready(function() {
 			<h4>Story detail</h4>
 		</div>
 		<hr>
+		<div style="text-align: right">
+			<p>${storyVo.reg_date}</p>
+		</div>
 		<div>
 			<c:if test="${storyVo.st_img != null}">
 				<img src="/story_img/displayImage?filePath=${storyVo.st_img}" width="300px" 
@@ -180,7 +183,7 @@ $(document).ready(function() {
 				<div class="col-md-3">
 					<div style="text-align: right">
 						<a href="/story/update?st_no=${storyVo.st_no}" style="margin-right: 5px">수정</a> 
-						<a href="#" id="storyDel">삭제</a>
+						<a href="javascript:doDelete();">삭제</a>
 					</div>
 				</div>
 			</div>
@@ -208,7 +211,7 @@ $(document).ready(function() {
 									<a href="/workroom/main/${commentVo.user_id}"><img src="/resources/img/test/littleduck.png" alt=""></a>
 								</div>
 								<div class="blog__details__author__text">
-									<h6>${commentVo.user_id} ${commentVo.reg_date}</h6>
+									<h6>${commentVo.user_nick} ${commentVo.reg_date}</h6>
 									<span class="st_c_content">${commentVo.st_c_content}</span>
 	<!-- 								<a href="#" style="font-size:13px" id="commentReply">답글</a> -->
 	<!-- 								<br> -->
@@ -246,3 +249,22 @@ $(document).ready(function() {
 </div>
 
 <%@ include file="../include/footer.jsp"%>
+
+<script>
+function doDelete() {
+	Swal.fire({
+		text: '삭제하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			location.href = "/story/delete_run?st_no=${storyVo.st_no}";
+		} 
+	});
+}
+</script>

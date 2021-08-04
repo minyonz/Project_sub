@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.LikeBookmarkVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -62,6 +63,12 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 	public int searchStoryCount(PagingDto pagingDto) {
 		int count = sqlSession.selectOne(NAMESPACE + "searchStoryCount", pagingDto);
 		return count;
+	}
+
+	@Override
+	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto) {
+		List<LikeBookmarkVo> list = sqlSession.selectList(NAMESPACE + "listBookmark", pagingDto);
+		return list;
 	}
 
 }

@@ -3,6 +3,7 @@ package com.dp.ggomjirak.my.service;
 import java.util.List;
 
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.LikeBookmarkVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -16,4 +17,5 @@ public interface WorkroomService {
 	public List<StoryVo> searchStory(PagingDto pagingDto);
 	public int searchHobbyCount(PagingDto pagingDto);
 	public int searchStoryCount(PagingDto pagingDto);
+	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto);
 }

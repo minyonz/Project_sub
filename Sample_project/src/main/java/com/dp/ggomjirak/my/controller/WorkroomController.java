@@ -22,6 +22,7 @@ import com.dp.ggomjirak.my.service.WorkroomSetService;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.LikeBookmarkVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -57,25 +58,31 @@ public class WorkroomController {
 	
 	// 카드 프로필 값 공통 메서드
 	public void profileCommon(String page_id, Model model, HttpSession session) throws Exception {
-		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-		String user_id = memberVo.getUser_id();
-		// 유저 정보 가져오기
+		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
 		MemberVo memberInfo = workroomService.getMemInfo(page_id);
 		WorkroomVo workroomVo = workroomSetService.getWrSet(page_id);
-		// 프로필 카드 정보, 작업실 정보(작업실 이름, 소개)
-		// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
-		FollowVo followVo = new FollowVo();
-		// 현재 페이지의 사용자
-		followVo.setFollowing(page_id);
-		// 현재 로그인한 사용자
-		followVo.setFollower(user_id);
-		int checkFollow = followService.checkFollow(followVo);
-		
-		model.addAttribute("user_id", user_id);
-		model.addAttribute("page_id", page_id);
+		String user_id = null;
 		model.addAttribute("memberInfo", memberInfo);
 		model.addAttribute("workroomVo", workroomVo);
-		model.addAttribute("checkFollow", checkFollow);
+		model.addAttribute("page_id", page_id);
+		model.addAttribute("user_id", user_id);
+		// 로그인 안 한 사용자가 작업실 들어갈 경우
+		if (session.getAttribute("loginVo") != null) {
+			// 유저 정보 가져오기
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			user_id = memberVo.getUser_id();
+			System.out.println("user_id:" + user_id);
+			// 팔로잉 정보 받아올 때 로그인한 사용자 정보 & 현재 페이지 사용자 정보를 followVo에 설정
+			FollowVo followVo = new FollowVo();
+			// 현재 페이지의 사용자
+			followVo.setFollowing(page_id);
+			// 현재 로그인한 사용자
+			followVo.setFollower(user_id);
+			int checkFollow = followService.checkFollow(followVo);
+			
+			model.addAttribute("user_id", user_id);
+			model.addAttribute("checkFollow", checkFollow);			
+		} 
 	}
 	
 	// 작업실 메인
@@ -87,13 +94,19 @@ public class WorkroomController {
 		List<StoryVo> storyList = storyService.StoryList(storyPagingDto);
 		pagingDto.setUser_id(page_id);
 		
+		System.out.println("session:" + session);
+		
 		// 취미 목록
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
+		
+		// 북마크 목록
+		List<LikeBookmarkVo> bmList = workroomService.listBookmark(pagingDto);
 		// 카드 프로필 값 공통 메서드 보내줌
 		profileCommon(page_id, model, session);
-		category(model);
+		category(model);			
 		model.addAttribute("storyList", storyList);
 		model.addAttribute("hobbyList", hobbyList);
+		model.addAttribute("bmList", bmList);
 		return "workroom/wr_main";
 	}	
 	

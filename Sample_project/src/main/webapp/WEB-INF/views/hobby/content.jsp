@@ -21,14 +21,56 @@
 <script>
 $(document).ready(function() {
 	selectCommentList();
+	
+	$('#stepSlide').carousel({
+		interval: 500
+	}).carousel('pause');
+	
+	var isStart = false;
+	$("#carousel_cycle").on("click", function() {
+		if(isStart == false) {
+			console.log("시작");
+			$('#stepSlide').carousel('cycle');
+			$(this).find("span").removeClass("fa-play").addClass("fa-pause");
+			isStart = true;
+		} else {
+			console.log("정지");
+			$('#stepSlide').carousel('pause');
+			$(this).find("span").removeClass("fa-pause").addClass("fa-play");
+			isStart = false;
+		}
+		
+		
+	});
+	
+	$("#carousel_prev").on("click", function() {
+		$('#stepSlide').carousel('prev');
+	});
+	
+	$("#carousel_next").on("click", function() {
+		$('#stepSlide').carousel('next');
+	});
+
+
+		// 이미지 슬라이드 이동
+		$("#carousel_move").on("click", function() {
+		var num = Number($("#carousel_number").val()) - 1;
+		$('#stepSlide').carousel(num);
+		});
+		
+		$('#stepSlide').on('slide.bs.carousel', function () {
+			console.log("호출");
+		});
+		$('#stepSlide').on('slid.bs.carousel', function () {
+			console.log("완료");
+
+		});
 });
+
 </script>
 <title>상세보기</title>
-<!-- 내가 설정한 style -->
+
 <style>
-/* <내가 한 style> */
-/* 1. 전체 큰 영역 */
-/* 2. 후기 */
 .review-row{
  padding-top: 10px;
  border-bottom: 2px solid #c1c1c1;
@@ -104,7 +146,7 @@ font-weight: 550;
 color: #1f5e43;
 font-weight: 550;
 }
-#view_cnt{
+.divCnt{
 color: #1f5e43;
 float: right;
 font-weight: 550;
@@ -130,11 +172,27 @@ height: 90px;
 font-weight:550;
 color: #1f5e43;
 }
+
+.carousel-indicators li {
+    width: 20px;
+    height: 3px;
+    margin-right: 0px; 
+    margin-left: 0px;
+    background: url(/resources/images/circle-border.png) no-repeat center;
+    background-size: 10px;
+    opacity: 1;
+}
+
 /* carousel 슬라이드 */
 .stepCarousel {
 	margin: 0 auto;
-	width: 900px;
+	width: 30rem;
 /* 	height:1100px; */
+}
+
+.stepSlideImgCont{
+	width: 100%;
+    height: 18rem;
 }
 .craftCarousel {
 	margin: 0 auto;
@@ -180,6 +238,7 @@ color: #1f5e43;
 }
 
 
+/* 화면 width 1300px부터 이렇게 하겠다.라는 뜻*/
 @media screen and (min-width: 1300px) {
 .container_north, .cotainer_south {
   display: grid; 
@@ -198,8 +257,9 @@ color: #1f5e43;
 .side-right { grid-area: side-right; }
  }
  
+ /* 화면 width 1300px까지 이렇게 하겠다.라는 뜻*/
  @media screen and (max-width: 1300px) {
-.body { padding: 0 100px; }
+.body { padding: 0 80px; }
  }
   	
 </style>
@@ -266,13 +326,8 @@ color: #1f5e43;
 /* .view_step_tip.st2 dd {padding:14px 28px 0; font-size:16px; line-height:1.6;} */
 .view_step .carousel .carouItem img {max-width:100%;}
 .view_step_cont .none {display:none;}
-/* .view_step_cont .carousel.slide {border:none; box-shadow:none; margin:0; padding:0;} */
-/* .view_step_cont .media-left .carousel.slide {width:300px;} */
 .view_step_cont .media-left {width:300px;}
-/* .view_step_cont .carousel-control {padding:0;} */
-/* .view_step_cont .carousel-indicators {bottom:-36px;} */
-/* .view_step_cont .carousel-indicators li {width:10px; height:10px;} */
-/* 2. 탭 css (후기, 댓글) */
+
 .tab-head{
 padding-left: 0px !important;
 padding-right: 0px !important;
@@ -284,7 +339,7 @@ outline: unset;
 border: 1px solid #fff !important;
 }
 .nav-item a{
-color: black !important;
+/* color: black !important; */
 font-weight: 600;
 padding-left: 28px;
 padding-right: 28px;
@@ -375,8 +430,8 @@ figure[data-ke-type='opengraph'] a {
 }
 figure[data-ke-type='opengraph'] div.og-image {
    border-right: solid 1px rgba(0, 0, 0, 0.06);
-    width: 100px;
-    height: 100px;
+    width: 8.3rem;
+    height: 8.3rem;
     background-size: cover;
     background-position: center;
 }
@@ -385,40 +440,41 @@ figure[data-ke-type='opengraph'] div {
 }
 figure[data-ke-type='opengraph'] div.og-text {
     flex-grow: 1;
-/* height: 130px; */
-padding-left: 40px;
+    height: 8rem;
+    padding-left: 1.5rem;
+    padding-top: 1rem;
 }
 figure[data-ke-type='opengraph'] p.og-title {
 color: #000000;
-padding-bottom: 10px;
+padding-bottom: 0.2rem;
 max-width: 467px;
 text-overflow: ellipsis;
 white-space: nowrap;
 margin: 0px;
-    overflow: hidden;
+overflow: hidden;
 }
 figure[data-ke-type='opengraph'] .og-desc {
     margin: 0px;
     max-width: 467px;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-family: 'Noto Sans', 'Noto Sans KR';
+/*     font-family: 'Noto Sans', 'Noto Sans KR'; */
     font-size: 14px;
     font-weight: 300;
-    font-style: normal;
-    font-stretch: normal;
-    line-height: normal;
-    letter-spacing: normal;
+/*     font-style: normal; */
+/*     font-stretch: normal; */
+    line-height: unset;
+/*     letter-spacing: normal; */
     color: #909090;
-    max-height: 42px;
+    min-height: 2.8rem;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     display: -webkit-box;
 }
 
-/* 오늘 수정 */
+/*임시 */
 a {
-color:black;
+ color:black;
 }
 </style>
 </head>
@@ -456,20 +512,36 @@ color:black;
 			</div>
 			<!-- 핵심 부분 컨테이너 -->
 				<!-- 수정/ 삭제 버튼을 위한 메뉴 -->
-				<div class="dropdown" style="float:right">
-					<button class="btnMenu" type="button" id="dropdownMenuButton" data-toggle="dropdown">
-					</button>
-					<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" 
-						style="min-width: 4rem;font-size: 13px;">
-						 <a class="dropdown-item mydr" href="/hobby/update/${hobbyVo.hobby_no}">수정</a>
-						  <div class="dropdown-divider"></div> 
-						 <a class="dropdown-item mydr" href="javascript:doDelete();">삭제</a>
-					</div>
-				</div>
+				<c:if test="${not empty loginVo }">
+					<c:if test="${loginVo.user_id == hobbyVo.user_id}">
+						<div class="dropdown" style="float:right">
+							<button class="btnMenu" type="button" id="dropdownMenuButton" data-toggle="dropdown">
+							</button>
+							<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" 
+								style="min-width: 4rem;font-size: 13px;">
+								 <a class="dropdown-item mydr" href="/hobby/update/${hobbyVo.hobby_no}">수정</a>
+								  <div class="dropdown-divider"></div> 
+								 <a class="dropdown-item mydr" href="javascript:doDelete();">삭제</a>
+							</div>
+						</div>
+					</c:if>
+				</c:if>
 				<!--//  수정/ 삭제 버튼을 위한 메뉴 -->
 				<div id="hobby_title">${hobbyVo.hobby_title}</div>
 				<div id="hobby_intro">${hobbyVo.hobby_intro}</div>
-				<div><span id="reg_date">작성일  : <fmt:formatDate value="${hobbyVo.reg_date}" pattern="yyyy-MM-dd KK:mm:ss"/></span><span id="view_cnt">조회수 : ${hobbyVo.view_cnt }</span></div>
+				<div>
+				<span id="reg_date">작성일  : <fmt:formatDate value="${hobbyVo.reg_date}" pattern="yyyy-MM-dd KK:mm:ss"/></span>
+				<div class="divCnt">
+					<span class="fa fa-eye"></span>
+					<span id="view_cnt">${hobbyVo.view_cnt}</span>
+					<span>|</span>
+					<span class="fa fa-heart-o"></span>
+					<span id="like_cnt">${hobbyVo.like_cnt}</span>
+					<span>|</span>
+					<span class="fa fa-comment-o"></span>
+					<span class="cmt_cnt">${hobbyVo.cmt_cnt}</span>
+				</div>
+				</div>
 				<div class="row">
 					<div class="col-md-7">
 						<div class="mainImg_cont">
@@ -481,7 +553,7 @@ color:black;
 							<div class="row sm_tit">
 								작가
 							</div>
-							<a href="#프로필링크">
+							<a href="/workroom/main/${hobbyVo.user_id}">
 							<img class="rounded-circle circle-image" 
 								src="/displayImage?filePath=${hobbyVo.user_img}"
 								style="width:2.2rem;"/> 
@@ -507,13 +579,15 @@ color:black;
 							<span class="fa fa-hand-paper-o"></span>${hobbyVo.level_name}
 						</div>
 						<div class="respon_row">
-							<button type="button" class="btn green_background">
-								<span style="color:white;" class="fa fa-heart-o"> 좋아요</span>
+							<button type="button" class="loginNeed btn green_background" id="like">
+								<span style="color:white;" class="fa fa-heart-o"></span>
+								<span style="color:white;">좋아요</span>
 							</button>
-							<button type="button" class="btn green_background">
-								<span style="color:white;" class="fa fa-bookmark-o"> 북마크</span>
+							<button type="button" class="loginNeed btn green_background" id="bookmark">
+								<span style="color:white;" class="fa fa-bookmark-o"></span>
+								<span style="color:white;">북마크</span>
 							</button>
-							<button type="button" class="btn green_background">
+							<button type="button" class="loginNeed btn green_background">
 								<span style="color:white;" class="fa fa-envelope-o"> 쪽지</span>
 							</button>
 						</div>
@@ -561,10 +635,20 @@ color:black;
 	            <!-- 슬라이드 이미지 -->
 	            <div>
 	            	<div class="divSlideView" style="margin-top: 60px;">
-	            		<!-- data-interval=false -> 자동 슬라이드 취소 -->
+<!-- 	            		<span>슬라이드 조작하기</span> -->
+	            		<div style="text-align:center; margin-bottom: 1rem;">
+	            			<button id="carousel_prev" class="btn btn-sm btn-outline-light green_background"><span class="fa fa-backward"></span></button>
+							<button id="carousel_cycle" style="margin: 0 3rem;" class="btn btn-sm btn-outline-light green_background"><span class="fa fa-play"></span></button>
+							<button id="carousel_next" class="btn btn-sm btn-outline-light green_background"><span class="fa fa-forward"></span></button>
+								<!-- 슬라이드 이동 -->
+<!-- 							<input type="number" id="carousel_number" min=1 max=5 value="1" > -->
+<!-- 							<button id="carousel_move" class="btn btn-sm btn-outline-light green_background">이동</button><br /> -->
+	            		</div>
+
 	            		<!-- 이미지 슬라이드 -->
-            			<div class="carousel stepCarousel slide" id="stepSlide" data-interval="false" >
-							<ol class="carousel-indicators" style="top: 460px; height: 30px;">
+	            		<!-- data-interval=false -> 자동 슬라이드 취소 -->
+            			<div class="carousel stepCarousel slide" id="stepSlide">
+							<ol class="carousel-indicators" style="top: 16.3rem; height: 30px;">
 								<c:forEach var="makeStepVo" items="${hobbyVo.makeSteps }">
 									<li data-slide-to="${makeStepVo.make_step_num - 1 }" 
 										data-target="#stepSlide"
@@ -575,7 +659,7 @@ color:black;
 							<div class="carousel-inner stepCarousel-inner">
 								<c:forEach var="makeStepVo" items="${hobbyVo.makeSteps }">
 									<div data-num="${makeStepVo.make_step_num}" class="carousel-item ${makeStepVo.make_step_num==1  ? 'active' : ''}">
-										<div style="width:900px; height:500px">
+										<div class="stepSlideImgCont">
 											<c:choose>
 												<c:when test="${not empty makeStepVo.make_step_img}">
 													<img class="slideImg" src="/displayImage?filePath=${makeStepVo.make_step_img }" />
@@ -642,16 +726,16 @@ color:black;
 									</div>
 								</c:forEach>
 							</div> 
-							<a class="carousel-control-prev" href="#stepSlide" 
-								data-slide="prev" style="height:500px">
-								<span class="carousel-control-prev-icon"></span> 
-								<span class="sr-only">Previous</span>
-							</a> 
-							<a class="carousel-control-next" href="#stepSlide" 
-								data-slide="next"  style="height:500px">
-								<span class="carousel-control-next-icon"></span> 
-								<span class="sr-only">Next</span>
-							</a>
+<!-- 							<a class="carousel-control-prev" href="#stepSlide"  -->
+<!-- 								data-slide="prev" style="height: 18rem;"> -->
+<!-- 								<span class="carousel-control-prev-icon"></span>  -->
+<!-- 								<span class="sr-only">Previous</span> -->
+<!-- 							</a>  -->
+<!-- 							<a class="carousel-control-next" href="#stepSlide"  -->
+<!-- 								data-slide="next"  style="height:18rem"> -->
+<!-- 								<span class="carousel-control-next-icon"></span>  -->
+<!-- 								<span class="sr-only">Next</span> -->
+<!-- 							</a> -->
 						</div>
 						<!-- //이미지 슬라이드 -->
 	            </div>
@@ -715,7 +799,7 @@ color:black;
 			</div>
 			<!-- 완성사진 영역 -->
 			<div style="margin-top: 100px;">
-				<div class="carousel craftCarousel slide" id="craftSlide">
+				<div class="carousel craftCarousel slide" id="craftSlide" style="box-shadow: 0 2px 4px 0 rgb(0 0 0 / 50%);">
 				<ol class="carousel-indicators">
 					<c:forEach var="completeImgVo" items="${hobbyVo.completeImgs}" varStatus="vs">
 						<li data-slide-to="${vs.index}" 
@@ -770,7 +854,8 @@ color:black;
 		<div class="side side-left"></div>
 		<div class="body">
 			<!-- 후기, 댓글 컨테이너 -->
-		  <ul class="nav nav-tabs" style="padding-left: 18%;">
+			<!-- style="padding-left: 18%;" 없앰 노트북으로 보니깐 이상해짐 스크린클때만 여백넣는작업 들어가야할듯 -->
+		  <ul class="nav nav-tabs" >
 		    <li class="nav-item">
 		      <a class="nav-link active" data-toggle="tab" href="#madeByMe">made by me</a>
 		    </li>
@@ -783,7 +868,7 @@ color:black;
   <div class="tab-content">
     <div id="madeByMe" class="container tab-pane active"><br>
 <!--       <h5 class="pl-2">made by me</h5> -->
-		<a style="float:right" href="#"><span class="fa fa-pencil-square"></span>후기작성</a>
+		<a class="loginNeed" style="float:right" href="#"><span class="fa fa-pencil-square"></span>후기작성</a>
 		<!-- review-container -->
 		<div class="review-container">
 		<c:forEach begin="1" end="4">
@@ -846,7 +931,7 @@ color:black;
 	 <!-- comment 시작 -->
     <div id="comment" class="container tab-pane fade"><br>
 <!--     		<h5 class="pl-2">comment</h5> -->
-			<div class="sm_tit">댓글 <span id="comment_cnt">3</span></div>
+			<div class="sm_tit">댓글 <span class="cmt_cnt">3</span></div>
 			<!--commentList-container -->
 			<div class="commentList-container" id="commentContainer">
 			<!-- comment-row-->
@@ -858,7 +943,7 @@ color:black;
 							<img class="rounded-circle circle-image user_img" 
 								src="/resources/images/profile.png" style="width:35px; height:35px;"/>
 							<span class="c_user_nick"> 하윤지</span>
-							<a class="cancel" href="#" style="float:right">취소</a>
+							<a class="cancel" href="javascript:cancelUpdate();" style="float:right">취소</a>
 						</div>
 						<div class="input-group" style="width:680px;">
 						<!-- 아이디부분 로그인기능 생기면 삭제 -->
@@ -875,10 +960,11 @@ color:black;
 									<img class="rounded-circle circle-image user_img" 
 									src="/resources/images/profile.png" style="width:35px; height:35px;"
 									/>
+									<span class="c_user_nick"> 하윤지</span>
 								</a>
-								<span class="c_user_nick"> 하윤지</span>
 								<span class="is_hobby_writer badge badge-pill badge-success" 
 									style="display:none; background: #1f5e43; padding-top: 5px;"> 글주인</span>
+								<!-- 댓글, 수정 삭제 -->
 								<div class="dropdown" style="float:right">
 									<button class="btnMenu_cmt" type="button" id="dropdownMenuButton" data-toggle="dropdown">
 									</button>
@@ -890,19 +976,19 @@ color:black;
 										 	href="javascript:void(0);">삭제</a>
 									</div>
 								</div>
+								<!-- //댓글, 수정 삭제 -->
 							</div>
 							<div class="c_content_area">
 								<span class="c_parent_user_nick" style="display:none">@하윤지 </span> 
 								<span class="c_content">댓글내용 댓글댓글내용 댓글댓글내용 11</span>
 							</div>
 							<div class="c_etc_area">
-								<span class="c_reg_date">2021-07-20 11:43</span>
-									<span>|</span>
-									<a href="javascript:void(0);" class="신고"
-										 onclick="신고()">신고</a>
+								<span class="c_reg_date"></span>
+<!-- 									<a href="javascript:void(0);" class="report" style="display:none;" -->
+<!-- 										 onclick="신고()"><span>|</span>신고</a> -->
 							</div>
 							<div class="c_btn_area">
-								<button class="doRecomment btn btn-sm btn-outline-light green_background"
+								<button class="loginNeed doRecomment btn btn-sm btn-outline-light green_background"
 										 onclick="doRecomment()">답글</button>
 							</div>
 					</div>
@@ -923,11 +1009,11 @@ color:black;
 			<div class="commentWrite-container">
 				<div class="input-group" style="width:680px;">
 					<!-- 아이디부분 로그인기능 생기면 삭제 -->
-					<input type="text" id="user_id" name="user_id" placeholder="댓글작성자 id(테스트를 위한)"/>
+<!-- 					<input type="text" id="user_id" name="user_id" placeholder="댓글작성자 id(테스트를 위한)"/> -->
 					<textarea id="c_content" name="c_content" class="form-control" placeholder="댓글을 남겨주세요."
 						 style="height:100px; width:100%; resize:none;"></textarea>
 					<!-- 로그인 기능 생기면 insertComment함수 인자안에 세션으로 얻은${user_id}넣기 -->
-					<button class="btn btn-outline-light green_background" type="button" 
+					<button class="loginNeed btn btn-outline-light green_background" type="button" 
 						onclick="insertComment(this)" style="height:100px; width:100px;">등록</button>
 				</div>
 			</div>
@@ -935,11 +1021,11 @@ color:black;
 				<!-- 답댓작성 -->
 				<div id="reply_div" style="display:none">
 					<div class="input-group" style="width:640px;">
-						<input type="text" id="re_user_id" name="user_id" placeholder="댓글작성자 id(테스트를 위한)"/>
+<!-- 						<input type="text" id="re_user_id" name="user_id" placeholder="댓글작성자 id(테스트를 위한)"/> -->
 						<input type="hidden" id="parent_c_no" value=""/>
 						<textarea id="re_c_content" class="form-control"
 							 style="height:100px; width:100%; resize:none;"></textarea>
-						<button class="btn btn-outline-light green_background insertRecomment" type="button" 
+						<button class="loginNeed btn btn-outline-light green_background insertRecomment" type="button" 
 							onclick="insertRecomment(this)" style="height:100px; width:100px;">등록</button>
 					</div>
 				</div>
@@ -958,6 +1044,83 @@ color:black;
 </div>
 <%@ include file="../include/footer.jsp" %>
 <script>
+var loginVo = "${loginVo}";
+if (loginVo == "") {
+	console.log("loginVo 없음:", loginVo);
+	$(".loginNeed").on("click", function() {
+		alert("로그인 해주세요");
+		return false;
+	});
+	$("#comment").on("click", ".loginNeed", function() {
+		alert("로그인 해주세요");
+		return false;
+	}).on("click", ".form-control", function() {
+		alert("로그인 해주세요");
+		return false;
+	});
+}
+
+//좋아요
+$("#like").click(function() {
+	if(loginVo == "") {
+		return false;
+	}
+	var url = "/hobby/like/${hobbyVo.hobby_no}";
+	$.get(url, function(rData) {
+		console.log(rData);
+		if (rData == "like") {
+			console.log("좋아용");
+			$("#like > span:first-child").attr({
+				"class" : "fa fa-heart",
+				style : "color:#C32424"
+			})
+			$("#like_cnt").text(Number($("#like_cnt").text()) + 1);
+		} else {
+			$("#like > span:first-child").attr({
+				"class" : "fa fa-heart-o",
+				style : "color:white"
+			});
+			$("#like_cnt").text(Number($("#like_cnt").text()) - 1);
+		}
+	});
+});
+
+if ("${likeCheck}" == 1) {
+    $("#like > span:first-child").attr({
+       "class" : "fa fa-heart",
+       style : "color:#C32424"
+    })
+ }
+ 
+//북마크
+$("#bookmark").click(function() {
+	if(loginVo == "") {
+		return false;
+	}
+	var url = "/hobby/bookmark/${hobbyVo.hobby_no}";
+	$.get(url, function(rData) {
+		console.log(rData);
+		if (rData == "bookmark") {
+			$("#bookmark > span:first-child").attr({
+				class : "fa fa-bookmark",
+				style : "color:#FFC300"
+			})
+		} else {
+			$("#bookmark > span:first-child").attr({
+				class : "fa fa-bookmark-o",
+				style : "color:white"
+			})
+		}
+	});
+});
+
+if ("${bookmarkCheck}" == 1) {
+    $("#bookmark > span:first-child").attr({
+       class : "fa fa-bookmark",
+       style : "color:#FFC300"
+    })
+ }
+ 
 function chgViewStep(step) {	
 	if (step == 1) {
 		$(".divStepView").hide();
@@ -1001,13 +1164,17 @@ function doDelete() {
 // 일반 댓글 작성
 function insertComment() {
 	var c_content = $("#c_content").val();
+	if (c_content.length < 1 || c_content.trim() == "") {
+		alert("댓글 내용을 입력하지 않았습니다.")
+		return false;
+	}
 	var h_no = parseInt("${hobbyVo.hobby_no}");
-	var user_id = $("#user_id").val();
+// 	var user_id = $("#user_id").val();
 	var url = "/comment/insertComment";
 	var sendData = {
 			"c_content" : c_content,
 			"h_no" 	    : h_no,
-			"user_id"	: user_id
+// 			"user_id"	: user_id
 	}
 	$.ajax({
 		"url" : url,
@@ -1031,14 +1198,18 @@ function insertComment() {
 function insertRecomment(el) {
 	var re_group = $(el).parent().parent().parent().parent().find(".re_group").val()
 	var parent_c_no = $("#parent_c_no").val();
-	var user_id = $("#re_user_id").val()
+// 	var user_id = $("#re_user_id").val()
 	var c_content = $("#re_c_content").val();
+	if (c_content.length < 1 || c_content.trim() == "") {
+		alert("댓글 내용을 입력하지 않았습니다.")
+		return false;
+	}
 	var h_no = parseInt("${hobbyVo.hobby_no}");
 	var url = "/comment/insertRecomment";
 	var sendData = {
 			"c_content" : c_content,
 			"h_no" 	    : h_no,
-			"user_id"	: user_id,
+// 			"user_id"	: user_id,
 			"parent_c_no" : parent_c_no,
 			"re_group" : re_group,
 	}
@@ -1061,17 +1232,34 @@ function insertRecomment(el) {
 		}
 	});
 }
+
 // 답글 버튼 누를때 
 function doRecomment(c_no) {
 	var reply = '<div id="reply_div">'+$('#reply_div').html()+'</div>';
-    $('#reply_div').remove();
-    $("#replyCommentDiv_"+ c_no).html(reply);
-    $('#reply_div').show();
+	if ($("#reply_div").css("display") == "block") {
+ 		console.log($("#replyCommentDiv_"+ c_no).find("#reply_div"));
+ 		if($("#replyCommentDiv_"+ c_no).find("#reply_div").length == 0) {
+  			$('#reply_div').remove();
+     		$("#replyCommentDiv_"+ c_no).html(reply);
+		 } else {
+  			$("#replyCommentDiv_"+ c_no).find("#reply_div").hide();
+ 		}
+	} else {
+		$('#reply_div').remove();
+		$("#replyCommentDiv_"+ c_no).html(reply);
+	}
+    
     $("#parent_c_no").val(c_no);
 }	
-var user_id = "${hobbyVo.user_id}";
+
+var hobby_writer = "${hobbyVo.user_id}"; // 글작성자 id
+
+if (loginVo != null) {
+	var login_id = "${loginVo.user_id}"; // 로그인한사람 id
+}
 // 댓글 리스트 조회
 function selectCommentList() {
+	
 	$("#commentContainer > .comment-row:gt(0)").remove();
 	$("#moreViewDiv").empty();
 	var url = "/comment/selectCommentList/${hobbyVo.hobby_no}";
@@ -1081,8 +1269,8 @@ function selectCommentList() {
 		} else {
 			$("#btnMoreComments").show();
 		}
-		$("#comment_cnt").text(rData.length);
-		
+// 		$("#comment_cnt").text(rData.length);
+		$(".cmt_cnt").text(rData.length);
 		$.each(rData, function(i) {
 			var cloneDiv = $("#commentContainer > .comment-row:eq(0)").clone();
 			if (this.c_depth == 1) {
@@ -1090,34 +1278,44 @@ function selectCommentList() {
 				cloneDiv.find(".c_parent_user_nick").show();
 			}
 			cloneDiv.show();
+			
+			//자기 댓글이 아닐경우 수정삭제 안보이게하기, 신고버튼은 보이게 하기(신고 기능 없음)
+			if(this.user_id != login_id) {
+				cloneDiv.find(".dropdown").hide();
+// 				cloneDiv.find(".report").show();
+			}
+			
+			//
 			cloneDiv.find(".view_comment").attr("id", "view_comment_" + this.c_no );
 			cloneDiv.find(".c_no").val(this.c_no);
 			cloneDiv.find(".re_group").val(this.re_group);
-			cloneDiv.find(".user_link").attr("href", "프로필링크/개인작업실코드(조인하기)");
+			cloneDiv.find(".user_link").attr("href", "/workroom/main/" + this.user_id);
 			cloneDiv.find(".user_img").attr("src", "/displayImage?filePath=" + this.user_img);
 			cloneDiv.find(".c_user_nick").text(this.user_nick);
-			if (this.user_id == user_id) {
+			if (this.user_id == hobby_writer) {
 				cloneDiv.find(".is_hobby_writer").show();
 			}
 			cloneDiv.find(".doUpdateComment").attr("onclick", "doUpdateComment(" + this.c_no + ")");
 			cloneDiv.find(".updateCommentDiv").attr("id", "updateCommentDiv_" + this.c_no);
+			// 댓글 수정 취소
+			cloneDiv.find(".cancel").attr("href", "javascript:cancelUpdate(" + this.c_no + ")");
 			cloneDiv.find(".updateBtn").attr("onclick", "updateComment(" + this.c_no + ")");
 			cloneDiv.find(".deleteComment").attr("onclick", "deleteComment(" + this.c_no + ")");
 			cloneDiv.find(".doRecomment").attr("onclick", "doRecomment(" + this.c_no + ")");
 			cloneDiv.find(".c_parent_user_nick").text("@" + this.parent_user_nick);
 			cloneDiv.find(".c_content").text(this.c_content);
-			cloneDiv.find(".c_reg_date").text(this.reg_date);
-			
+			var reg_date = changeDateString(this.reg_date);
+			cloneDiv.find(".c_reg_date").text(reg_date);
 			cloneDiv.find(".replyCommentDiv").attr("id", "replyCommentDiv_" + this.c_no);
 			
 			// 댓글 3개까지는 전체보기 줄여보기 x, 4개부터 보일때 3개까지만 보이고 전체보기 버튼 눌러야 전체보임
 			if(i > 2) {
 				$("#moreViewDiv").append(cloneDiv);
-				console.log(i + "," + "moreview" +  cloneDiv.html());
+// 				console.log(i + "," + "moreview" +  cloneDiv.html());
 				$("#moreViewDiv").insertAfter("#commentContainer > .comment-row:last"); 
 			} else {
 				$("#commentContainer").append(cloneDiv);
-				console.log(i + "," + "일반" + cloneDiv.html());
+// 				console.log(i + "," + "일반" + cloneDiv.html());
 			}
 // 			console.log("댓글들", $("#commentContainer > .comment-row:gt(3)"));
 		});
@@ -1132,8 +1330,19 @@ function doUpdateComment(c_no) {
     $("#updateCommentDiv_" + c_no).find(".c_content").val(c_content);
 	$("#view_comment_" + c_no).hide();
 }
+
+//수정 취소 누를때
+function cancelUpdate(c_no) {
+	 $("#updateCommentDiv_" + c_no).hide();
+	 $("#view_comment_" + c_no).show();
+}
+
 function updateComment(c_no) {
 	var c_content = $("#updateCommentDiv_" + c_no).find(".c_content").val();
+	if (c_content.length < 1 || c_content.trim() == "") {
+		alert("1자 이상 입력해야 글을 등록할 수 있습니다.");
+		return false;
+	}
 	var url = "/comment/updateComment";
 	var sendData = {
 			"c_content" : c_content,
@@ -1158,14 +1367,29 @@ function updateComment(c_no) {
 }
 // 댓글 삭제  
 function deleteComment(c_no) {
-	var url = "/comment/deleteComment/" + c_no;
+	var url = "/comment/deleteComment";
 	if(confirm("삭제 하시겠습니까?")) {
-	$.get(url, function(rData) {
-			console.log(rData);
-			if(rData == 0) {
-				alert("답댓이 있는 댓글은 삭제할 수 없습니다.");
-			} else {
-				selectCommentList();
+		var url = "/comment/updateComment";
+		var sendData = {
+				"h_no" : "${hobbyVo.hobby_no}",
+				"c_no"	: c_no
+		}
+		
+		$.ajax({
+			"url" : url,
+			"headers" : {
+				"Content-Type" : "application/json"
+			},
+			"method" : "post",
+			"dataType" : "text",
+			"data" : JSON.stringify(sendData),
+			"success" : function(rData) {
+				console.log(rData);
+				if(rData == 0) {
+					alert("답댓이 있는 댓글은 삭제할 수 없습니다.");
+				} else {
+					selectCommentList();
+				}
 			}
 		});
 	}
@@ -1182,6 +1406,23 @@ function moreViewToggle() {
         $("#btnMoreComments").html('전체보기');
         commentOpens = 0;
     }
+}
+
+function make2digits(num) {
+	if (num < 10) {
+		num = "0" +  num;
+	}
+	return num;
+}
+
+function changeDateString(timestamp) {
+	var d = new Date(timestamp);
+	var year = d.getFullYear();
+	var month = d.getMonth() + 1;
+	var date = d.getDate();
+	var hour = make2digits(d.getHours());
+	var minute = make2digits(d.getMinutes());
+	return year + "." + month + "." + date + ". " + hour + ":" + minute;
 }
 </script>
 </body>

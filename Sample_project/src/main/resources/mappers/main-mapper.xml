@@ -7,6 +7,7 @@
   <!-- com.kh.sample01.member.getTime -->
 <mapper namespace="com.dp.ggomjirak.main">
 
+	
 	<!-- 추천 취미 리스트 -->
 	<select id="getSuggestHobby" resultType="HobbyVo">
 		select * from
@@ -49,7 +50,7 @@
 	<!-- 인기작가 -->
 	<select id="getPopularMemberList1" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
@@ -60,7 +61,7 @@
 	</select>
 	<select id="getPopularMemberList2" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
@@ -71,7 +72,7 @@
 	</select>
 	<select id="getPopularMemberList3" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
@@ -82,7 +83,7 @@
 	</select>
 	<select id="getPopularMemberList4" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, c.name from
+		(select rownum rnum, a.user_id, a.user_nick, a.user_grade, c.name from
 		        (select * from tbl_memberdetail where user_id in (select user_id from tbl_memberinfo where is_del = 'N') 
 		         order by follower_cnt desc) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd

@@ -52,7 +52,7 @@
 <!-- 		id="authInterceptor"></beans:bean> -->
 	
 	
-<!-- 	<interceptors> -->
+	<interceptors>
 <!-- 		<interceptor> -->
 <!-- 			<mapping path="/doA"/> -->
 <!-- 			<mapping path="/doB"/> -->
@@ -64,7 +64,15 @@
 <!-- 			<exclude-mapping path="/board/listAll"/> -->
 <!-- 			<beans:ref bean="authInterceptor"/> -->
 <!-- 		</interceptor> -->
-<!-- 	</interceptors> -->
+		<interceptor>
+			<mapping path="/story/**/*"/>
+			<mapping path="/st_comment/**/*"/>
+			<exclude-mapping path="/story/list/**"/>
+			<exclude-mapping path="/story/detail/**"/>
+			<exclude-mapping path="/st_comment/list/**"/>
+			<beans:ref bean="authInterceptor"/>
+		</interceptor>
+	</interceptors>
 	
 	
 </beans:beans>

@@ -22,6 +22,7 @@
     vertical-align: top;
 }
 
+/* 삭제 이미지 */
 .btn_del {
     display: block;
     opacity: 0.5;
@@ -32,25 +33,25 @@
 }
 </style>
 <script>
-$(document).ready(function() {	
-	$("#frmStory").submit(function() {
-		var st_content = $("#st_content").val();
-		if (st_content.trim() == "" || st_content == null) {
-			console.log("내용입력");
-			$("#msg").text("스토리 내용을 입력해 주세요.");
-			$("#st_content").focus();
-			return false;
-		}
-		$(this).submit();
-	});
-});
+// $(document).ready(function() {	
+// 	$("#frmStory").submit(function() {
+// 		var st_content = $("#st_content").val();
+// 		if (st_content.trim() == "" || st_content == null) {
+// 			console.log("내용입력");
+// 			$("#msg").text("스토리 내용을 입력해 주세요.");
+// 			$("#st_content").focus();
+// 			return false;
+// 		}
+// 		$(this).submit();
+// 	});
+// });
 </script>
 <!-- 스토리 수정 폼 -->
 <%@ include file="../include/workroomSide.jsp"%>
 <!-- 글작성 폼 -->
 <div class="col-md-9">
 	<div class="checkout__order contact-form">
-		<form action="/story/update_run" method="post">
+		<form id="frmUpdate" action="/story/update_run" method="post">
 		<div class="row" style="margin-top:10px; justify-content: center;">
 			<div class="divCompleteImg" style="margin-right:20px; height: 200px;">
 				<label class="storyImg_label" for="story_file" style="border: 1px solid #e1e1e1; width:200px; height:200px; overflow: hidden;">
@@ -59,7 +60,7 @@ $(document).ready(function() {
 				</label>
 				<input type="file" class="story_file" id="story_file" accept=".gif, .jpg, .png" 
 				onchange="previewStoryImg(this);" style="display:none;width:0px;height:0px;font-size:0px;">
-				<input type="hidden" class="storyImg_hidden" data-exist="0" id="st_img" name="st_img"/>
+				<input type="hidden" class="storyImg_hidden" data-exist="0" id="st_img" name="st_img" value="${storyVo.st_img}"/>
 				<div style="position: relative;bottom: 13rem;">
 					<a id="btnDelStoryImg" href="javascript:delStoryImg()" 
 						class="btn_del btn_delStoryImg" style="float:right; display:none"></a>
@@ -71,7 +72,7 @@ $(document).ready(function() {
 				<input type="hidden" name="st_no" value="${storyVo.st_no}" />
 				<textarea placeholder="스토리를 작성해 주세요." name="st_content"
 					id="st_content">${storyVo.st_content}</textarea>
-				<button type="submit" class="site-btn">작성완료</button>
+				<button type="button" onclick="doSubmit();" class="site-btn">작성완료</button>
 			</div>
 		</form>
 	</div>
@@ -82,6 +83,7 @@ $(document).ready(function() {
 
 <%@ include file="../include/footer.jsp"%>
 <script>
+
 //ajax, 사진넣기
 function previewStoryImg(targetObj) {
 	if (targetObj.files.length == 0){
@@ -93,6 +95,35 @@ function previewStoryImg(targetObj) {
 	
 	var file = targetObj.files[0];
 	console.log("파일존재");
+	
+	// 이미지파일체크, 파일 사이즈 체크
+	var imgJ = /(.*?)\.(jpg|jpeg|png|gif)$/;
+	var maxSize = 10 * 1024 * 1024;
+    
+	console.log(file.name);
+	console.log(file.size);
+    if(!file.name.match(imgJ)) {
+    	Swal.fire({
+			text: '이미지 파일만 업로드 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    } else if(file.size > maxSize) {
+    	Swal.fire({
+			text: '파일 크기는 10MB까지 가능합니다.', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'warning', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+		});
+        return;
+    }
+	
 	var formData = new FormData();
 	formData.append("file", file);
 	// sort의 storyImg(Controller의 case문)
@@ -143,6 +174,48 @@ function delStoryImg() {
 			$("#btnDelStoryImg").css("display", "none");
 		}
 	})
+}
+
+//유효성 검사
+function validate() {
+	// 내용
+	var hobby_title = $("#hobby_title").val();
+	var st_content = $("#st_content").val();
+	if (typeof st_content == "undefined" || st_content.trim() == "" || st_content ==  null) {
+		$("#msg").text("스토리 내용을 입력해 주세요.");
+		$("#hobby_title").focus();
+		$("#st_content").focus();
+		return false;
+	}
+	return true;
+}
+
+function doSubmit() {
+	valResult = validate();
+	console.log(valResult);
+    if (!valResult) {
+        return false;
+    } 
+    console.log("확인");
+    
+ 	//수정하시겠습니까?
+	Swal.fire({
+		text: '수정하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			 $("#frmUpdate").submit();
+		} else {
+			return false;
+		}
+	});
+    
 }
 
 </script>

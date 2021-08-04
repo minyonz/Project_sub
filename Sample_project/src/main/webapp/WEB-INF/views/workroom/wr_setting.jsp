@@ -188,7 +188,7 @@ $(document).ready(function() {
 			</div>
 			<div class="checkout__order">
 				<div class="workroom_box">
-					<h4>북마크 목록</h4>
+					<h4>좋아요 목록</h4>
 				</div>
 				<div class="workroom_box">
 					<hr>
