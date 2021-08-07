@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.LikeBookmarkVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -52,6 +53,12 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 		List<StoryVo> list = sqlSession.selectList(NAMESPACE + "searchStory" , pagingDto);
 		return list;
 	}
+	
+	@Override
+	public List<MadeByMeVo> searchMbm(PagingDto pagingDto) {
+		List<MadeByMeVo> list = sqlSession.selectList(NAMESPACE + "searchMbm", pagingDto);
+		return list;
+	}
 
 	@Override
 	public int searchHobbyCount(PagingDto pagingDto) {
@@ -64,6 +71,12 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 		int count = sqlSession.selectOne(NAMESPACE + "searchStoryCount", pagingDto);
 		return count;
 	}
+	
+	@Override
+	public int searchMbmCount(PagingDto pagingDto) {
+		int count = sqlSession.selectOne(NAMESPACE + "searchMbmCount", pagingDto);
+		return count;
+	}
 
 	@Override
 	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto) {
@@ -74,6 +87,18 @@ public class WorkroomDaoImpl implements WorkRoomDao {
 	@Override
 	public int bookmarkCount(String user_id) {
 		int count = sqlSession.selectOne(NAMESPACE + "bookmarkCount", user_id);
+		return count;
+	}
+
+	@Override
+	public List<MadeByMeVo> listMbm(PagingDto pagingDto) {
+		List<MadeByMeVo> list = sqlSession.selectList(NAMESPACE + "listMbm", pagingDto);
+		return list;
+	}
+
+	@Override
+	public int mbmCount(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "mbmCount", user_id);
 		return count;
 	}
 

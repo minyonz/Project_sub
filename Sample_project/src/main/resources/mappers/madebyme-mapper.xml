@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.dp.ggomjirak.madebyme">
+		
+	<!-- 입력 -->
+	<insert id="insertMbm">
+		insert into tbl_madebyme(mbm_no, user_id, hobby_no, level_no, mbm_content, mbm_img)
+		values(seq_mbm_no.nextval, #{user_id}, #{hobby_no}, #{level_no}, #{mbm_content}, #{mbm_img, jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectHobby" resultType="HobbyVo">
+		select * from tbl_hobby
+		where hobby_no = #{hobby_no} and is_del = 'N'
+	</select>
+	
+	<!-- 수정 -->
+	<update id="updateMbm">
+		update tbl_madebyme set
+			level_no = #{level_no},
+			mbm_content = #{mbm_content},
+			mbm_img = #{mbm_img, jdbcType=VARCHAR}
+		where mbm_no = #{mbm_no} and hobby_no = #{hobby_no}
+	</update>
+	
+	<!-- 삭제 -->
+	<update id="deleteMbm">
+		update tbl_madebyme set
+			is_del = 'Y',
+			del_date = sysdate
+		where mbm_no = #{mbm_no} and hobby_no = #{hobby_no}
+	</update>
+	
+	<!-- 불러오기 -->
+	<select id="selectMbm" resultType="MadeByMeVo">
+		select mbm.*, md.user_nick, md.user_img
+			from tbl_madebyme mbm, tbl_memberdetail md
+		where mbm.user_id = md.user_id
+			  and mbm_no = #{mbm_no} and hobby_no = #{hobby_no}
+	</select>
+	
+	<!-- 리스트 -->
+	<select id="listMbm" resultType="MadeByMeVo">
+		select mbm.*, md.user_nick, md.user_img
+			from tbl_madebyme mbm, tbl_memberdetail md
+		where mbm.user_id = md.user_id
+			  and hobby_no = #{hobby_no} and is_del = 'N'
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updateViewCnt">
+		update tbl_madebyme set
+			view_cnt = view_cnt + 1
+		where mbm_no = #{mbm_no}
+	</update>
+	
+	<!-- 좋아요 -->
+	<update id="updateLikeCount">
+		update tbl_madebyme set
+			like_cnt = like_cnt + #{count}
+		where mbm_no = #{mbm_no}
+	</update>
+	
+	<!-- 좋아요 테이블 -->
+	<insert id="insertLike">
+		insert into tbl_mbm_like
+		values (#{user_id}, #{mbm_no})
+	</insert>
+	
+	<delete id="deleteLike">
+		delete from tbl_mbm_like
+		where mbm_no = #{mbm_no} and user_id = #{user_id}
+	</delete>
+	
+	<!-- 좋아요 여부 -->
+	<select id="likeCheck" resultType="int">
+		select count(*) from tbl_mbm_like
+		where mbm_no = #{mbm_no} and user_id = #{user_id}
+	</select>
+	
+	<!-- 좋아요 전체 갯수 -->
+	<select id="likeAll" resultType="int">
+		select like_cnt from tbl_madebyme
+		where mbm_no = #{mbm_no}
+	</select>
+	
+	
+</mapper>
+
+
+
+
+
+
+

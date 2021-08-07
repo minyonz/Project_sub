@@ -20,16 +20,28 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		// 요청 경로 얻기
 		String uri = request.getRequestURI();
 		String queryString = request.getQueryString();
-		String requestPath = uri + "?" + queryString;
+		String requestPath = null;
+
+		if (uri == "/manager/**/*") {
+			uri = "/main/mainHome";
+		}
+		if(queryString == null) {
+			requestPath = uri;
+		} else {
+			requestPath = uri + "?" + queryString; 
+		}
 		System.out.println("requestPath:" + requestPath);
 		session.setAttribute("requestPath", requestPath);
 		
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+				
 		// 로그인 되어 있지 않다면
 		if (memberVo == null) {
+			//response.sendRedirect("/loginForm");
 			response.sendRedirect("/mypage/login");
 			return false; // 요청 처리를 중단
 		}
+		
 		return true; // 요청 처리를 계속함
 	}	
 }

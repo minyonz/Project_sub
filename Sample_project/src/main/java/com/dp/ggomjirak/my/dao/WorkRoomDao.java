@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.LikeBookmarkVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -19,11 +20,16 @@ public interface WorkRoomDao {
 	// 취미, 스토리 검색
 	public List<HobbyVo> searchHobby(PagingDto pagingDto);
 	public List<StoryVo> searchStory(PagingDto pagingDto);
+	public List<MadeByMeVo> searchMbm(PagingDto pagingDto);
 	// 검색 후 총 갯수
 	public int searchHobbyCount(PagingDto pagingDto);
 	public int searchStoryCount(PagingDto pagingDto);
+	public int searchMbmCount(PagingDto pagingDto);
 	// 북마크 목록 불러오기
 	public List<LikeBookmarkVo> listBookmark(PagingDto pagingDto);
 	// 북마크 총 갯수
 	public int bookmarkCount(String user_id);
+	// 메이드바이미
+	public List<MadeByMeVo> listMbm(PagingDto pagingDto);
+	public int mbmCount(String user_id);
 }

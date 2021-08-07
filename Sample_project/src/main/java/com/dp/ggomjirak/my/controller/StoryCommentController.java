@@ -7,8 +7,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,10 +40,10 @@ public class StoryCommentController {
 	@RequestMapping(value="/list", method=RequestMethod.GET)
 	public List<StoryCommentVo> stCommentList(int st_no) throws Exception {
 		List<StoryCommentVo> list = storyCommentService.listComment(st_no);
-		System.out.println(st_no);
 		return list;
 	}
 	
+	// 수정
 	@RequestMapping(value="/modify", method=RequestMethod.GET)
 	public String stCommentModify(int st_c_no, String st_c_content) throws Exception {
 		storyCommentService.updateComment(st_c_no, st_c_content);

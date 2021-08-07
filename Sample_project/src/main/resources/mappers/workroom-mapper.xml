@@ -9,15 +9,23 @@
 	<select id="listHobby" resultType="HobbyVo">
 		select * from(select rownum rnum, a.* from 
 		    (select * from tbl_hobby
-		    where user_id = #{user_id} 
-		    order by hobby_no desc)a)
+		    where user_id = #{user_id} and is_del = 'N'
+		    <choose>
+		    	<when test="qCheck == 0">
+		    		order by like_cnt desc, view_cnt desc
+		    	</when>
+		    	<when test="qCheck == 1">
+		    		order by hobby_no desc
+		    	</when>
+		    </choose>
+		    )a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	
 	<!-- 취미 총 갯수 -->
 	<select id="hobbyCount" resultType="int">
 		select count(*) from tbl_hobby
-		where user_id = #{user_id}
+		where user_id = #{user_id} and is_del = 'N'
 	</select>
 	
 	<!-- 프로필카드 -->
@@ -48,6 +56,16 @@
 			order by st_no desc)a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
+
+	<select id="searchMbm" resultType="MadeByMeVo">
+		select * from
+		(select rownum rnum, a.* from
+			(select * from tbl_madebyme
+			where mbm_content like '%' || #{keywork} || '%'
+			and useR_id = #{user_id} and is_del = 'N'
+			order by mbm_no desc)a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
 	
 	<!-- 검색 후 취미 총 갯수 -->
 	<select id="searchHobbyCount" resultType="int">
@@ -65,6 +83,14 @@
 		and is_del = 'N'
 	</select>
 	
+	<!-- 검색 후 메바미 총 갯수 -->
+	<select id="searchMbmCount" resultType="int">
+		select count(*) from tbl_madebyme
+		where user_id = #{user_id}
+		and mbm_content like '%' || #{keywork} || '%'
+		and is_del = 'N'
+	</select>
+	
 	<!-- 북마크 목록 -->
 	<select id="listBookmark" resultType="LikeBookmarkVo">
 		select bm.hobby_no, hb.user_id, hb.hobby_title, hb.main_img, md.user_img, md.user_nick
@@ -78,6 +104,29 @@
 	<select id="bookmarkCount" resultType="int">
 		select count(*) from tbl_bookmark
 		where user_id = #{user_id}
+	</select>
+	
+	<!-- 메이드바이미 -->
+	<select id="listMbm" resultType="MadeByMeVo">
+		select * from(select rownum rnum, a.* from 
+		    (select * from tbl_madebyme
+		    where user_id = #{user_id} and is_del = 'N'
+		    <choose>
+		    	<when test="qCheck == 0">
+		    		order by like_cnt desc, view_cnt desc
+		    	</when>
+		    	<when test="qCheck == 1">
+		    		order by mbm_no desc
+		    	</when>
+		    </choose>
+		    )a)
+		where rnum between #{startRow} and #{endRow}
+	</select>
+	
+	<!-- 메이드바이미 총 갯수 -->
+	<select id="mbmCount" resultType="int">
+		select count(*) from tbl_madebyme
+		where user_id = #{user_id} and is_del = 'N'
 	</select>
 	
 		

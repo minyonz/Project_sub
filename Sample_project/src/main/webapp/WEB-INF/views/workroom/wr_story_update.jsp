@@ -56,7 +56,7 @@
 			<div class="divCompleteImg" style="margin-right:20px; height: 200px;">
 				<label class="storyImg_label" for="story_file" style="border: 1px solid #e1e1e1; width:200px; height:200px; overflow: hidden;">
 					<img id="previewImg_story" class="previewImg_compl" 
-						src="/story_img/displayImage?filePath=${storyVo.st_img}" style="width:100%; height:100%;  cursor: pointer; object-fit: cover;">
+						src="/img/displayImage?filePath=${storyVo.st_img}" style="width:100%; height:100%;  cursor: pointer; object-fit: cover;">
 				</label>
 				<input type="file" class="story_file" id="story_file" accept=".gif, .jpg, .png" 
 				onchange="previewStoryImg(this);" style="display:none;width:0px;height:0px;font-size:0px;">

@@ -23,6 +23,7 @@ import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.FollowVo;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.LikeBookmarkVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 import com.dp.ggomjirak.vo.StoryPagingDto;
@@ -100,6 +101,8 @@ public class WorkroomController {
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 북마크 목록
 		List<LikeBookmarkVo> bmList = workroomService.listBookmark(pagingDto);
+		// 메이드바이미
+		List<MadeByMeVo> mbmList = workroomService.listMbm(pagingDto);
 		
 		int bookmarkCount = workroomService.bookmarkCount(page_id);
 		int hobbyCount = workroomService.hobbyCount(page_id);
@@ -112,9 +115,11 @@ public class WorkroomController {
 		model.addAttribute("storyList", storyList);
 		model.addAttribute("hobbyList", hobbyList);
 		model.addAttribute("bmList", bmList);
+		model.addAttribute("mbmList", mbmList);
 		return "workroom/wr_main";
 	}	
 	
+	// 취미
 	@RequestMapping(value="/hobby/{user_id}", method=RequestMethod.GET)
 	public String wrHobby(@PathVariable("user_id") String page_id, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 //		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
@@ -126,17 +131,37 @@ public class WorkroomController {
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 프로필 카드용
 		profileCommon(page_id, model, session);
-		
 		category(model);
 		model.addAttribute("pagingDto", pagingDto);
 		model.addAttribute("hobbyList", hobbyList);
 		return "workroom/wr_hobby";
 	}
 	
-	@RequestMapping(value="/mbm/{user_id}", method=RequestMethod.GET)
-	public String wrMbm(@PathVariable("user_id") String page_id, Model model, HttpSession session) throws Exception {
+	// 북마크
+	@RequestMapping(value="/bookmark/{user_id}", method=RequestMethod.GET)
+	public String wrBookmark(@PathVariable("user_id")String page_id, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
+		int count = workroomService.bookmarkCount(page_id);
+		pagingDto.setCount(count);
+		pagingDto.setUser_id(page_id);
+		List<LikeBookmarkVo> bmList = workroomService.listBookmark(pagingDto);
 		profileCommon(page_id, model, session);
 		category(model);
+		model.addAttribute("pagingDto", pagingDto);
+		model.addAttribute("bmList", bmList);
+		return "workroom/wr_bookmark";
+	}
+	
+	// 메이드바이미
+	@RequestMapping(value="/mbm/{user_id}", method=RequestMethod.GET)
+	public String wrMbm(@PathVariable("user_id") String page_id, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
+		int count = workroomService.mbmCount(page_id);
+		pagingDto.setCount(count);
+		pagingDto.setUser_id(page_id);
+		List<MadeByMeVo> mbmList = workroomService.listMbm(pagingDto);
+		profileCommon(page_id, model, session);
+		category(model);
+		model.addAttribute("pagingDto", pagingDto);
+		model.addAttribute("mbmList", mbmList);
 		return "workroom/wr_mbm";
 	}
 		
@@ -147,16 +172,17 @@ public class WorkroomController {
 //		String user_id = memberVo.getUser_id();
 		pagingDto.setKeyword(keyword);
 		pagingDto.setUser_id(page_id);
-		// 나중에 삭제(hobbyVo에 hobby_writer = user_id)
-		pagingDto.setUser_id(page_id);
 		int hobbyCount = workroomService.searchHobbyCount(pagingDto);
 		int storyCount = workroomService.searchStoryCount(pagingDto);
-		int count = 0;
-		if (hobbyCount > storyCount) {
-			count = hobbyCount;
-		} else if (storyCount > hobbyCount) {
-			count = storyCount;
+		int mbmCount = workroomService.searchMbmCount(pagingDto);
+		int[] arr = {hobbyCount, storyCount, mbmCount};
+		int count = arr[0];
+		for (int num : arr) {
+			if (num > count) {
+				count = num;
+			}
 		}
+		System.out.println(count);
 		pagingDto.setCount(count);
 		List<HobbyVo> searchHobbyList = workroomService.searchHobby(pagingDto);
 		List<StoryVo> searchStoryList = workroomService.searchStory(pagingDto);

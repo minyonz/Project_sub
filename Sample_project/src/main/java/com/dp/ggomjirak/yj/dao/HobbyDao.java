@@ -67,4 +67,6 @@ public interface HobbyDao {
 	//조회수, 댓글, 좋아요 작업
 	public int updateViewCnt(int hobby_no);
 	public int updateCmtCnt(int hobby_no, int count);
+	
+	
 }

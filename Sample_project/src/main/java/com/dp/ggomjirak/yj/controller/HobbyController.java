@@ -21,6 +21,7 @@ import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.CostVo;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.LevelVo;
+import com.dp.ggomjirak.vo.MaterialSearch;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.TimeVo;
 import com.dp.ggomjirak.yj.service.CateService;
@@ -47,7 +48,7 @@ public class HobbyController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HobbyController.class);
 	
-	@RequestMapping(value="/content/{hobby_no}", method=RequestMethod.GET)
+	@RequestMapping(value="/content/{hobby_no}")
 	public String content(Model model, 
 			@PathVariable("hobby_no") int hobby_no,
 			HttpServletRequest request,
@@ -69,7 +70,7 @@ public class HobbyController {
 		return "hobby/content";
 	}
 	
-	@RequestMapping(value="/update/{hobby_no}", method=RequestMethod.GET)
+	@RequestMapping(value="/update/{hobby_no}")
 	public String update(Model model,
 			@ModelAttribute("loginVo") MemberVo loginVo,
 			@PathVariable("hobby_no") int hobby_no) throws Exception {
@@ -88,7 +89,7 @@ public class HobbyController {
 		return "hobby/modify_form";
 	}
 	
-	@RequestMapping(value="/updateRun", method=RequestMethod.POST)
+	@RequestMapping(value="/updateRun")
 	public String updateRun(@ModelAttribute HobbyVo hobbyVo, 
 			@ModelAttribute("loginVo") MemberVo loginVo, 
 			HttpServletRequest request, RedirectAttributes rttr) throws Exception {
@@ -114,7 +115,7 @@ public class HobbyController {
 		return url;
 	}
 	
-	@RequestMapping(value="/insert", method=RequestMethod.GET)
+	@RequestMapping(value="/insert")
 	public String insert(Model model, @ModelAttribute("loginVo") MemberVo loginVo) throws Exception {
 		List<CateVo> cates = cateService.getCateList();
 		List<TimeVo> times = cateService.getTimeList();
@@ -128,7 +129,7 @@ public class HobbyController {
 		return "hobby/write_form";
 	}
 	
-	@RequestMapping(value="/insertRun", method=RequestMethod.POST)
+	@RequestMapping(value="/insertRun")
 	public String insertRun(HobbyVo hobbyVo, 
 			@ModelAttribute("loginVo") MemberVo loginVo, RedirectAttributes rttr) throws Exception {
 		
@@ -177,7 +178,7 @@ public class HobbyController {
 	}
 	
 	// 좋아요
-	@RequestMapping(value="/like/{hobby_no}", method=RequestMethod.GET)
+	@RequestMapping(value="/like/{hobby_no}")
 	@ResponseBody
 	public String like(@PathVariable("hobby_no") int hobby_no, HttpSession session) throws Exception {
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
@@ -190,7 +191,7 @@ public class HobbyController {
 	}
 	
 	// 북마크
-	@RequestMapping(value="/bookmark/{hobby_no}", method=RequestMethod.GET)
+	@RequestMapping(value="/bookmark/{hobby_no}")
 	@ResponseBody
 	public String bookmark(@PathVariable("hobby_no") int hobby_no, HttpSession session) throws Exception {
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
@@ -202,5 +203,5 @@ public class HobbyController {
 		return "cancel";
 	}
 		
-
+	
 }

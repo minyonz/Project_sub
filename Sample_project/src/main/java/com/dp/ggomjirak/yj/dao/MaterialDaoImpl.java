@@ -7,6 +7,8 @@ import javax.inject.Inject;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.MaterialSearch;
 import com.dp.ggomjirak.vo.MaterialVo;
 
 @Repository
@@ -16,12 +18,6 @@ public class MaterialDaoImpl implements MaterialDao {
 	
 	@Inject
 	SqlSession sqlSession;
-	
-	@Override
-	public void insertMaterial2(List<MaterialVo> materialVos) {
-		sqlSession.insert(NAMESPACE + "insertMaterial2", materialVos);
-//		System.out.println(count + "행 삽입됨");
-	}
 	
 
 	@Override
@@ -41,5 +37,29 @@ public class MaterialDaoImpl implements MaterialDao {
 	public int getMaterialNo(String materialName) {
 		return sqlSession.selectOne(NAMESPACE + "getMaterialNo", materialName);
 	}
+
+//	 __________준비물로 목록조회 ___________
+
+	@Override
+	public List<HobbyVo> selectHMList(MaterialSearch materialSearch) {
+		return sqlSession.selectList(NAMESPACE + "selectHMList", materialSearch);
+	}
+//
+
+
+	@Override
+	public MaterialVo getMaterialVoByNo(int material_no) {
+		return sqlSession.selectOne(NAMESPACE + "getMaterialVoByNo", material_no);
+	}
+
+
+	@Override
+	public int getCountHMList(MaterialSearch materialSearch) {
+		return sqlSession.selectOne(NAMESPACE + "getCountHMList", materialSearch);
+	}
+
+
+
+
 
 }

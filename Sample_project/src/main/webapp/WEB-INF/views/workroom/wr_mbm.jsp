@@ -2,197 +2,111 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp" %>
-<!-- <div class="container-fluid" style="background: #F5F5F5"> -->
-<!-- 	<div class="row"> -->
-<!-- 		<div class="col-md-2"></div> -->
-<!-- 		<div class="col-md-8"> -->
-<!-- 			<div class="row"> -->
-<!-- 				<div class="col-md-3"> -->
-<!-- 					<div class="checkout__order"> -->
-<!-- 						유저 카드 프로필 -->
-<!-- 						<div class="box" style="margin: 12px auto;"> -->
-<!-- 							<a href="/workroom/main"><img class="profile" src="/resources/img/test/littleduck.png" -->
-<!-- 								alt="profile image" style="width: 100%; text-align: center"></a> -->
-<!-- 						</div> -->
-<!-- 						<div class="card-body"> -->
-<!-- 							<h4 class="text-center">user1</h4> -->
-<!-- 							<p class="card-text text-center">안녕하세요</p> -->
-<!-- 							<div style="text-align: center;"> -->
-<!-- 								<div style="display: inline-block;"> -->
-<!-- 									<p style="margin-bottom: -5px">팔로워</p> -->
-<!-- 									<p style="text-align: center">5</p> -->
-<!-- 								</div> -->
-<!-- 								<div style="display: inline-block;"> -->
-<!-- 									<p style="margin: -2px"> -->
-<!-- 										<img src="/resources/img/test/minus.png" height="25px"> -->
-<!-- 									</p> -->
-<!-- 									<p> -->
-<!-- 										<img src="/resources/img/test/minus.png" height="25px"> -->
-<!-- 									</p> -->
-<!-- 								</div> -->
-<!-- 								<div style="display: inline-block;"> -->
-<!-- 									<p style="margin-bottom: -5px">좋아요</p> -->
-<!-- 									<p style="text-align: center">5</p> -->
-<!-- 								</div> -->
-<!-- 							</div> -->
-<!-- 							<div style="text-align: center;"> -->
-<!-- 								<a href="#" class="btn btn-primary">팔로우</a>  -->
-<!-- 								<a href="#" class="btn btn-primary">쪽지</a>  -->
-<!-- 								<a href="#" class="btn btn-primary">글쓰기</a> -->
-<!-- 							</div> -->
-<!-- 						</div> -->
+<script>
+$(document).ready(function() {
+	$(".pagination > a").click(function(e) {
+		e.preventDefault(); // 페이지 이동 막기
+		var page = $(this).attr("href");
+		var frmPaging = $("#frmPaging");
+		frmPaging.find("[name=page]").val(page);
+		frmPaging.submit();
+	});
 
-<!-- 					</div> -->
-<!-- 					카테고리 -->
-<!-- 					<div class="checkout__order"> -->
-<!-- 						<div class="blog__sidebar__item" style="margin-left: 40px;"> -->
-<!-- 							<ul> -->
-<!-- 								<li><a href="#">소개</a></li> -->
-<!-- 								<li><a href="/workroom/wr_hobby">꼼지락</a></li> -->
-<!-- 								<li><a href="#">Story</a></li> -->
-<!-- 								<li><a href="/workroom/wr_mbm">MadeByMe</a></li> -->
-<!-- 								<li><a href="#">피드</a></li> -->
-<!-- 							</ul> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 					<div> -->
-<!-- 						<input type="text" -->
-<!-- 							style="border: 1px solid #E5E8E8; height: 30px;"> -->
-<!-- 						<button type="button" -->
-<!-- 							style="border: none; background: none; padding: 0;"> -->
-<!-- 							<img src="/resources/img/test/loupe.png" height="17px"> -->
-<!-- 						</button> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-				<!-- 간단 카드 보여주기 -->
-				<div class="col-md-9">
-					<div class="checkout__order">
-					<div class="workroom_box row" style="height:39px;">
-							<h4>MadeByMe</h4>
-							<select>
-								<option>인기순</option>
-								<option>최신순</option>
-							</select>
+	$(".qCheck > li > a").click(function(e) {
+		e.preventDefault();
+		var searchType = $(this).text();
+		$("#btnOption").text(searchType);
+		var qCheck = $(this).attr("href");
+		
+		$("#frmPaging > input[name=qCheck]").val(qCheck);
+		$("#frmPaging > input[name=page]").val("1");
+		$("#frmPaging").submit();
+
+	});
+});
+</script>
+<form id="frmPaging" action="/workroom/mbm/${page_id}" method="get">
+<input type="hidden" name="page" value="${pagingDto.page}"/>
+<input type="hidden" name="perPage" value="${pagingDto.perPage}"/>
+<input type="hidden" name="endRow" value="${pagingDto.endRow}"/>
+<input type="hidden" name="qCheck" value="${pagingDto.qCheck}"/>
+</form>
+<div class="col-md-9">
+	<div class="checkout__order">
+		<div class="workroom_box row" style="height: 39px;">
+			<h4>MadeByMe</h4>
+			<ul class="nav nav-pills">
+					<li>
+					<div class="dropdown">
+					  <button id="btnOption" class="form-control btn btn-outline-light green_background dropdown-toggle" 
+					  type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" style="margin-left: 20px;">
+					    <c:choose>
+					    <c:when test="${pagingDto.qCheck == 0}">인기순</c:when>
+					    <c:when test="${pagingDto.qCheck == 1}">최신순</c:when>
+					    </c:choose>
+					  </button>
+					  <ul class="qCheck dropdown-menu" aria-labelledby="dropdownMenuButton1">
+					    <li><a class="dropdown-item" href="0">인기순</a></li>
+					    <li><a class="dropdown-item" href="1">최신순</a></li>
+					  </ul>
+					</div>
+					</li>
+			</ul>
+		</div>
+		<div class="workroom_box">
+			<hr>
+			<div class="container-fluid">
+				<c:forEach var="mbmVo" items="${mbmList}">
+					<div class="row">
+						<div class="col-md-3" style="height:167px;">
+							<c:if test="${mbmVo.mbm_img != null}">
+								<img src="/img/displayImage?filePath=${mbmVo.mbm_img}"
+								style="width: 100%; height: 100%; object-fit:cover;">
+							</c:if>
 						</div>
-							<hr>
-				<div class="row featured__filter">
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix vegetables fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample08.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood oranges">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix oranges fastfood">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample08.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fresh-meat vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample06.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-4 col-sm-6 mix fastfood vegetables">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="/resources/img/test/sample07.jpg">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="featured__item__text">
-                            <h6><a href="#">test</a></h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
+						<div class="col-md-8" style="padding: 0px; margin: auto;">
+							<p style="font-size: 15px; margin: 10px" class="story_detail">
+							<a href="/mbm/detail/${page_id}?hobby_no=${mbmVo.hobby_no}&mbm_no=${mbmVo.mbm_no}" class="oooo">${mbmVo.mbm_content}</a><br> 
+							<a class="fa fa-heart-o" href="/mbm/detail/${page_id}?hobby_no=${mbmVo.hobby_no}&mbm_no=${mbmVo.mbm_no}" 
+								style="margin-right: 5px"> ${mbmVo.like_cnt}</a> 
+							</p>
+						</div>
+					</div>
+					<hr>
+				</c:forEach>
 			</div>
 		</div>
-		<div class="col-md-2"></div>
+		<!-- 페이징 -->
+		<div class="product__pagination justify-content-center pagination" style="display: flex;">
+			<!-- 이전페이지(<-) -->
+			<c:if test="${pagingDto.startPage != 1}">
+				<a href="${pagingDto.startPage - 1}">
+					<i class="fa fa-long-arrow-left"></i>
+				</a>
+			</c:if>
+			<c:forEach var="v" begin="${pagingDto.startPage}" end="${pagingDto.endPage}">
+			<a 
+				<c:choose>
+					<c:when test="${v == pagingDto.page}">
+						class="green_background" style="color: white;"
+				 	</c:when>
+				 	<c:otherwise>
+				 		class="page-item"
+					</c:otherwise>
+				</c:choose>
+				href="${v}">${v}</a> 
+			</c:forEach> 
+			<!-- 다음페이지(->) -->
+			<c:if test="${pagingDto.endPage < pagingDto.totalPage}">
+			<a href="${pagingDto.startPage + 1}">
+				<i class="fa fa-long-arrow-right"></i>
+			</a>
+			</c:if>
+		</div>
 	</div>
 </div>
-
+	<div class="col-md-2"></div>
+	</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <%@ include file="../include/footer.jsp"%>

@@ -40,6 +40,7 @@ public class HobbyVo {
 	private String user_nick;
 	private String user_img;
 	
+	private int rnum;
 	
 	
 	public HobbyVo() {
@@ -271,18 +272,21 @@ public class HobbyVo {
 		this.cmt_cnt = cmt_cnt;
 	}
 
+	public int getRnum() {
+		return rnum;
+	}
+
+	public void setRnum(int rnum) {
+		this.rnum = rnum;
+	}
+
 	@Override
 	public String toString() {
-		return "HobbyVo [hobby_no=" + hobby_no + ", hobby_title=" + hobby_title + ", user_id=" + user_id + ", main_img="
-				+ main_img + ", hobby_video=" + hobby_video + ", hobby_intro=" + hobby_intro + ", l_cate_no="
-				+ l_cate_no + ", m_cate_no=" + m_cate_no + ", level_no=" + level_no + ", cost_no=" + cost_no
-				+ ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt=" + like_cnt + ", cmt_cnt=" + cmt_cnt
-				+ ", is_del=" + is_del + ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", del_date=" + del_date
-				+ ", makeSteps=" + makeSteps + ", hobbyMaterials=" + hobbyMaterials + ", completeImgs=" + completeImgs
-				+ ", l_cate_name=" + l_cate_name + ", m_cate_name=" + m_cate_name + ", level_name=" + level_name
-				+ ", cost_name=" + cost_name + ", time_name=" + time_name + ", user_nick=" + user_nick + ", user_img="
-				+ user_img + "]";
+		return "HobbyVo [hobby_no=" + hobby_no + ", l_cate_no=" + l_cate_no + ", m_cate_no=" + m_cate_no + ", level_no="
+				+ level_no + ", cost_no=" + cost_no + ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt="
+				+ like_cnt + ", cmt_cnt=" + cmt_cnt + ",reg_date=" + reg_date + "]";
 	}
+
 
 
 

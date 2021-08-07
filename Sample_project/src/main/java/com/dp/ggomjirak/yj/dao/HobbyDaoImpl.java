@@ -137,10 +137,9 @@ public class HobbyDaoImpl implements HobbyDao {
 		map.put("count", count);
 		return sqlSession.update(NAMESPACE + "updateCmtCnt", map);
 	}
-
-
-
-
+	
+	
+	
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.dp.ggomjirak.my.service.StoryCommentService;
 import com.dp.ggomjirak.my.service.StoryService;
@@ -21,6 +22,7 @@ import com.dp.ggomjirak.vo.StoryCommentVo;
 import com.dp.ggomjirak.vo.StoryPagingDto;
 import com.dp.ggomjirak.vo.StoryVo;
 
+@SessionAttributes({"loginVo"})
 @Controller
 @RequestMapping(value="/story")
 public class StoryController {
@@ -41,15 +43,6 @@ public class StoryController {
 		int count = storyService.storyCount(storyPagingDto);
 		storyPagingDto.setCount(count);
 		List<StoryVo> list = storyService.StoryList(storyPagingDto);
-//		int likeCheck = 0;
-//		for (int i = 0; i < list.size(); i++) {
-//			StoryVo vo = list.get(i);
-//			int st_no = vo.getSt_no();
-//			likeCheck = storyService.likeCheck(st_no, user_id);
-//			System.out.println(likeCheck);
-//			System.out.println(st_no);
-//			model.addAttribute("likeCheck", likeCheck);
-//		}
 		// 카드프로필 공통 메서드
 		wrController.profileCommon(page_id, model, session);
 		wrController.category(model);
@@ -61,15 +54,16 @@ public class StoryController {
 	// 스토리 상세
 	@RequestMapping(value="/detail/{user_id}", method=RequestMethod.GET)
 	public String wrStoryDetail(@PathVariable("user_id") String page_id, int st_no, Model model, HttpSession session) throws Exception {
-		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-		String user_id = memberVo.getUser_id();
 		StoryVo storyVo = storyService.StorySelect(st_no);
 		List<StoryCommentVo> list = storyCommentService.listComment(st_no);
 		wrController.profileCommon(page_id, model, session);
-		int likeCheck = storyService.likeCheck(st_no, user_id);
-		
 		wrController.category(model);
-		model.addAttribute("likeCheck", likeCheck);
+		if (session.getAttribute("loginVo") != null) {
+			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+			String user_id = memberVo.getUser_id();
+			int likeCheck = storyService.likeCheck(st_no, user_id);
+			model.addAttribute("likeCheck", likeCheck);
+		}
 		model.addAttribute("storyVo", storyVo);
 		model.addAttribute("list", list);
 		return "workroom/wr_story_detail";
@@ -125,9 +119,11 @@ public class StoryController {
 	
 	// 스토리 삭제 실행
 	@RequestMapping(value="/delete_run", method=RequestMethod.GET)
-	public String wrStoryDeleteRun(int st_no) throws Exception {
+	public String wrStoryDeleteRun(int st_no, HttpSession session) throws Exception {
+		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
+		String user_id = memberVo.getUser_id();
 		storyService.StoryDelete(st_no);
-		return "redirect:/story/list";
+		return "redirect:/story/list/" + user_id;
 	}
 	
 	// 스토리 좋아요

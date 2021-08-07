@@ -2,7 +2,6 @@ package com.dp.ggomjirak.my.controller;
 
 import java.io.FileInputStream;
 import javax.annotation.Resource;
-import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -11,20 +10,16 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.dp.ggomjirak.vo.CompleteImgVo;
-import com.dp.ggomjirak.vo.MakeStepVo;
-import com.dp.ggomjirak.yj.service.HobbyService;
 import com.dp.ggomjirak.yj.util.MyFileUploadUtil;
 
 @RestController
-@RequestMapping(value="/story_img")
+@RequestMapping(value="/img")
 public class ImageController {
 	
 	@Resource(name="rootPath")
@@ -36,16 +31,13 @@ public class ImageController {
 	private static final String STEP_IMG_UPLOAD_PATH = "test/make_step";
 	private static final String COMPLETE_IMG_UPLOAD_PATH = "test/complete_img";
 	private static final String STORY_IMG_UPLOAD_PATH = "story/story_img";
-	
-	@Inject
-	private HobbyService hobbyService;
+	private static final String MBM_IMG_UPLOAD_PATH = "madebyme/mbm_img";
 	
 	//이미지 출력
 	@RequestMapping(value="/displayImage", method=RequestMethod.GET)
 	public ResponseEntity<byte[]> displayImage(String filePath) throws Exception {
 		String fullFilePath = rootPath + "/" + filePath;
 		FileInputStream fis = new FileInputStream(fullFilePath);
-//		logger.info("이미지출력시작", fullFilePath);
 		HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.IMAGE_JPEG);
         ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(
@@ -83,6 +75,10 @@ public class ImageController {
 			filePath = MyFileUploadUtil.uploadImage(rootPath, STORY_IMG_UPLOAD_PATH, 
 					orgFileName, file.getBytes());
 			break;
+		case "mbmImg":
+			filePath = MyFileUploadUtil.uploadImage(rootPath, MBM_IMG_UPLOAD_PATH, 
+					orgFileName, file.getBytes());
+			break;
 		}
 		return filePath;
 	}
@@ -94,20 +90,6 @@ public class ImageController {
 			return "success";
 		};
 		return "fail";
-	}
-	
-	//*수정작업 (db에 있는 사진인지 판단하는 부분)
-	@RequestMapping(value="/selectCompleteImgName", method=RequestMethod.POST, produces="application/text;charset=utf-8") 
-	@ResponseBody
-	public String selectCompleteImgName(@RequestBody CompleteImgVo completeImgVo){
-		System.out.println("완성사진: " + completeImgVo);
-		return hobbyService.selectCompleteImgName(completeImgVo);
-	}
-	
-	@RequestMapping(value="/selectMainImg", method=RequestMethod.GET, produces="application/text;charset=utf-8") 
-	@ResponseBody
-	public String selectMainImg(int hobby_no){
-		return hobbyService.selectMainImg(hobby_no);
 	}
 	
 

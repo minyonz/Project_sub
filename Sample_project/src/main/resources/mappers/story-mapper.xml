@@ -47,7 +47,7 @@
 	<!-- 글조회 -->
 	<select id="selectStory" resultType="StoryVo">
 		select * from tbl_story
-		where st_no = #{st_no}
+		where st_no = #{st_no} and is_del = 'N'
 	</select>
 	
 	<!-- 댓글 카운트 증가 -->
