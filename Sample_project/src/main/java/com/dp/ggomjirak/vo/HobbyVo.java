@@ -21,6 +21,7 @@ public class HobbyVo {
 	private int view_cnt;
 	private int like_cnt;
 	private int cmt_cnt;
+	private int mbm_cnt;
 	private String is_del;
 	private Timestamp reg_date;
 	private Timestamp mod_date;
@@ -30,6 +31,7 @@ public class HobbyVo {
 	private List<MakeStepVo> makeSteps;
 	private List<HobbyMaterialVo> hobbyMaterials;
 	private List<CompleteImgVo> completeImgs;
+	private List<MadeByMeVo> madeByMes;
 	
 	// not db column
 	private String l_cate_name;
@@ -39,6 +41,8 @@ public class HobbyVo {
 	private String time_name;
 	private String user_nick;
 	private String user_img;
+	private String like_hobby; // 좋아요: 로그인한 사용자가 좋아요 했으면 값있고 없으면 null (jstl에서는 empty)
+	private String bm_hobby; // 북마크 : 로그인한 사용자가 좋아요 했으면 값있고 없으면 null (jstl에서는 empty)
 	
 	private int rnum;
 	
@@ -48,264 +52,349 @@ public class HobbyVo {
 		// TODO Auto-generated constructor stub
 	}
 
+
 	public int getHobby_no() {
 		return hobby_no;
 	}
+
 
 	public void setHobby_no(int hobby_no) {
 		this.hobby_no = hobby_no;
 	}
 
+
 	public String getHobby_title() {
 		return hobby_title;
 	}
+
 
 	public void setHobby_title(String hobby_title) {
 		this.hobby_title = hobby_title;
 	}
 
+
 	public String getUser_id() {
 		return user_id;
 	}
+
 
 	public void setUser_id(String user_id) {
 		this.user_id = user_id;
 	}
 
+
 	public String getMain_img() {
 		return main_img;
 	}
+
 
 	public void setMain_img(String main_img) {
 		this.main_img = main_img;
 	}
 
+
 	public String getHobby_video() {
 		return hobby_video;
 	}
+
 
 	public void setHobby_video(String hobby_video) {
 		this.hobby_video = hobby_video;
 	}
 
+
 	public String getHobby_intro() {
 		return hobby_intro;
 	}
+
 
 	public void setHobby_intro(String hobby_intro) {
 		this.hobby_intro = hobby_intro;
 	}
 
+
 	public int getL_cate_no() {
 		return l_cate_no;
 	}
+
 
 	public void setL_cate_no(int l_cate_no) {
 		this.l_cate_no = l_cate_no;
 	}
 
+
 	public int getM_cate_no() {
 		return m_cate_no;
 	}
+
 
 	public void setM_cate_no(int m_cate_no) {
 		this.m_cate_no = m_cate_no;
 	}
 
+
 	public int getLevel_no() {
 		return level_no;
 	}
+
 
 	public void setLevel_no(int level_no) {
 		this.level_no = level_no;
 	}
 
+
 	public int getCost_no() {
 		return cost_no;
 	}
+
 
 	public void setCost_no(int cost_no) {
 		this.cost_no = cost_no;
 	}
 
+
 	public int getTime_no() {
 		return time_no;
 	}
+
 
 	public void setTime_no(int time_no) {
 		this.time_no = time_no;
 	}
 
+
 	public int getView_cnt() {
 		return view_cnt;
 	}
+
 
 	public void setView_cnt(int view_cnt) {
 		this.view_cnt = view_cnt;
 	}
 
+
 	public int getLike_cnt() {
 		return like_cnt;
 	}
+
 
 	public void setLike_cnt(int like_cnt) {
 		this.like_cnt = like_cnt;
 	}
 
-	public String getIs_del() {
-		return is_del;
-	}
-
-	public void setIs_del(String is_del) {
-		this.is_del = is_del;
-	}
-
-	public Timestamp getReg_date() {
-		return reg_date;
-	}
-
-	public void setReg_date(Timestamp reg_date) {
-		this.reg_date = reg_date;
-	}
-
-	public Timestamp getMod_date() {
-		return mod_date;
-	}
-
-	public void setMod_date(Timestamp mod_date) {
-		this.mod_date = mod_date;
-	}
-
-	public Timestamp getDel_date() {
-		return del_date;
-	}
-
-	public void setDel_date(Timestamp del_date) {
-		this.del_date = del_date;
-	}
-
-	public List<MakeStepVo> getMakeSteps() {
-		return makeSteps;
-	}
-
-	public void setMakeSteps(List<MakeStepVo> makeSteps) {
-		this.makeSteps = makeSteps;
-	}
-
-	public List<HobbyMaterialVo> getHobbyMaterials() {
-		return hobbyMaterials;
-	}
-
-	public void setHobbyMaterials(List<HobbyMaterialVo> hobbyMaterials) {
-		this.hobbyMaterials = hobbyMaterials;
-	}
-
-	public List<CompleteImgVo> getCompleteImgs() {
-		return completeImgs;
-	}
-
-	public void setCompleteImgs(List<CompleteImgVo> completeImgs) {
-		this.completeImgs = completeImgs;
-	}
-
-	public String getL_cate_name() {
-		return l_cate_name;
-	}
-
-	public void setL_cate_name(String l_cate_name) {
-		this.l_cate_name = l_cate_name;
-	}
-
-	public String getM_cate_name() {
-		return m_cate_name;
-	}
-
-	public void setM_cate_name(String m_cate_name) {
-		this.m_cate_name = m_cate_name;
-	}
-
-	public String getLevel_name() {
-		return level_name;
-	}
-
-	public void setLevel_name(String level_name) {
-		this.level_name = level_name;
-	}
-
-	public String getCost_name() {
-		return cost_name;
-	}
-
-	public void setCost_name(String cost_name) {
-		this.cost_name = cost_name;
-	}
-
-	public String getTime_name() {
-		return time_name;
-	}
-
-	public void setTime_name(String time_name) {
-		this.time_name = time_name;
-	}
-
-	public String getUser_nick() {
-		return user_nick;
-	}
-
-	public void setUser_nick(String user_nick) {
-		this.user_nick = user_nick;
-	}
-
-	public String getUser_img() {
-		return user_img;
-	}
-
-	public void setUser_img(String user_img) {
-		this.user_img = user_img;
-	}
 
 	public int getCmt_cnt() {
 		return cmt_cnt;
 	}
 
+
 	public void setCmt_cnt(int cmt_cnt) {
 		this.cmt_cnt = cmt_cnt;
 	}
+
+
+	public int getMbm_cnt() {
+		return mbm_cnt;
+	}
+
+
+	public void setMbm_cnt(int mbm_cnt) {
+		this.mbm_cnt = mbm_cnt;
+	}
+
+
+	public String getIs_del() {
+		return is_del;
+	}
+
+
+	public void setIs_del(String is_del) {
+		this.is_del = is_del;
+	}
+
+
+	public Timestamp getReg_date() {
+		return reg_date;
+	}
+
+
+	public void setReg_date(Timestamp reg_date) {
+		this.reg_date = reg_date;
+	}
+
+
+	public Timestamp getMod_date() {
+		return mod_date;
+	}
+
+
+	public void setMod_date(Timestamp mod_date) {
+		this.mod_date = mod_date;
+	}
+
+
+	public Timestamp getDel_date() {
+		return del_date;
+	}
+
+
+	public void setDel_date(Timestamp del_date) {
+		this.del_date = del_date;
+	}
+
+
+	public List<MakeStepVo> getMakeSteps() {
+		return makeSteps;
+	}
+
+
+	public void setMakeSteps(List<MakeStepVo> makeSteps) {
+		this.makeSteps = makeSteps;
+	}
+
+
+	public List<HobbyMaterialVo> getHobbyMaterials() {
+		return hobbyMaterials;
+	}
+
+
+	public void setHobbyMaterials(List<HobbyMaterialVo> hobbyMaterials) {
+		this.hobbyMaterials = hobbyMaterials;
+	}
+
+
+	public List<CompleteImgVo> getCompleteImgs() {
+		return completeImgs;
+	}
+
+
+	public void setCompleteImgs(List<CompleteImgVo> completeImgs) {
+		this.completeImgs = completeImgs;
+	}
+
+
+	public List<MadeByMeVo> getMadeByMes() {
+		return madeByMes;
+	}
+
+
+	public void setMadeByMes(List<MadeByMeVo> madeByMes) {
+		this.madeByMes = madeByMes;
+	}
+
+
+	public String getL_cate_name() {
+		return l_cate_name;
+	}
+
+
+	public void setL_cate_name(String l_cate_name) {
+		this.l_cate_name = l_cate_name;
+	}
+
+
+	public String getM_cate_name() {
+		return m_cate_name;
+	}
+
+
+	public void setM_cate_name(String m_cate_name) {
+		this.m_cate_name = m_cate_name;
+	}
+
+
+	public String getLevel_name() {
+		return level_name;
+	}
+
+
+	public void setLevel_name(String level_name) {
+		this.level_name = level_name;
+	}
+
+
+	public String getCost_name() {
+		return cost_name;
+	}
+
+
+	public void setCost_name(String cost_name) {
+		this.cost_name = cost_name;
+	}
+
+
+	public String getTime_name() {
+		return time_name;
+	}
+
+
+	public void setTime_name(String time_name) {
+		this.time_name = time_name;
+	}
+
+
+	public String getUser_nick() {
+		return user_nick;
+	}
+
+
+	public void setUser_nick(String user_nick) {
+		this.user_nick = user_nick;
+	}
+
+
+	public String getUser_img() {
+		return user_img;
+	}
+
+
+	public void setUser_img(String user_img) {
+		this.user_img = user_img;
+	}
+
+
+	public String getLike_hobby() {
+		return like_hobby;
+	}
+
+
+	public void setLike_hobby(String like_hobby) {
+		this.like_hobby = like_hobby;
+	}
+
+
+	public String getBm_hobby() {
+		return bm_hobby;
+	}
+
+
+	public void setBm_hobby(String bm_hobby) {
+		this.bm_hobby = bm_hobby;
+	}
+
 
 	public int getRnum() {
 		return rnum;
 	}
 
+
 	public void setRnum(int rnum) {
 		this.rnum = rnum;
 	}
 
+
 	@Override
 	public String toString() {
-		return "HobbyVo [hobby_no=" + hobby_no + ", l_cate_no=" + l_cate_no + ", m_cate_no=" + m_cate_no + ", level_no="
-				+ level_no + ", cost_no=" + cost_no + ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt="
-				+ like_cnt + ", cmt_cnt=" + cmt_cnt + ",reg_date=" + reg_date + "]";
+		return "HobbyVo [hobby_no=" + hobby_no + ", hobby_title=" + hobby_title + ", user_id=" + user_id + ", main_img="
+				+ main_img + ", hobby_video=" + hobby_video + ", hobby_intro=" + hobby_intro + ", l_cate_no="
+				+ l_cate_no + ", m_cate_no=" + m_cate_no + ", level_no=" + level_no + ", cost_no=" + cost_no
+				+ ", time_no=" + time_no + ", view_cnt=" + view_cnt + ", like_cnt=" + like_cnt + ", cmt_cnt=" + cmt_cnt
+				+ ", mbm_cnt=" + mbm_cnt + ", is_del=" + is_del + ", reg_date=" + reg_date + ", mod_date=" + mod_date
+				+ ", del_date=" + del_date + ", makeSteps=" + makeSteps + ", hobbyMaterials=" + hobbyMaterials
+				+ ", completeImgs=" + completeImgs + ", madeByMes=" + madeByMes + ", l_cate_name=" + l_cate_name
+				+ ", m_cate_name=" + m_cate_name + ", level_name=" + level_name + ", cost_name=" + cost_name
+				+ ", time_name=" + time_name + ", user_nick=" + user_nick + ", user_img=" + user_img + ", like_hobby="
+				+ like_hobby + ", bm_hobby=" + bm_hobby + ", rnum=" + rnum + "]";
 	}
 
-
-
-
-
-
-
-	
-
-
-
-
-
-
-
-
-
-
-	
-
-	
-	
 }

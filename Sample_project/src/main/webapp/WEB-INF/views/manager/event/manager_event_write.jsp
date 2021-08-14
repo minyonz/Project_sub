@@ -35,7 +35,7 @@ $(document).ready(function() {
 	<!-- Page Heading -->
 	<h1 class="h3 mb-2 text-gray-800">이벤트 글 작성</h1>
 	<form role="form" id="frmEventWrite" action="/event/managerEventWriteRun" method="post">
-	<input type="text" id="user_id" name="user_id" value="${lo_user_id}">
+	<input type="hidden" id="user_id" name="user_id" value="${lo_user_id}">
 		<!-- DataTales Example -->
 	<div class="card shadow mb-4">
 		<div
@@ -68,7 +68,7 @@ $(document).ready(function() {
 				<div class="divMainImg card-img rounded" style="position: relative;">
 						<label for="mainImg_file" id="mainImg_label" style="overflow: hidden; width: 100%; height: 600px; ">
 							<img class="card-img rounded" id="previewImg_main"
-							src="${contextPath}/resources/images/main_img_btn.jpg"
+							src="/resources/manager/img/photo.png"
 							style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid #e1e1e1;">
 						</label>
 						<input type="file" class="mainImg_file" name="mainImg_file"
@@ -163,7 +163,7 @@ function delMainImg() {
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#e_img").val("");
-			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
+			$("#previewImg_main").attr("src", "/resources/manager/img/photo.png");
 			$("#btnDelMainImg").css("display", "none");
 		}
 	});

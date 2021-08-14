@@ -3,7 +3,14 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
-<!-- 간단 카드 보여주기 -->
+<style>
+.oooo {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 4;
+	-webkit-box-orient: vertical;
+}
+</style>
 <script>	
 $(document).ready(function() {
 	$("#pagination > a").click(function(e) {
@@ -36,16 +43,11 @@ $(document).ready(function() {
 			<div class="col-lg-3 col-md-4 col-sm-6 mix oranges fresh-meat">
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg"
-						data-setbg="/displayImage?filePath=${hobbyVo.user_img}">
-						<ul class="featured__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
+						data-setbg="/displayImage?filePath=${hobbyVo.main_img}">
 					</div>
 					<div class="featured__item__text">
 						<h6>
-							<a href="#">${hobbyVo.hobby_title}</a>
+							<a href="/hobby/content/${hobbyVo.hobby_no}">${hobbyVo.hobby_title}</a>
 						</h6>
 					</div>
 				</div>
@@ -54,29 +56,63 @@ $(document).ready(function() {
 		</div>
 	</div>
 	<!-- 스토리 -->
-	<div class="checkout__order" id="story">
-		<div class="workroom_box row" style="height: 39px;">
+		<div class="checkout__order" id="story">
+		<div class="workroom_box row" style="height: 39px; display:flex;">
 			<h4>Story</h4>
 		</div>
-		<hr>
-		<div class="container-fluid">
-			<c:forEach var="storyVo" items="${searchStoryList}">
-				<div class="row">
-					<div class="col-md-10" style="padding: 0px; margin: auto;">
-						<p style="font-size: 14px; margin: 10px" class="story_detail">
-							<a href="/story/detail?st_no=${storyVo.st_no}">${storyVo.st_content}</a><br> 
-							<a class="fa fa-heart-o" href="#" style="margin-right: 5px"> ${storyVo.st_like_count}</a>
-							<a class="fa fa-comment-o" href="/story/detail?st_no=${storyVo.st_no}"> ${storyVo.st_c_count}</a>
-						</p>
+		<div class="workroom_box">
+			<hr>
+			<div class="container-fluid">
+				<c:forEach begin="0" end="2" var="storyVo" items="${searchStoryList}">
+					<div class="row">
+						<div class="col-md-10" style="padding: 0px; margin: auto;">
+							<p style="font-size: 15px; margin: 10px" class="story_detail">
+								<a href="/story/detail/${page_id}?st_no=${storyVo.st_no}" class="oooo">${storyVo.st_content}</a><br> 
+								<a class="fa fa-heart-o" href="/story/detail/${page_id}?st_no=${storyVo.st_no}" 
+									style="margin-right: 5px"> ${storyVo.st_like_count}</a> 
+								<a class="fa fa-comment-o" href="/story/detail/${page_id}?st_no=${storyVo.st_no}">
+									${storyVo.st_c_count}</a>
+							</p>
+						</div>
+						<div class="col-md-2" style="height:120px;">
+							<c:if test="${storyVo.st_img != null}">
+								<img src="/img/displayImage?filePath=${storyVo.st_img}" 
+								style="width: 100%; height: 100%; object-fit:cover;">
+							</c:if>
+						</div>
 					</div>
-					<div class="col-md-2" style="padding: 0px;">
-						<c:if test="${storyVo.st_img != null}">
-							<img src="/displayImage?filePath=${storyVo.st_img}" width="100px">
-						</c:if>
+					<hr>
+				</c:forEach>
+			</div>
+		</div>
+	</div>
+	<!-- 메이드바이미 -->
+	<div class="checkout__order" id="mbm">
+		<div class="workroom_box row" style="height: 39px; display:flex;">
+			<h4>MadeByMe</h4>
+		</div>
+		<div class="workroom_box">
+			<hr>
+			<div class="container-fluid">
+				<c:forEach begin="0" end="2" var="mbmVo" items="${searchMbmList}">
+					<div class="row">
+						<div class="col-md-2" style="height:120px;">
+							<c:if test="${mbmVo.mbm_img != null}">
+								<img src="/img/displayImage?filePath=${mbmVo.mbm_img}" 
+								style="width: 100%; height: 100%; object-fit:cover;">
+							</c:if>
+						</div>
+						<div class="col-md-10" style="padding: 0px; margin: auto;">
+							<p style="font-size: 15px; margin: 10px" class="story_detail">
+								<a href="/mbm/detail/${page_id}?hobby_no=${mbmVo.hobby_no}&mbm_no=${mbmVo.mbm_no}" class="oooo">${mbmVo.mbm_content}</a><br> 
+								<a class="fa fa-heart-o" href="/mbm/detail/${page_id}?hobby_no=${mbmVo.hobby_no}&mbm_no=${mbmVo.mbm_no}" 
+									style="margin-right: 5px"> ${mbmVo.like_cnt}</a> 
+							</p>
+						</div>
 					</div>
-				</div>
-				<hr>
-			</c:forEach>
+					<hr>
+				</c:forEach>
+			</div>
 		</div>
 	</div>
 	<!-- 페이징 -->
@@ -108,6 +144,8 @@ $(document).ready(function() {
 		</div>
 		<!-- 페이징 끝 -->
 	<div class="col-md-2"></div>
+</div>
+</div>
 </div>
 
 <%@ include file="../include/footer.jsp"%>

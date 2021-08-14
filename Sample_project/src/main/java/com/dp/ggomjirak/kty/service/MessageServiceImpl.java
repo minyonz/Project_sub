@@ -73,4 +73,11 @@ public class MessageServiceImpl implements MessageService {
 		return result;
 	}
 
+	@Override
+	public List<MessageVo> messageListSend(String msg_sender) {
+		List<MessageVo> list = 
+				messageDao.messageListSend(msg_sender);
+		return list;
+	}
+
 }

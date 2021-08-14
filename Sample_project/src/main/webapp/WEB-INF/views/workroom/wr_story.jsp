@@ -114,6 +114,6 @@ $(document).ready(function() {
 </div>
 <div class="col-md-2"></div>
 </div>
-</div>
+
 
 <%@ include file="../include/footer.jsp"%>

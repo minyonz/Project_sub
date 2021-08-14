@@ -33,18 +33,16 @@
 }
 </style>
 <script>
-// $(document).ready(function() {	
-// 	$("#frmStory").submit(function() {
-// 		var st_content = $("#st_content").val();
-// 		if (st_content.trim() == "" || st_content == null) {
-// 			console.log("내용입력");
-// 			$("#msg").text("스토리 내용을 입력해 주세요.");
-// 			$("#st_content").focus();
-// 			return false;
-// 		}
-// 		$(this).submit();
-// 	});
-// });
+$(document).ready(function() {	
+	$("#btnCancel").click(function() {
+		var result = confirm("작성을 취소하시겠습니까?");
+		if(result){
+			location.href = "/hobby/content/${hobbyVo.hobby_no}";
+		}else{
+		    return false;
+		}
+	});
+});
 </script>
 <!-- 스토리 수정 폼 -->
 <%@ include file="../include/workroomSide.jsp"%>
@@ -69,10 +67,12 @@
 		</div>
 		<br>
 			<div class="col-lg-12 text-center">
+				<span id="msg"></span>
 				<input type="hidden" name="st_no" value="${storyVo.st_no}" />
 				<textarea placeholder="스토리를 작성해 주세요." name="st_content"
 					id="st_content">${storyVo.st_content}</textarea>
-				<button type="button" onclick="doSubmit();" class="site-btn">작성완료</button>
+				<button type="button" onclick="doSubmit();" class="site-btn">등록</button>
+				<a href="/story/list/${page_id}" class="btn-cancle" id="btnCancel">취소</a>
 			</div>
 		</form>
 	</div>
@@ -129,7 +129,7 @@ function previewStoryImg(targetObj) {
 	// sort의 storyImg(Controller의 case문)
 	formData.append("sort", "storyImg");
 	
-	var url = "/story_img/uploadImage";
+	var url = "/img/uploadImage";
 	
 	$.ajax({
 		"processData" : false,
@@ -166,11 +166,11 @@ function delStoryImg() {
 	console.log("삭제")
 	var filePath = $("#st_img").val();
 	console.log(filePath);
-	var url = "/story_img/deleteFile?filePath=" + filePath;
+	var url = "/img/deleteFile?filePath=" + filePath;
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#st_img").val("");
-			$("#previewImg_story").attr("src", "${contextPath}/resources/images/preview_img.jpg");
+			$("#previewImg_story").attr("src", "${contextPath}/resources/images/preview_img.png");
 			$("#btnDelStoryImg").css("display", "none");
 		}
 	})
@@ -179,11 +179,10 @@ function delStoryImg() {
 //유효성 검사
 function validate() {
 	// 내용
-	var hobby_title = $("#hobby_title").val();
 	var st_content = $("#st_content").val();
 	if (typeof st_content == "undefined" || st_content.trim() == "" || st_content ==  null) {
 		$("#msg").text("스토리 내용을 입력해 주세요.");
-		$("#hobby_title").focus();
+		$("#msg").attr("style", "color:#FF5454; font-weight: bold");
 		$("#st_content").focus();
 		return false;
 	}

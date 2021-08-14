@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.EventVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 
@@ -50,6 +51,12 @@ public class MainDaoImpl implements MainDao {
 	@Override
 	public List<HobbyVo> getMonthHobbyList() {
 		List<HobbyVo> list = sqlSession.selectList(NAMESPACE + "getMonthHobbyList");
+		return list;
+	}
+
+	@Override
+	public List<MadeByMeVo> getBestMadeList() {
+		List<MadeByMeVo> list = sqlSession.selectList(NAMESPACE + "getBestMadeList");
 		return list;
 	}
 
@@ -96,6 +103,12 @@ public class MainDaoImpl implements MainDao {
 	}
 
 	@Override
+	public List<MadeByMeVo> searchMade(PagingDto pagingDto) {
+		List<MadeByMeVo> list = sqlSession.selectList(NAMESPACE + "searchMade", pagingDto);
+		return list;
+	}
+
+	@Override
 	public int getCountHobbySearch(PagingDto pagingDto) {
 		int count = sqlSession.selectOne(NAMESPACE + "getCountHobbySearch", pagingDto);
 		return count;
@@ -104,6 +117,12 @@ public class MainDaoImpl implements MainDao {
 	@Override
 	public int getCountMemberSearch(PagingDto pagingDto) {
 		int count = sqlSession.selectOne(NAMESPACE + "getCountMemberSearch", pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountMadeSearch(PagingDto pagingDto) {
+		int count = sqlSession.selectOne(NAMESPACE + "getCountMadeSearch", pagingDto);
 		return count;
 	}
 
@@ -143,6 +162,20 @@ public class MainDaoImpl implements MainDao {
 		int count = sqlSession.selectOne(NAMESPACE + "getCountHobbyCate", pagingDto);
 		return count;
 	}
+
+	@Override
+	public void insertLoginTime(String user_id) {
+		sqlSession.insert(NAMESPACE + "insertLoginTime", user_id);
+		
+	}
+
+	@Override
+	public void insertMemberActiv(String user_id) {
+		sqlSession.insert(NAMESPACE + "insertMemberActiv", user_id);
+		
+	}
+
+
 
 
 

@@ -14,6 +14,7 @@
 			(select rownum rnum, a.*, c.user_nick from
 				(select * from tbl_hobby where user_id != #{user_id}
 				and user_id not in(select user_id from tbl_manager_member)
+				and is_del = 'N'
 				order by like_cnt desc)a
 			left join tbl_memberdetail c on a.user_id = c.user_id
 			where (select cate_no1 from tbl_memberdetail where user_id = #{user_id}) = a.m_cate_no
@@ -24,13 +25,14 @@
 	
 	<!-- 인기취미 리스트 -->
 	<select id="getPopularHobbyList" resultType="HobbyVo">
-		select c.user_nick, b.* from
-		    (select rownum rnum, a.* from
+		select * from
+        (select rownum rnum, c.user_nick, b.* from
+		    (select a.* from
 		        (select * from tbl_hobby
 		        where is_del = 'N'
 		        and user_id not in(select user_id from tbl_manager_member)
 		        order by view_cnt desc, like_cnt desc) a) b
-		        left join tbl_memberdetail c on b.user_id = c.user_id
+		        left join tbl_memberdetail c on b.user_id = c.user_id)
 		where rnum between 1 and 10
 	</select>
 	
@@ -44,6 +46,19 @@
 		        and to_char(reg_date, 'mm') = to_char(sysdate, 'mm')
 		        order by view_cnt desc, like_cnt desc) a) b
 		        left join tbl_memberdetail c on b.user_id = c.user_id
+		where rnum between 1 and 10
+	</select>
+	
+	<!-- 베스트 메이드 -->
+	<select id="getBestMadeList" resultType="MadeByMeVo">
+		select * from
+        (select rownum rnum, c.user_nick, b.* from
+		    (select a.* from
+		        (select * from tbl_madebyme
+		        where is_del = 'N'
+		        and user_id not in(select user_id from tbl_manager_member)
+		        order by view_cnt desc, like_cnt desc) a) b
+		        left join tbl_memberdetail c on b.user_id = c.user_id)
 		where rnum between 1 and 10
 	</select>
 	
@@ -138,7 +153,8 @@
 	<select id="searchHobbyCate" resultType="HobbyVo">
 		select * from
 		(select rownum rnum, a.*, c.user_nick from
-		        (select * from tbl_hobby where user_id in 
+		        (select * from tbl_hobby
+		        where is_del = 'N' and user_id in 
 		        (select user_id from tbl_memberinfo where is_del = 'N'
 		        and user_id not in(select user_id from tbl_manager_member)))a
 		        left join tbl_memberdetail c on a.user_id = c.user_id
@@ -168,7 +184,8 @@
 	<!-- 취미 카테고리 검색 수 -->
 	<select id="getCountHobbyCate" resultType="int">
 		select count (*) from
-			(select * from tbl_hobby where user_id in 
+			(select * from tbl_hobby
+		        where is_del = 'N' and user_id in 
 		        (select user_id from tbl_memberinfo where is_del = 'N'
 		        and user_id not in(select user_id from tbl_manager_member)))a
                 left join tbl_memberdetail c on a.user_id = c.user_id
@@ -198,7 +215,8 @@
 	<select id="searchHobby" resultType="HobbyVo">
 		select * from
 		(select rownum rnum, a.*, c.user_nick from
-		        (select * from tbl_hobby where user_id in 
+		        (select * from tbl_hobby 
+                where is_del = 'N' and user_id in 
 		        (select user_id from tbl_memberinfo where is_del = 'N'
 		        and user_id not in(select user_id from tbl_manager_member)))a
 		        left join tbl_memberdetail c on a.user_id = c.user_id
@@ -211,7 +229,8 @@
 	<!-- 검색 취미 갯수 -->
 	<select id="getCountHobbySearch" resultType="int">
 		select count (*) from
-			(select * from tbl_hobby where user_id in 
+			(select * from tbl_hobby 
+                where is_del = 'N' and user_id in
 		        (select user_id from tbl_memberinfo where is_del = 'N'
 		        and user_id not in(select user_id from tbl_manager_member)))a
                 left join tbl_memberdetail c on a.user_id = c.user_id
@@ -222,7 +241,7 @@
 	<!-- 검색(작가) -->
 	<select id="searchMember" resultType="MemberVo">
 		select * from
-		(select rownum rnum, a.user_nick, a.user_grade, a.user_id, c.name from
+		(select rownum rnum, a.*, c.name from
 		        (select * from tbl_memberdetail where user_id in 
 		        	(select user_id from tbl_memberinfo where is_del = 'N')) a 
 		         left join tbl_membergrade c on a.user_grade = c.cd
@@ -242,7 +261,44 @@
 		         and a.user_id not in(select user_id from tbl_manager_member)
 	</select>
 	
+	<!-- 검색 메이드 -->
+	<select id="searchMade" resultType="MadeByMeVo">
+		select * from
+        (select rownum rnum, c.user_nick, b.* from
+		    ((select a.* from
+		        (select * from tbl_madebyme
+		        where is_del = 'N'
+		        and user_id not in(select user_id from tbl_manager_member)
+		        order by view_cnt desc, like_cnt desc) a) b
+		        left join tbl_memberdetail c on b.user_id = c.user_id)
+                where c.user_nick like '%' || #{keyword} || '%')
+		where rnum between #{startRow} and #{endRow}
+	</select>
 	
+	<!-- 검색 메이드 수 -->
+	<select id="getCountMadeSearch" resultType="int">
+		select count(*) from
+        (select rownum rnum, c.user_nick, b.* from
+		    ((select a.* from
+		        (select * from tbl_madebyme
+		        where is_del = 'N'
+		        and user_id not in(select user_id from tbl_manager_member)
+		        order by view_cnt desc, like_cnt desc) a) b
+		        left join tbl_memberdetail c on b.user_id = c.user_id)
+                where c.user_nick like '%' || #{keyword} || '%')
+	</select>
+	
+	<!-- 로그인 시간 저장 -->
+	<insert id="insertLoginTime">
+		insert into tbl_login_time
+        values(#{user_id}, sysdate)
+	</insert>
+	
+		<!-- 로그인시 활동기록 데이터 생김 -->
+	<insert id="insertMemberActiv">
+		insert into tbl_member_activ
+		values(#{user_id}, 0, 0, 0, 0)
+	</insert>
 
 
 </mapper>

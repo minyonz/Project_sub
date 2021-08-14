@@ -26,14 +26,12 @@
 				      <c:if test="${eventVo.e_img != null}">
 				      	<img src="/eventImg/displayImage?filePath=${eventVo.e_img}"
 				      		class="rounded mx-auto d-block" alt="EventImage"
-							width="1200px" height="600px">
+							width="1200px" height="500px">
 				      </c:if>
 				      </td>
 				    </tr>
 				    <tr>
-				    	<td colspan="2">
-				    		${eventVo.e_content}
-				    	</td>
+				    	<td colspan="2" style="white-space:pre;">${eventVo.e_content}</td>
 				    </tr>
 				  </tbody>
 				</table>

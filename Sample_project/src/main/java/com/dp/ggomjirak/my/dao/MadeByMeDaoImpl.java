@@ -84,11 +84,9 @@ public class MadeByMeDaoImpl implements MadeByMeDao {
 	@Override
 	public int likeCheck(int mbm_no, String user_id) {
 		Map<String, Object> map = new HashMap<>();
-		System.out.println("dao:" + mbm_no);
 		map.put("mbm_no", mbm_no);
 		map.put("user_id", user_id);
 		int count = sqlSession.selectOne(NAMESPACE + "likeCheck", map);
-		System.out.println("daoCount:" + count);
 		return count;
 	}
 

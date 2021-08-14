@@ -95,6 +95,29 @@
 		where user_id = #{user_id}
 	</select>
 	
+	<!-- 회원 최신 로그인 날짜 조회 -->
+	<select id="selectLoginTime" resultType="LoginTimeVo">
+		select * from
+			(select rownum rnum, b.* from
+			(select  a.* from tbl_login_time a
+			where a.user_id = #{user_id}
+			order by login_time desc) b)
+		where rnum = 1
+	</select>
+	
+	<!-- 회원 최신 로그인 날 횟수 조회 -->
+	<select id="getCountLoginTime" resultType="int">
+		select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm/dd') = to_char((
+			select login_time from
+			(select rownum rnum, b.* from
+			(select  a.* from tbl_login_time a
+			where a.user_id = #{user_id}
+			order by login_time desc) b)
+			where rnum = 1), 'yy/mm/dd')
+			and user_id = #{user_id}
+	</select>
+	
 	<!-- 회원 정보 수정 -->
 	<update id="updateMemberInfo">
 		update tbl_memberinfo set
@@ -181,8 +204,7 @@
 				where is_del = 'Y'
 				</when>
 			</choose>
-		        order by e_no desc) a
-		        <include refid="searchEvent"></include>)
+		        order by e_no desc) a)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 글갯수 -->
@@ -201,8 +223,7 @@
 				<when test="qCheck == 3">
 				where is_del = 'Y'
 				</when>
-			</choose>
-			<include refid="searchEvent"></include>
+			</choose>)
 	</select>
 
 	<!-- 이벤트 글 목록 (진행중) -->
@@ -312,7 +333,6 @@
 				</when>
 			</choose>
              	) a
-             	<include refid="searchEvent"></include>
                 order by e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
@@ -329,7 +349,45 @@
 				and sysdate > end_date
 				</when>
 			</choose>
-			<include refid="searchEvent"></include>)
+			)
+	</select>
+	
+	<!-- 활동 기록 작성 글 수 증가 -->
+	<update id="updateContentCnt">
+		update tbl_member_activ set
+			content_cnt = content_cnt + #{count}
+			where user_id = #{user_id} 
+	</update>
+	
+	<!-- 활동 기록 댓글 수 증가 -->
+	<update id="updateCommentCnt">
+		update tbl_member_activ set
+			comment_cnt = comment_cnt + #{count}
+			where user_id = #{user_id} 
+	</update>
+	
+	<!-- 활동 기록 문의글 수 증가 -->
+	<update id="updateAskCnt">
+		update tbl_member_activ set
+			ask_cnt = ask_cnt + #{count}
+			where user_id = #{user_id} 
+	</update>
+	
+	<!-- 활동 기록 좋아요 수 증가 -->
+	<update id="updateLikeAllCnt">
+		update tbl_member_activ set
+			like_all_cnt = like_all_cnt + #{count}
+			where user_id = #{user_id} 
+	</update>
+	
+	<select id="getContentCnt" resultType="int">
+		select count(*) from tbl_hobby
+		where user_id = #{user_id}
+	</select>
+	
+	<select id="getQnACnt" resultType="int">
+		select count(*) from tbl_QnA
+		where user_id = #{user_id}
 	</select>
 	
 	<!-- 메인 -->
@@ -361,6 +419,36 @@
 		where user_grade = 2 union all
 		select count(*) as from tbl_memberdetail
 		where user_grade = 1)
+	</select>
+	
+	<!-- 회원 로그인 현황 그래프 -->
+	<select id="getAllLoginTime" resultType="int">
+		select * from (
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/01') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/02') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/03') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/04') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/05') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/06') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/07') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/08') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/09') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/10') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/11') union all
+			select count (*) from tbl_login_time
+			where to_char(login_time, 'yy/mm') = (to_char(sysdate, 'yy') || '/12')
+		)
 	</select>
 	
 	<sql id="search">
@@ -405,21 +493,6 @@
 		</if>
 	</sql>
 	
-	<sql id="searchEvent">
-		<if test="searchType != null">
-			<choose>
-				<when test='searchType == "t"'>
-					where a.e_title like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "u"'>
-					where a.user_id like '%' || #{keyword} || '%'
-				</when>
-				<when test='searchType == "tu"'>
-					where a.e_title like '%' || #{keyword} || '%'
-					or a.user_id like '%' || #{keyword} || '%'
-				</when>
-			</choose>
-		</if>
-	</sql>
+
 
 </mapper>

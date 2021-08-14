@@ -10,6 +10,8 @@ import java.util.regex.Pattern;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,8 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import com.dp.ggomjirak.vo.CompleteImgVo;
 import com.dp.ggomjirak.vo.HobbyMaterialVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MakeStepVo;
+import com.dp.ggomjirak.vo.MaterialSearch;
 import com.dp.ggomjirak.vo.MaterialVo;
+import com.dp.ggomjirak.vo.ReviewPaging;
 import com.dp.ggomjirak.yj.dao.HobbyDao;
 import com.dp.ggomjirak.yj.dao.MaterialDao;
 import com.dp.ggomjirak.yj.util.MyFileUploadUtil;
@@ -88,7 +93,7 @@ public class HobbyServiceImpl implements HobbyService {
 	}
 	
 	@Override // isUpdate 수정폼에 뿌릴데이터인지아닌지 여부 true이면 수정용(사용자가 입력한 원본그대로 줘야함)
-	public HobbyVo selectHobbyArticle(int hobby_no, boolean isUpdate) {
+	public HobbyVo selectHobbyArticle(int hobby_no, ReviewPaging rp, boolean isUpdate) {
 		if (!isUpdate) {
 			//조회수 증가
 			hobbyDao.updateViewCnt(hobby_no);
@@ -96,6 +101,8 @@ public class HobbyServiceImpl implements HobbyService {
 		HobbyVo hobbyVo = hobbyDao.selectHobby(hobby_no);
 		// 준비물
 		List<HobbyMaterialVo> hobbyMaterials = hobbyDao.selectHobbyMaterialList(hobby_no);
+		System.out.println(hobbyMaterials);
+		System.out.println(hobbyVo);
 		hobbyVo.setHobbyMaterials(hobbyMaterials);
 
 		// 만들기 순서
@@ -120,10 +127,28 @@ public class HobbyServiceImpl implements HobbyService {
 					makeStepVo.setUrlOgTag(urlOgTag);
 					System.out.println(urlOgTag);
 				}
+				// 엔터키 작업
+				makeStepVo.setMake_step_text(makeStepVo.getMake_step_text().replace("\r\n" ,"<br>"));
+				if (makeStepVo.getNote() != null) {
+					makeStepVo.setNote(makeStepVo.getNote().replace("\r\n" ,"<br>"));
+				}
+				if (makeStepVo.getTip() != null) {
+					makeStepVo.setTip(makeStepVo.getTip().replace("\r\n" ,"<br>"));
+				}
+				if (makeStepVo.getLink_desc() != null) {
+					makeStepVo.setLink_desc(makeStepVo.getLink_desc().replace("\r\n" ,"<br>"));
+				}
+				
 			}
+			
 			List<CompleteImgVo> completeImgs = hobbyDao.selectCompleteImgListNotNull(hobby_no);
 			hobbyVo.setCompleteImgs(completeImgs);
 			
+			rp.setHobby_no(hobby_no);
+			int review_count = hobbyVo.getMbm_cnt();
+			rp.setReview_count(review_count);
+			List<MadeByMeVo> madeByMes = hobbyDao.selectMbmList(rp);
+			hobbyVo.setMadeByMes(madeByMes);
 		} else {
 			List<CompleteImgVo> completeImgs = hobbyDao.selectCompleteImgListAll(hobby_no);
 			hobbyVo.setCompleteImgs(completeImgs);
@@ -256,48 +281,22 @@ public class HobbyServiceImpl implements HobbyService {
 
 	@Override
 	public int deleteHobbyArticle(int hobby_no) {
-		// TODO Auto-generated method stub
-		return 0;
+		return hobbyDao.deleteHobby(hobby_no);
 	}
 
-//	@Override
-//	public int deleteHobbyArticle(int hobby_no) {
-//		return hobbyDao.deleteHobby(hobby_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectAll(int material_no) {
-//		return hobbyDao.selectAll(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectNew(int material_no) {
-//		return hobbyDao.selectNew(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectLike(int material_no) {
-//		return hobbyDao.selectLike(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectView(int material_no) {
-//		return hobbyDao.selectView(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectTime(int material_no) {
-//		return hobbyDao.selectTime(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectLevel(int material_no) {
-//		return hobbyDao.selectLevel(material_no);
-//	}
-//
-//	@Override
-//	public List<HobbyVo> selectCost(int material_no) {
-//		return hobbyDao.selectCost(material_no);
-//	}
+	private static final Logger logger = LoggerFactory.getLogger(HobbyServiceImpl.class);
+	
+	@Transactional
+	@Override
+	public List<HobbyVo> selectHMList(MaterialSearch materialSearch) {
+		int count = materialDao.getCountHMList(materialSearch); // m_no에 해당하는 준비물들 총개수 
+		materialSearch.setCount(count); // 페이징관련된 필드 세팅 
+		MaterialVo materialVo = materialDao.getMaterialVoByNo(materialSearch.getM_no());
+		materialSearch.setM_name(materialVo.getMaterial_name()); // ms에 준비물이름 세팅
+		logger.info("service");
+		System.out.println(materialSearch);
+		return materialDao.selectHMList(materialSearch);
+	}
+
 
 }

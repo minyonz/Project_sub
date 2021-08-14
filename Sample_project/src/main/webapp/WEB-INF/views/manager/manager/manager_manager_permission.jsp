@@ -50,9 +50,24 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var user_id = $(this).attr("data-id");
+		var pCheck = $("#frmPaging").attr("action");
+		$("#frmPaging > input[name=pCheck]").val(pCheck);
 		$("#frmPaging > input[name=user_id]").val(user_id);
 		$("#frmPaging").attr("action", "/manager/managerMemberContent");
 		$("#frmPaging").submit();
+	});
+	
+	$(".btnInsert").click(function(e) {
+		e.preventDefault
+		var user_id = $(this).attr("data-id");
+		var result = confirm(user_id + "님을 관리자로 등록하시겠습니까?");
+		if(result){
+			var user_id = $(this).attr("data-id");
+			var user_name = $(this).attr("data-name");
+		    $(this).attr("href", "/manager/managerInsertManager?user_id=" + user_id + "&user_name=" + user_name);
+		}else{
+		    return false;
+		}
 	});
 });
 </script>
@@ -63,6 +78,7 @@ $(document).ready(function() {
 <input type="hidden" name="searchType" value="${pagingDto.searchType}"/>
 <input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
 <input type="hidden" name="user_id" value="${pagingDto.user_id}"/>
+<input type="hidden" name="pCheck" value="${pagingDto.pCheck}"/>
 </form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -76,7 +92,8 @@ $(document).ready(function() {
 		    <div class="col-lg-2 col-md-3 mb-3">	    		  
 				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
 						id="btnSearchType" data-toggle="dropdown">
-							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == ""}'>옵션 선택</c:if>
+							<c:if test='${pagingDto.searchType == null}'>옵션 선택</c:if>
 							<c:if test='${pagingDto.searchType == "i"}'>아이디</c:if>
 							<c:if test='${pagingDto.searchType == "n"}'>닉네임</c:if>
 							<c:if test='${pagingDto.searchType == "m"}'>이름</c:if>
@@ -149,18 +166,14 @@ $(document).ready(function() {
 						
 							<td>${member.rnum}</td>
 							<td>${member.user_name}</td>
-							<td><a id="a_id" href="/manager/managerMemberContent?user_id=${member.user_id}">${member.user_id}</a></td>
+							<td><a class="a_id" href="#" data-id="${member.user_id}">${member.user_id}</a></td>
 							<td>${member.user_pw}</td>
 							<td>${member.user_email}</td>
 							<td>${member.user_tel}</td>
 							<td>${member.user_nick}</td>
 							<td>${member.reg_date}</td>
 							<td>
-								<form action="/manager/managerInsertManager" method="post">
-									<button type="submit" class="btn btn-success green_background">등록</button>
-									<input type="hidden" id="user_id" name="user_id" value="${member.user_id}">
-									<input type="hidden" id="user_name" name="user_name" value="${member.user_name}">
-								</form>
+									<a type="submit" class="btnInsert btn btn-success green_background" data-id="${member.user_id}" data-name="${member.user_name}">등록</a>
 							</td>
 						
 						</tr>

@@ -184,7 +184,14 @@
                            		<h6><a href="/hobby/content/${likebmVo.hobby_no}">${likebmVo.hobby_title}</a></h6>
 								<div class="blog__details__author__pic row" style="width: 100%; height: 100%; ">
 									<a href="/workroom/main/${likebmVo.user_id}" style="margin-left: auto; margin-right: auto;">
-									<img src="/displayImage?filePath=${likebmVo.user_img}" style="height: 30px; width: 30px;" alt="">
+									<c:choose>
+										<c:when test="${likebmVo.user_img != null}">
+											<img src="/displayImage?filePath=${likebmVo.user_img}" style="height: 30px; width: 30px;" alt="profile">
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/img/noprofile.png" style="height: 30px; width: 30px;" alt="profile">
+										</c:otherwise>
+									</c:choose>
 									<span class="st_c_content" style="font-size:14px; margin-top: 5px; margin-left: 5px;">${likebmVo.user_nick}</span>
 									</a>
 								</div>
@@ -205,7 +212,14 @@
                            		<h6><a href="/hobby/content/${likebmVo.hobby_no}">${likebmVo.hobby_title}</a></h6>
 								<div class="blog__details__author__pic row" style="width: 100%; height: 100%; ">
 									<a href="/workroom/main/${likebmVo.user_id}" style="margin-left: auto; margin-right: auto;">
-									<img src="/displayImage?filePath=${likebmVo.user_img}" style="height: 30px; width: 30px;" alt="">
+									<c:choose>
+										<c:when test="${likebmVo.user_img != null}">
+											<img src="/displayImage?filePath=${likebmVo.user_img}" style="height: 30px; width: 30px;" alt="profile">
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/img/noprofile.png" style="height: 30px; width: 30px;" alt="profile">
+										</c:otherwise>
+									</c:choose>
 									<span class="st_c_content" style="font-size:14px; margin-top: 5px; margin-left: 5px;">${likebmVo.user_nick}</span>
 									</a>
 								</div>
@@ -220,41 +234,7 @@
 	</div>
 </div>
 </div>
-</div>
-<c:if test="${msgDelte == 'success'}">
-      <script>
-      Swal.fire({
-         icon : "success",
-         title : "삭제 성공",
-      }).then(function(){close()});
-      </script>
-</c:if>
-<c:if test="${msgDelte == 'fail'}">
-      <script>
-      Swal.fire({
-         icon : "error",
-         title : "삭제 실패",
-      }).then(function(){close()});
-      </script>
-</c:if>
-<c:if test="${msgInsert == 'success'}">
-      <script>
-      Swal.fire({
-         icon : "success",
-         title : "등록 성공",
-      }).then(function(){close()});
-      </script>
-</c:if>
-<c:if test="${msgInsert == 'fail'}">
-      <script>
-      Swal.fire({
-         icon : "error",
-         title : "등록 실패",
-      }).then(function(){close()});
-      </script>
-</c:if>
 <div class="col-md-2"></div>
-</div>
 </div>
 
 <%@ include file="../include/footer.jsp"%>

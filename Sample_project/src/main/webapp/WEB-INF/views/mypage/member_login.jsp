@@ -14,7 +14,7 @@ $(document).ready(function(){
 	}
 });
 </script>
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -28,20 +28,26 @@ $(document).ready(function(){
 						<!-- 내부 패널 왼쪽 -->
 						<%-- <%@ include file="mypage_include/mypage_left.jsp"%> --%>
 					</div>
-					<div class="col-md-9">
+					<div class="col-md-6">
 						<!-- 내부 패널 메인 -->
 							<form role="form" action="/mypage/loginRun" method="post">
+							<div class="checkout__order">
+							<div class="workroom_box row" style="height: 39px; display:flex;">
+								<h4>로그인</h4>
+								<a href="/mypage/login" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+							</div>
+							<hr>
 							<div class="form-group">
 								<label for="user_id"> 아이디 </label> 
 								<input type="text" class="form-control" 
-									id="user_id" name="user_id"
-									value="cat" />
+									id="user_id" name="user_id" required
+									value="" />
 							</div>
 							<div class="form-group">
 								<label for="user_pw"> 패스워드 </label> 
 								<input type="password" class="form-control" 
-									id="user_pw" name="user_pw"
-									value="12345" />
+									id="user_pw" name="user_pw" required
+									value="" />
 							</div>
 							<div class="checkbox">
 								<label> 
@@ -50,7 +56,9 @@ $(document).ready(function(){
 							</div>
 							<button type="submit" class="btn btn-primary">로그인</button>
 							<a href="/mypage/joinForm" class="btn btn-success">회원가입</a>
+							</div>
 						</form>
+						<div class="col-md-3"></div>
 						</div> <!-- </div class="row"> --> 
 					</div> <!-- 내부 패널 메인  끝 -->
 				</div> 	<!-- 전체 페이지 메인 패널 끝 -->

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dp.ggomjirak.jh.dao.ManagerDao;
 import com.dp.ggomjirak.vo.CateStrVo;
+import com.dp.ggomjirak.vo.LoginTimeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -91,6 +92,30 @@ public class ManagerServiceImpl implements ManagerService {
 		return intro;
 	}
 
+	@Override
+	public LoginTimeVo selectLoginTime(String user_id) {
+		LoginTimeVo loginTimeVo = managerDao.selectLoginTime(user_id);
+		return loginTimeVo;
+	}
+
+	@Override
+	public int getCountLoginTime(String user_id) {
+		int count = managerDao.getCountLoginTime(user_id);
+		return count;
+	}
+
+	@Override
+	public int getContentCnt(String user_id) {
+		int count = managerDao.getContentCnt(user_id);
+		return count;
+	}
+
+	@Override
+	public int getQnACnt(String user_id) {
+		int count = managerDao.getQnACnt(user_id);
+		return count;
+	}
+
 	@Transactional
 	@Override
 	public void updateMember(MemberVo memberVo, WorkroomVo workroomVo) {
@@ -144,6 +169,15 @@ public class ManagerServiceImpl implements ManagerService {
 		List<Integer> list = managerDao.getAllUserGrade();
 		return list;
 	}
+
+	@Override
+	public List<Integer> getAllLoginTime() {
+		List<Integer> list = managerDao.getAllLoginTime();
+		return list;
+	}
+
+
+
 
 
 

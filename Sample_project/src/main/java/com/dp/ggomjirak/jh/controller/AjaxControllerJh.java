@@ -32,9 +32,6 @@ public class AjaxControllerJh {
 	
 	private static final Logger logger = LoggerFactory.getLogger(AjaxControllerJh.class);
 	
-	private static final String MAIN_IMG_UPLOAD_PATH = "main_img";
-	private static final String STEP_IMG_UPLOAD_PATH = "make_step";
-	private static final String COMPLETE_IMG_UPLOAD_PATH = "complete_img";
 	private static final String EVENT_IMG_UPLOAD_PATH = "event_img";
 	
 	@Inject
@@ -66,19 +63,6 @@ public class AjaxControllerJh {
 		System.out.println("orgFileName:" + orgFileName);
 		String filePath = null;
 		switch (sort) {
-		case "mainImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, MAIN_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
-
-		case "stepImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, STEP_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
-		case "complImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, COMPLETE_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
 		case "eventImg":
 			filePath = MyFileUploadUtil.uploadImage(rootPath, EVENT_IMG_UPLOAD_PATH, 
 					orgFileName, file.getBytes());

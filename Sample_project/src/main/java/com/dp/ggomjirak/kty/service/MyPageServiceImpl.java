@@ -7,6 +7,7 @@ import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dp.ggomjirak.jh.dao.MainDao;
 import com.dp.ggomjirak.kty.dao.MemberDao;
 
 import com.dp.ggomjirak.vo.CateVo;
@@ -18,10 +19,15 @@ public class MyPageServiceImpl implements MyPageService {
 
 	@Inject
 	private MemberDao memberDao;
+	
+	@Inject
+	private MainDao mainDao;
 
+	@Transactional
 	@Override
 	public MemberVo login(String user_id, String user_pw) {
 		MemberVo memberVo = memberDao.login(user_id, user_pw);
+		mainDao.insertLoginTime(user_id);
 		return memberVo;
 	}
 
@@ -39,6 +45,7 @@ public class MyPageServiceImpl implements MyPageService {
 	@Override
 	public void insertMember(MemberVo memberVo) {
 		memberDao.insertMember(memberVo);
+		mainDao.insertMemberActiv(memberVo.getUser_id());
 	}
 
 	@Override

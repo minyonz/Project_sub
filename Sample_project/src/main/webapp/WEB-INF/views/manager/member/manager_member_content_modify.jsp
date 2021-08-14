@@ -60,8 +60,16 @@ $(document).ready(function() {
 					<div class="row">
 						<div class="col-xl-2 col-lg-3 col-md-4 col-sm-12">
 							<h6><strong>프로필 이미지</strong></h6>
-							<img src="../resources/img/eximage.png" class="rounded-circle"
-								alt="..." width="150px" height="150px" style="margin: 20px">
+							<c:choose>
+	                        <c:when test="${memberVo.user_img != null}">
+	                        	<img src="/displayImage?fileName=${memberVo.user_img}" class="rounded-circle"
+									alt="..." width="150px" height="150px" style="margin: 20px">
+	                        </c:when>
+	                        <c:otherwise>
+	                        	<img src="/resources/img/noprofile.png" class="rounded-circle"
+									alt="..." width="150px" height="150px" style="margin: 20px">
+	                        </c:otherwise>
+	                        </c:choose>
 						</div>
 						
 						<div class="col-xl-10 col-lg-9 col-md-8 col-sm-12">
@@ -204,52 +212,6 @@ $(document).ready(function() {
 					
 				</tbody>
 			</table>
-		
-		</div>
-	</div>
-	
-	<!-- DataTales Example -->
-	<div class="card shadow mb-4">
-		<div class="card-header py-3" style="overflow: hidden">
-			<h6 class="m-0 font-weight-bold green_color" style="float: left;">작성 글</h6>
-			
-			<div class="dropdown">
-				<select name="category"
-					class="btn btn-outline-light green_background dropdown-toggle"
-					data-bs-toggle="dropdown" aria-expanded="false">
-					<option class="dropdown-item" value="1">취미</option>
-					<option class="dropdown-item" value="2">스토리</option>
-					<option class="dropdown-item" value="3">Made by Me</option>
-					<option class="dropdown-item" value="4">문의</option>
-				</select>
-			</div>
-			
-		</div>
-		
-		
-		<div class="card-body">
-			<table class="table" id="dataTable" width="100%" cellspacing="0">
-					<thead>
-						<tr>
-							<th>글번호</th>
-							<th>게시판</th>
-							<th>제목</th>
-							<th>작성일</th>
-							<th>삭제여부</th>
-							<th>삭제일</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>1</td>
-							<td>취미</td>
-							<td><a href="#">Architect</a></td>
-							<td>2011/04/25</td>
-							<td>X</td>
-							<td>-</td>
-						</tr>
-					</tbody>
-				</table>
 		
 		</div>
 	</div>

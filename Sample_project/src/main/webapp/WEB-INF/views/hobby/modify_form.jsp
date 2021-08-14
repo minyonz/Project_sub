@@ -394,7 +394,7 @@
 		$(box).find("input[type=hidden]").val("");
 		$(box).find(".btn_delStepImg").hide();
 		$(box).find(".stepImg_hidden").val("");
-		$(box).find(".previewImg_step").attr("src", "${contextPath}/resources/images/preview_img.jpg");
+		$(box).find(".previewImg_step").attr("src", "${contextPath}/resources/images/preview_img.png");
 		$(box).find(".divStepNote").hide();
 		$(box).find(".divStepTip").hide();
 		$(box).find(".divStepLink").hide();
@@ -584,6 +584,11 @@ margin-right: 15px;
 	background:#1f5e43; 
 	color:#fff;
 	}
+	
+	
+.divExtra .form-control {
+		font-size: 0.8rem;
+	}
 /* 	.btn_delMainImg { */
 /*     right: 1rem; */
 /*     top: 0; */
@@ -615,7 +620,6 @@ margin-right: 15px;
 .side-right { grid-area: side-right; }
  }
 </style>
-<title>수정하기</title>
 </head>
 <body>
 <%@ include file="../include/header.jsp" %>
@@ -653,7 +657,7 @@ margin-right: 15px;
 								<div class="row">
 									<input type="text" class="form-control main_input" 
 										id="hobby_title" name="hobby_title" required 
-										value="${hobbyVo.hobby_title}"
+										value="${hobbyVo.hobby_title}" spellcheck="false"
 										maxlength="40" minlength="2" autocomplete="off"/>
 								</div>
 								<div class="row float-right" 
@@ -682,7 +686,7 @@ margin-right: 15px;
 								<div class="row">
 									<textarea class="form-control main_input" style="height:80px; resize:none;" 
 											 name="hobby_intro" id="hobby_intro" required maxlength="300" minlength="2" 
-											 autocomplete="off">${hobbyVo.hobby_intro}</textarea>
+											 autocomplete="off" spellcheck="false">${hobbyVo.hobby_intro}</textarea>
 								</div>
 								<div class="row float-right" 
 									 style="
@@ -717,7 +721,7 @@ margin-right: 15px;
 													style="width:100%; height:100%; object-fit:cover; cursor:pointer; border: 1px solid #e1e1e1;" >
 											</label>
 											<input type="file" class="mainImg_file" name="mainImg_file" 
-												id="mainImg_file" accept=".gif, .jpg, .png" onchange="previewMainImg(this);"
+												id="mainImg_file" accept=".gif, .jpg, .png, .jpeg" onchange="previewMainImg(this);"
 												style="display:none;width:0px;height:0px;font-size:0px;"/>
 											<input type="hidden" name="main_img" id="main_img" value="${hobbyVo.main_img}"/>
 											<a id="btnDelMainImg" href="javascript:delMainImg()" class="btn_del"
@@ -737,7 +741,7 @@ margin-right: 15px;
 											</div>
 											<div class="row">
 												<input class="form-control main_input" 
-													type="text" value="${hobbyVo.hobby_video}"
+													type="text" value="${hobbyVo.hobby_video}" spellcheck="false"
 													 name="hobby_video" id="hobby_video" autocomplete="off"
 													placeholder="유튜브 주소만 가능해요. ex)https://youtu.be/Ab6E2BsuLJ0" ></input>
 											</div>
@@ -830,12 +834,12 @@ margin-right: 15px;
 												value="${hobbyMaterialVo.seq}"/>
 											<input type="text" value="${hobbyMaterialVo.materialName}"
 												style="width:200px; display: inline-block;" 
-												class="materialName form-control" 
+												class="materialName form-control" spellcheck="false"
 												name="hobbyMaterials[${vs.count - 1}].materialName"
 												autocomplete="off"/>
 											<input type="text" value="${hobbyMaterialVo.material_detail}"
 												style="width:200px; display: inline-block;" 
-												class="material_detail form-control" 
+												class="material_detail form-control"  spellcheck="false"
 												name="hobbyMaterials[${vs.count - 1}].material_detail"
 												autocomplete="off"/>
 											<a  href="javascript:delMaterial(${vs.count})"
@@ -871,9 +875,9 @@ margin-right: 15px;
 									만들기 순서<span class="star">*</span>
 								</div>
 								<input type="file" id="multifile_step"  
-									style="display:none;" accept=".gif, .jpg, .png" multiple>
+									style="display:none;" accept=".gif, .jpg, .png, .jpeg" multiple>
 								<button type="button" onclick="document.getElementById('multifile_step').click();"
-									class="btn btn-outline-light btn-sm green_background" style="margin-left:10px; font-size:9px;">
+									class="btn btn-sm green_background" style="margin-left:10px; font-size:9px; color:white;">
 									<span class="fa fa-plus"> 순서 사진 한번에 추가</span>
 								</button>
 							</div>
@@ -901,7 +905,7 @@ margin-right: 15px;
 																		src="/displayImage?filePath=${makeStepVo.make_step_img}" >
 																</label>
 																 <input type="file" class="stepImg_file" 
-																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
+																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png, .jpeg" 
 																	onchange="previewMakeStepImg(this, ${vs.count});"
 																	style="display:none;width:0px;height:0px;font-size:0px;">
 																<input type="hidden" class="stepImg_hidden" 
@@ -917,10 +921,10 @@ margin-right: 15px;
 															</c:when>
 															<c:otherwise>
 																<label class="stepImg_label" for="stepImg_file_${vs.count}">
-																	<img id="previewImg_step_${vs.count}" class="previewImg_step" src="${contextPath}/resources/images/preview_img.jpg"/>
+																	<img id="previewImg_step_${vs.count}" class="previewImg_step" src="${contextPath}/resources/images/preview_img.png"/>
 																</label>
 																 <input type="file" class="stepImg_file" 
-																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png" 
+																	 id="stepImg_file_${vs.count}" accept=".gif, .jpg, .png, .jpeg" 
 																	onchange="previewMakeStepImg(this, ${vs.count});"
 																	style="display:none;width:0px;height:0px;font-size:0px;">
 																<input type="hidden" class="stepImg_hidden" 
@@ -941,7 +945,7 @@ margin-right: 15px;
 														class="form-control stepText" 
 														placeholder="순서에 맞는 설명을 입력해 주세요" 
 														style="height:160px; width:430px; resize:none;" 
-														autocomplete="off">${makeStepVo.make_step_text }</textarea>
+														autocomplete="off" spellcheck="false">${makeStepVo.make_step_text }</textarea>
 												</div>
 												<div class="divStepBtn" style="display:inline-block; display:none;">
 													<a class="moveUp" href="javascript:moveUp(${vs.count})"><span class="fa fa-chevron-up"></span></a>
@@ -950,7 +954,7 @@ margin-right: 15px;
 													<a class="delStepBox" href="javascript:delStepBox(${vs.count})"><span class="fa fa-times"></span></a>
 												</div>
 												<!-- 노트, 팁 부분 -->
-												<div style="width:594px;border:3px solid rgba(31, 94, 67, .75); margin-left: 123px">
+												<div class="divExtra" style="width:594px;border:3px solid rgba(31, 94, 67, .75); margin-left: 123px">
 													<div style="padding:5px; text-align:center">
 														<!-- 노트보기 -->
 														<a href="javascript:showNote(${vs.count});"
@@ -986,8 +990,8 @@ margin-right: 15px;
 														<img src="${contextPath}/resources/images/note.png"
 														style="width:24px;height:24px; vertical-align:top;"/> 
 														<textarea name="makeSteps[${vs.count - 1}].note" 
-															class="form-control stepNoteText" autocomplete="off"
-															style="width:500px;height:50px;
+															class="form-control stepNoteText" autocomplete="off" spellcheck="false"
+															style="width:500px;height:50px; 
 															resize:none; display: inline-block;">${makeStepVo.note}</textarea>
 													</div>
 													<!--// 노트영역 -->
@@ -998,7 +1002,7 @@ margin-right: 15px;
 														<img src="${contextPath}/resources/images/lamp.png"
 															style="width:24px;height:24px;vertical-align:top;"> 
 														<textarea name="makeSteps[${vs.count - 1}].tip" 
-															class="form-control stepTipText" autocomplete="off"
+															class="form-control stepTipText" autocomplete="off" spellcheck="false"
 															 style="width:500px;height:50px;
 																 resize:none; display: inline-block;">${makeStepVo.tip}</textarea>
 													</div>
@@ -1011,12 +1015,12 @@ margin-right: 15px;
 															style="width:24px;height:24px;vertical-align:top;"> 
 														<input type="text" value="${makeStepVo.link_url}"
 															 name="makeSteps[${vs.count - 1}].link_url"
-															 placeholder="사이트 주소를 입력해주세요."
+															 placeholder="사이트 주소를 입력해주세요." spellcheck="false"
 															 class="form-control stepLink_url" autocomplete="off"
 															 style="width:500px;resize:none; display: inline-block;">
 														<textarea 
 															name="makeSteps[${vs.count - 1}].link_desc" 
-															placeholder="url에 대한 설명을 입력해 주세요"
+															placeholder="url에 대한 설명을 입력해 주세요" spellcheck="false"
 															class="form-control stepLink_desc" autocomplete="off"
 															style="width:500px;height:50px;
 																resize:none; display: inline-block; 
@@ -1056,12 +1060,12 @@ margin-right: 15px;
 											</c:when>
 											<c:otherwise>
 												<img id="previewImg_compl_${vs.count}" class="previewImg_compl" 
-													src="${contextPath}/resources/images/preview_img.jpg" style="width:140px; height:140px;  cursor: pointer;">
+													src="${contextPath}/resources/images/preview_img.png" style="width:140px; height:140px; object-fit: cover; cursor: pointer;">
 											</c:otherwise>
 										</c:choose>
 									</label>
 									<input type="file" class="complImg_file" 
-										 id="complImg_file_${vs.count}" accept=".gif, .jpg, .png" onchange="previewComplImg(this, ${vs.count});"
+										 id="complImg_file_${vs.count}" accept=".gif, .jpg, .png, .jpeg" onchange="previewComplImg(this, ${vs.count});"
 										style="display:none;width:0px;height:0px;font-size:0px;">
 									<c:choose>
 										<c:when test="${not empty completeImgVo.img_name}">
@@ -1094,8 +1098,8 @@ margin-right: 15px;
 				 <!-- 저장/완료/닫기 버튼 부분 -->
 				 <div class="cont_box">
 						<div style="text-align: center;">
-							<button type="button" onclick="doSubmit();" class="btn btn-outline-light btn-lg green_background">완료</button>
-							<button type="button" onclick="history.back();" class="btn btn-outline-light btn-lg green_background">닫기</button>
+							<button type="button" onclick="doSubmit();" class="btn btn-lg green_background" style="color:white;">완료</button>
+							<button type="button" onclick="doClose();" class="btn btn-lg green_background" style="color:white;">닫기</button>
 						</div>
 				 </div>
 				 <!-- //저장/완료/닫기 버튼 -->
@@ -1111,29 +1115,17 @@ margin-right: 15px;
     <div class="modal-dialog" style="width:1000px;">
         <div class="modal-content" style="padding:0;">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><img src="https://recipe1.ezmember.co.kr/img/btn_close.gif" alt="닫기" width="18px" height="18px"></span></button>
-                <h4 class="modal-title">단계별 추가 정보 입력</h4>
+                <h4 class="modal-title" style="font-size: 18px;">추가 기능 설명</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                	<span aria-hidden="true">×</span>
+                </button>
             </div>
             <div class="modal-body" style="padding:0;">
-                <div class="guide_tit"><img src="https://recipe1.ezmember.co.kr/img/guide_tt3.gif"></div>
-                <div class="modal_guide st2">
-                    <img src="https://recipe1.ezmember.co.kr/img/guide5_01.jpg">
-                    <img src="https://recipe1.ezmember.co.kr/img/guide5_02.jpg" border="0" usemap="#Map_tip">
-                    <map name="Map_tip">
-                      <area shape="rect" coords="175,581,489,604" href="http://www.10000recipe.com/recipe/6851475" target="_blank" alt="중국집 단골손님 짜장면">
-                      <area shape="rect" coords="147,610,461,633" href="http://www.10000recipe.com/recipe/6851952" target="_blank" alt="대구 명물 납작만두">
-                      <area shape="rect" coords="257,640,572,663" href="http://www.10000recipe.com/recipe/6852193" target="_blank" alt="든든하게 시작하는 아침식사! 참치죽">
-                    </map>
-                    <img src="https://recipe1.ezmember.co.kr/img/guide5_03.jpg">
-                </div>
-                <div class="talk_guide"><span></span>
-                    <button class="btn btn-default" type="button" onClick="location.href='/customer/list.html?bid=3'">문의하기</button>
+                   <img src="/resources/images/guide.png">
                 </div>
             </div>
         </div>
-        <!-- /.modal-content -->
     </div>
- </div>
 <%@ include file="../include/footer.jsp" %>
 <script>
 // ----------수정폼------------
@@ -1220,7 +1212,7 @@ function previewMainImg(targetObj) {
 		"success" : function(filePath) {
 			console.log("filePath:" + filePath);
 			// 1. hidden에 값 넣기 
-			$("#main_img").val(filePath);
+			$("#preview_main.png").val(filePath);
 			//2. 프리뷰이미지 보여주기 
 			var reader = new FileReader();
 			reader.readAsDataURL(file);
@@ -1250,13 +1242,13 @@ function delMainImg() {
 		console.log("메인사진", main_img)
 		if(main_img == filePath) {
 			$("#main_img").val("");
-			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
+			$("#previewImg_main").attr("src", "${contextPath}/resources/images/preview_main.png");
 			$("#btnDelMainImg").css("display", "none");
 		} else {
 			$.get("/deleteFile?filePath=" + filePath, function(rData) {
 				if (rData == "success") {
 					$("#main_img").val("");
-					$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
+					$("#previewImg_main").attr("src", "${contextPath}/resources/images/preview_main.png");
 					$("#btnDelMainImg").css("display", "none");
 				}
 			})
@@ -1449,14 +1441,14 @@ function delStepImg(seq) {
 	if (step_no > 0) { //db에 있는 것 -> 폼전송되기전까지 서버에서 사진 삭제하면안됨
 		$(el).val("");
 		$("#stepBox_" + seq).addClass("none_img");
-		$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+		$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.png");
 		$("#btnDelStepImg_" + seq).hide();
 	} else {
 		$.get("/deleteFile?filePath=" + filePath, function(rData) {
 			if (rData == "success") {
 				$(el).val("");
 				$("#stepBox_" + seq).addClass("none_img");
-				$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+				$("#previewImg_step_" + seq).attr("src", "${contextPath}/resources/images/preview_img.png");
 				$("#btnDelStepImg_" + seq).hide();
 			}
 		});
@@ -1562,7 +1554,7 @@ function delComplImg(num) {
 				$.get("/deleteFile?filePath=" + filePath, function(rData) {
 					if (rData == "success") {
 						$(el).val("");
-						$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+						$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.png");
 						$("#btnDelComplImg_" + num).hide();
 					}
 				})
@@ -1571,7 +1563,7 @@ function delComplImg(num) {
 // 				서버에서 사진 삭제하지말고
 // 				프리뷰이미지만 없애기
 				$(el).val("");
-				$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.jpg");
+				$("#previewImg_compl_" + num).attr("src", "${contextPath}/resources/images/preview_img.png");
 				$("#btnDelComplImg_" + num).hide();
 			} 
 			
@@ -1595,9 +1587,9 @@ function createMaterialBox() {
 	  +	'<div class="divMaterialItem" style="display:inline-block;">'
 		+	'<input type="hidden" class="seq" name="hobbyMaterials[0].seq" value="1"/>'
 		+	'<input type="text" style="width:200px; display: inline-block; margin-left:3px; margin-right:4px;" class="materialName form-control"' 
-		+		'name="hobbyMaterials[0].materialName" placeholder=""  autocomplete="off"/>'
+		+		'name="hobbyMaterials[0].materialName" placeholder=""  spellcheck="false" autocomplete="off"/>'
 		+	'<input type="text" style="width:200px; display: inline-block; margin-right: 4px;" class="material_detail form-control"' 
-		+		'name="hobbyMaterials[0].material_detail"placeholder="" autocomplete="off"/>'
+		+		'name="hobbyMaterials[0].material_detail"placeholder="" spellcheck="false" autocomplete="off"/>'
 		+	'<a  href="javascript:delMaterial(1)"'
 		+		 'class="btnDelMaterial" style="display:none;"></a>'
 		+ '</div>'
@@ -1923,6 +1915,26 @@ function doSubmit() {
 		}
 	});
     
+}
+
+function doClose() {
+	console.log("확인");
+	Swal.fire({
+		text: '수정을 취소 하시겠습니까?', 
+		allowOutsideClick: false,
+		iconColor: "#1f5e43",
+		icon: 'question', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+		cancelButtonText: "취소",
+		showCancelButton: true,
+	}).then(function(result) {
+		if(result.isConfirmed) {
+			history.back();
+		} else {
+			return false;
+		}
+	});
 }
 </script>
 </body>

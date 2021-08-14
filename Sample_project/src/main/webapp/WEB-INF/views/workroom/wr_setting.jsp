@@ -2,8 +2,6 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ include file="../include/header.jsp"%>
-<script src="/resources/js/sweetalert2.min.js"></script>
-<link rel="stylesheet" href="/resources/css/sweetalert2.min.css">
 <script>
 $(document).ready(function() {
 	
@@ -103,7 +101,7 @@ $(document).ready(function() {
 		console.log(url);
 		$.get(url, function(rData) {
 			if (rData.unFollow) {
-				that.replaceWith("<button type='button' class='btn btn-primary follow'>팔로우</button>");
+				that.replaceWith("<button type='button' class='btn green_background white_color follow'>팔로우</button>");
 			}
 		});
 	});
@@ -116,7 +114,7 @@ $(document).ready(function() {
 		console.log(url);
 		$.get(url, function(rData) {
 			if (rData.follow) {
-				that.replaceWith("<button type='button' class='btn btn-outline-primary unfollow'>언팔로우</button>");
+				that.replaceWith("<button type='button' class='btn btn-outline-warning unfollow' style='color:#F39C12'>언팔로우</button>");
 			}
 		});
 	});
@@ -128,7 +126,7 @@ $(document).ready(function() {
 		<div class="col-md-3"></div>
 		<div class="col-md-6">
 			<div style="text-align: center; margin-top: 12px;">
-				<h2 style="font-weight: 700">내 작업실 설정<a href="/workroom/main/${page_id}" class="fa fa-home" style="font-size:30px; margin-left:10px;"></a></h2>
+				<h2 style="font-weight: 700">내 작업실 설정<a href="/workroom/main/${user_id}" class="fa fa-home" style="font-size:30px; margin-left:10px;"></a></h2>
 			</div>
 			<div class="checkout__order">
 				<div class="workroom_box row">
@@ -147,18 +145,6 @@ $(document).ready(function() {
 					<span id="introWarning" style="margin-left:10px; color:#E14F4F; font-size:15px;"></span>
 				</div>
 			</div>
-<!-- 			<div class="checkout__order"> -->
-<!-- 				<div class="workroom_box"> -->
-<!-- 					<h4>작업실 공개 여부</h4> -->
-<!-- 				</div> -->
-<!-- 				<div class="workroom_box"> -->
-<!-- 					<hr> -->
-<!-- 					<div class="custom-control custom-switch"> -->
-<!-- 					  <input type="checkbox" class="custom-control-input" id="customSwitch1"> -->
-<!-- 					  <label class="custom-control-label" for="customSwitch1">공개</label> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
 			<div class="row">
 				<div class="col-md-6">
 					<div class="checkout__order">
@@ -172,7 +158,16 @@ $(document).ready(function() {
 									<div class="col-md-8">
 										<div class="blog__details__author">
 											<div class="blog__details__author__pic">
-												<a href="#"><img src="/displayImage?filePath=${followVo.user_img}" alt=""></a>
+											<a href="/workroom/main/${followVo.user_id}">
+											<c:choose>
+												<c:when test="${followVo.user_img != null}">
+													<img src="/displayImage?filePath=${followVo.user_img}" alt="profile">
+												</c:when>
+												<c:otherwise>
+													<img src="/resources/img/noprofile.png" alt="profile">
+												</c:otherwise>
+											</c:choose>
+												</a>
 											</div>
 											<div class="blog__details__author__text">
 												<span data-id="${followVo.following}">${followVo.user_nick}</span>
@@ -181,7 +176,7 @@ $(document).ready(function() {
 									</div>
 									<div class="col-md-4">
 										<div style="text-align: right" class="divUnfollow">
-											<button type="button" class="btn btn-outline-primary unfollow">언팔로우</button> 
+											<button type="button" class="btn btn-outline-warning unfollow" style="color:#F39C12">언팔로우</button> 
 										</div>
 									</div>
 								</div>
@@ -206,7 +201,16 @@ $(document).ready(function() {
 									<div class="col-md-5">
 										<div class="blog__details__author">
 											<div class="blog__details__author__pic">
-												<a href="/workroom/main/${likeBmVo.user_id}"><img src="/displayImage?filePath=${likeBmVo.user_img}" alt=""></a>
+												<a href="/workroom/main/${likeBmVo.user_id}">
+												<c:choose>
+													<c:when test="${likeBmVo.user_img != null}">
+														<img src="/displayImage?filePath=${likeBmVo.user_img}" alt="profile">														
+													</c:when>
+													<c:otherwise>
+														<img src="/resources/img/noprofile.png" alt="profile">
+													</c:otherwise>
+												</c:choose>
+												</a>
 											</div>
 											<div class="blog__details__author__text">
 												<span>${likeBmVo.user_nick}</span>
@@ -220,7 +224,7 @@ $(document).ready(function() {
 				</div>
 			</div>
 		</div>
+		<div class="col-md-3"></div>
 	</div>
-			<div class="col-md-3"></div>
-		</div>
-	<%@ include file="../include/footer.jsp"%>
+</div>
+<%@ include file="../include/footer.jsp"%>

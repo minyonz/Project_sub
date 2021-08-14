@@ -3,6 +3,7 @@ package com.dp.ggomjirak.jh.dao;
 import java.util.List;
 
 import com.dp.ggomjirak.vo.CateStrVo;
+import com.dp.ggomjirak.vo.LoginTimeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -22,6 +23,10 @@ public interface ManagerDao {
 	public String selectGradeById(String user_id);
 	public MemberActivVo selectMemberActivById(String user_id);
 	public String selectMemberIntroById(String user_id);
+	public LoginTimeVo selectLoginTime(String user_id);
+	public int getCountLoginTime(String user_id);
+	public int getContentCnt(String user_id);
+	public int getQnACnt(String user_id);
 	
 	
 	public void updateMemberInfo(MemberVo memberVo);
@@ -37,9 +42,14 @@ public interface ManagerDao {
 	
 	public int getCountManager(PagingDto pagingDto);
 	
+	public void updateContentCnt(String user_id, int count);
+	public void updateAskCnt(String user_id, int count);
+	
+	
 	// 메인
 	public List<MemberVo> selectPopularMemberList();
 	public int getMemberCount();
 	public List<Integer> getAllUserGrade();
+	public List<Integer> getAllLoginTime();
 	
 }

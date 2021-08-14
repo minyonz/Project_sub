@@ -36,6 +36,7 @@ public class EventController {
 		System.out.println("pagingDto: " + pagingDto);
 		List<EventVo> eventListAll = eventService.showEventListAll(pagingDto);
 		model.addAttribute("eventListAll", eventListAll);
+		model.addAttribute("pagingDto", pagingDto);
 		if (session.getAttribute("loginVo") != null) {
 			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
 			String lo_user_id = lo_memberVo.getUser_id();

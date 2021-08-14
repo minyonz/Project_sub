@@ -68,8 +68,9 @@ $(document).ready(function() {
 		}
 		
 		$("#frmPaging > input[name=keyword]").val(keyword);
-		$("#frmPaging > input[name=page]").val("1");
 		$("#frmPaging > input[name=searchType]").val(searchType);
+		$("#frmPaging > input[name=page]").val("1");
+		
 		$("#frmPaging > input[name=today]").val(today);
 		$("#frmPaging").submit();
 	});
@@ -100,8 +101,8 @@ $(document).ready(function() {
 		    <div class="col-lg-2 col-md-3 mb-3">	    		  
 				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
 						id="btnSearchType" data-toggle="dropdown">
-							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
-							<c:if test='${pagingDto.searchType == ""}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == null}'>옵션 선택</c:if>
+							<c:if test='${pagingDto.searchType == ""}'>옵션 선택</c:if>
 							<c:if test='${pagingDto.searchType == "t"}'>제목</c:if>
 							<c:if test='${pagingDto.searchType == "u"}'>작성자</c:if>
 							<c:if test='${pagingDto.searchType == "tu"}'>제목 + 작성자</c:if>
@@ -182,15 +183,15 @@ $(document).ready(function() {
 		  <thead>
 		    <tr>
 		      <th scope="col">베너</th>
-		      <th scope="col">글 번호</th>
-		      <th scope="col">작성자</th>
-		      <th scope="col">제목</th>
-		      <th scope="col">시작일</th>
-		      <th scope="col">종료일</th>
-		      <th scope="col">작성일</th>
-		      <th scope="col">수정일</th>
-		      <th scope="col">첨부파일</th>
-		      <th scope="col">삭제일</th>
+		      <th>글 번호</th>
+		      <th>작성자</th>
+		      <th style="width: 30%;">제목</th>
+		      <th>시작일</th>
+		      <th>종료일</th>
+		      <th>작성일</th>
+		      <th>수정일</th>
+		      <th>첨부파일</th>
+		      <th>삭제일</th>
 		    </tr>
 		  </thead>
 		  <tbody>

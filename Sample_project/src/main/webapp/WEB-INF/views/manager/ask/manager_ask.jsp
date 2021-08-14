@@ -176,10 +176,10 @@ $(document).ready(function() {
 							<a href="/ask/managerAskContent?qna_no=${qna.qna_no}"
 							<c:choose>
 							<c:when test="${qna.delete_time == null}">
-								class="text-dark font-weight-bold"
+								class="short text-dark font-weight-bold"
 							</c:when>
 							<c:otherwise>
-								class="text-muted"
+								class="short text-muted"
 							</c:otherwise>
 							</c:choose>
 							

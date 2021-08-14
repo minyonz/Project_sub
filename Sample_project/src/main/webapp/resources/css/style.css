@@ -61,7 +61,7 @@ a:focus {
 html,
 body {
 	height: 100%;
-	font-family: "Cairo", sans-serif;
+/* 	font-family: "Cairo", sans-serif; */
 	-webkit-font-smoothing: antialiased;
 	font-smoothing: antialiased;
 }
@@ -75,7 +75,7 @@ h6 {
 	margin: 0;
 	color: #111111;
 	font-weight: 400;
-	font-family: "Cairo", sans-serif;
+/* 	font-family: "Cairo", sans-serif; */
 }
 
 h1 {
@@ -104,7 +104,7 @@ h6 {
 
 p {
 	font-size: 16px;
-	font-family: "Cairo", sans-serif;
+/* 	font-family: "Cairo", sans-serif; */
 	color: #6f6f6f;
 	font-weight: 400;
 	line-height: 26px;
@@ -158,7 +158,7 @@ ol {
 	right: 0;
 	height: 4px;
 	width: 80px;
-	background: #7fad39;
+	background: #3A7C5F;
 	content: "";
 	margin: 0 auto;
 }
@@ -640,7 +640,7 @@ ol {
 	right: 18px;
 	top: 9px;
 	content: "3";
-	font-family: "ElegantIcons";
+/* 	font-family: "ElegantIcons"; */
 	font-size: 18px;
 	color: #ffffff;
 }
@@ -873,7 +873,7 @@ ol {
 	bottom: -2px;
 	width: 100%;
 	height: 2px;
-	background: #7fad39;
+	background: #3A7C5F;
 	content: "";
 	opacity: 0;
 }
@@ -1164,14 +1164,11 @@ ol {
 	height: 1px;
 	width: 5px;
 	background: #dd2222;
-	content: "";
 }
 
 .price-range-wrap .range-slider .price-input input {
 	font-size: 16px;
-	color: #dd2222;
 	font-weight: 700;
-	max-width: 20%;
 	border: none;
 	display: inline-block;
 }
@@ -1199,7 +1196,7 @@ ol {
 }
 
 .price-range-wrap .price-range .ui-slider-range {
-	background: #dd2222;
+	background: #1f5e43;
 	border-radius: 0;
 }
 
@@ -1357,8 +1354,8 @@ ol {
 }
 
 .product__item__pic__hover li:hover a {
-	background: #7fad39;
-	border-color: #7fad39;
+	background: #1f5e43;
+	border-color: #1f5e43;
 }
 
 .product__item__pic__hover li:hover a i {
@@ -1596,9 +1593,10 @@ ol {
 	margin-right: 0;
 }
 
+/* 윤지수정 (사진hover하트 리트윗 색변경) */
 .product__item__pic__hover li:hover a {
-	background: #7fad39;
-	border-color: #7fad39;
+	background: #1f5e43;
+	border-color: #1f5e43;
 }
 
 .product__item__pic__hover li:hover a i {

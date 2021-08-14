@@ -17,6 +17,7 @@ import com.dp.ggomjirak.vo.CateStrVo;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.EventVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
@@ -52,6 +53,7 @@ public class MainController {
 			
 			List<HobbyVo> popularHobby = mainService.getPopularHobbyList();
 			List<HobbyVo> monthHobby = mainService.getMonthHobbyList();
+			List<MadeByMeVo> bestMade = mainService.getBestMadeList();
 			List<MemberVo> popularMember1 = mainService.getPopularMemberList1();
 			List<MemberVo> popularMember2 = mainService.getPopularMemberList2();
 			List<MemberVo> popularMember3 = mainService.getPopularMemberList3();
@@ -60,6 +62,7 @@ public class MainController {
 			model.addAttribute("cates", JSONArray.fromObject(category));
 			model.addAttribute("popularHobby", popularHobby);
 			model.addAttribute("monthHobby", monthHobby);
+			model.addAttribute("bestMade", bestMade);
 			model.addAttribute("popularMember1", popularMember1);
 			model.addAttribute("popularMember2", popularMember2);
 			model.addAttribute("popularMember3", popularMember3);
@@ -210,11 +213,14 @@ public class MainController {
 		model.addAttribute("cates", JSONArray.fromObject(category));
 		int count1 = mainService.getCountHobbySearch(pagingDto);
 		int count2 = mainService.getCountMemberSearch(pagingDto);
+		int count3 = mainService.getCountMadeSearch(pagingDto);
 		int count;
-		if (count1 >= count2) {
-			count = count1;
+		if (count1 > count2) {
+			if (count1 > count3) count = count1;
+			else count = count3;
 		} else {
-			count = count2;
+			if (count2 > count3) count = count2;
+			else count = count3;
 		}
 		pagingDto.setCount(count);
 		
@@ -223,8 +229,10 @@ public class MainController {
 		
 		List<HobbyVo> searchHobbyList = mainService.searchHobby(pagingDto);
 		List<MemberVo> searchMemberList = mainService.searchMember(pagingDto);
+		List<MadeByMeVo> searchMadeList = mainService.searchMade(pagingDto);
 		model.addAttribute("searchHobbyList", searchHobbyList);
 		model.addAttribute("searchMemberList", searchMemberList);
+		model.addAttribute("searchMadeList", searchMadeList);
 		model.addAttribute("pagingDto", pagingDto);
 		if (session.getAttribute("loginVo") != null) {
 			MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");

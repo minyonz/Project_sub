@@ -77,4 +77,10 @@ public class MessageDaoImpl implements MessageDao {
 		return false;
 	}
 
+	@Override
+	public List<MessageVo> messageListSend(String msg_sender) {
+		List<MessageVo>	list = sqlSession.selectList(NAMESPACE + "messageListSend", msg_sender);
+		return list;
+	}
+
 }

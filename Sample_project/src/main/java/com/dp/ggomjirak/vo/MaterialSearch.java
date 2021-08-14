@@ -2,6 +2,8 @@ package com.dp.ggomjirak.vo;
 
 
 public class MaterialSearch {
+	private String user_id; //로그인한 아이디
+	
 	private int m_no;
 	private String m_name;
 	private String sort; // 최신,조회,댓글 
@@ -132,15 +134,19 @@ public class MaterialSearch {
 	public void setCost(int cost) {
 		this.cost = cost;
 	}
+	public String getUser_id() {
+		return user_id;
+	}
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
 	@Override
 	public String toString() {
-		return "MaterialSearch [m_no=" + m_no + ", m_name=" + m_name + ", sort=" + sort + ", time=" + time + ", level="
-				+ level + ", cost=" + cost + ", page=" + page + ", startRow=" + startRow + ", endRow=" + endRow
-				+ ", count=" + count + ", startPage=" + startPage + ", endPage=" + endPage + ", totalPage=" + totalPage
-				+ ", perPage=" + perPage + ", PAGE_BLOCK=" + PAGE_BLOCK + "]";
+		return "MaterialSearch [user_id=" + user_id + ", m_no=" + m_no + ", m_name=" + m_name + ", sort=" + sort
+				+ ", time=" + time + ", level=" + level + ", cost=" + cost + ", page=" + page + ", startRow=" + startRow
+				+ ", endRow=" + endRow + ", count=" + count + ", startPage=" + startPage + ", endPage=" + endPage
+				+ ", totalPage=" + totalPage + ", perPage=" + perPage + ", PAGE_BLOCK=" + PAGE_BLOCK + "]";
 	}
-
-	
 	
 	
 }

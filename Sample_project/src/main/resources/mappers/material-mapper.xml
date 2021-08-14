@@ -59,6 +59,8 @@
 	
 
  	<!-- __________준비물로 목록조회 ___________-->
+ 	
+ 	<!-- 페이징을위한 개수구하기 -->
  	<select id="getCountHMList" parameterType="MaterialSearch" resultType="int">
  		SELECT count(*) 
 		FROM tbl_hobby_material HM
@@ -68,14 +70,22 @@
 		<include refid="search"></include>
  	</select>
  	
+ 	<!-- 조회 -->
 	<select id="selectHMList" parameterType="MaterialSearch" resultType="HobbyVo">
 		SELECT * 
 		FROM (SELECT ROWNUM rnum, A.*
 				 FROM (SELECT  H.*, M.*, W.user_nick, W.user_img
+				 		<if test = "user_id != null">
+				 		, HL.hobby_no like_hobby, BM.hobby_no bm_hobby
+				 		</if>
 						FROM tbl_hobby_material HM
 						JOIN tbl_hobby H ON H.hobby_no = HM.hobby_no 
 						JOIN tbl_memberdetail W ON H.user_id = W.user_id
 						JOIN tbl_material M ON M.material_no = HM.material_no
+						<if test = "user_id != null">
+							LEFT OUTER JOIN tbl_hobby_like HL ON HL.user_id = #{user_id} AND H.hobby_no = HL.hobby_no
+							LEFT OUTER JOIN tbl_bookmark BM ON BM.user_id = #{user_id} AND H.hobby_no = BM.hobby_no
+				 		</if>
 				 		<include refid="search"></include> ) A )
 		WHERE rnum BETWEEN #{startRow} AND #{endRow} 
 	</select>

@@ -86,8 +86,6 @@ $(document).ready(function() {
 <!-- 쪽지 보내기 모달창 -->
 <div class="row">
     <div class="col-md-12">
-<!--         <a id="modal-915236" href="#modal-container-915236" role="button"
-            class="btn" data-toggle="modal">Launch demo modal</a> -->
         <div class="modal fade" id="modal-container-915236" role="dialog"
             aria-labelledby="myModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
@@ -119,26 +117,35 @@ $(document).ready(function() {
 			<div class="row">
 				<div class="col-md-3">
 					<div class="checkout__order">
-						<!-- 유저 카드 프로필 -->
+						<!-- 프로필 카드 -->
 						<div class="box" style="margin: 12px auto;">
-							<a href="/workroom/main/${page_id}"><img class="profile" src="/displayImage?filePath=${memberInfo.user_img}"
-								alt="profile image" style="width: 100%; text-align: center"></a>
+							<a href="/workroom/main/${page_id}">
+							<c:choose>
+								<c:when test="${memberInfo.user_img != null}">
+									<img class="profile" src="/displayImage?filePath=${memberInfo.user_img}"
+									alt="profile image" style="width: 100%; text-align: center">
+								</c:when>
+								<c:otherwise>
+									<img class="profile" src="/resources/img/noprofile.png"
+									alt="profile image" style="width: 100%; text-align: center">
+								</c:otherwise>
+							</c:choose>
+							</a>
 						</div>
 						<div class="card-body">
 							<div style="display: flex; justify-content: center;">
 							<h4 class="text-center" style="display:inline;">${memberInfo.user_nick}</h4>
 							</div>
 							<p class="text-center" style="font-size:12px; margin-top:-20px">${memberInfo.name}</p>
-							<!-- memberInfo에서 받아오면 카테고리 코드로 나와서 workroomVo에서 받아옴 -->
 							<p class="card-text text-center" style="font-size:13px;"> 
 								<c:if test="${workroomVo.cate_no1 ne '선택안함'}">
-									${workroomVo.cate_no1},
+									[${workroomVo.cate_no1}]
 								</c:if>
 								<c:if test="${workroomVo.cate_no2 ne '선택안함'}">
-									${workroomVo.cate_no2},
+									[${workroomVo.cate_no2}]
 								</c:if>
 								<c:if test="${workroomVo.cate_no3 ne '선택안함'}">
-								    ${workroomVo.cate_no3} 
+								    [${workroomVo.cate_no3}] 
 								</c:if>
 							</p>
 							<div style="text-align: center;">
@@ -178,11 +185,11 @@ $(document).ready(function() {
 					<div class="checkout__order">
 						<div class="blog__sidebar__item" style="margin-left: 40px;">
 							<ul>
-								<li><a href="#">소개</a></li>
-								<li><a href="#hobby">꼼지락</a></li>
-								<li><a href="#story">Story</a></li>
-								<li><a href="#mbm">MadeByMe</a></li>
-								<li><a href="#bookmark">북마크</a></li>
+								<li><a href="/workroom/main/${page_id}">소개</a></li>
+								<li><a href="/workroom/hobby/${page_id}">꼼지락</a></li>
+								<li><a href="/story/list/${page_id}">Story</a></li>
+								<li><a href="/workroom/mbm/${page_id}">MadeByMe</a></li>
+								<li><a href="/workroom/bookmark/${page_id}">북마크</a></li>
 							</ul>
 						</div>
 					</div>
@@ -193,3 +200,4 @@ $(document).ready(function() {
 						style="border:none; background:none; padding: 0;" id="btnStSearch"></button>
 					</div>
 				</div>
+				<!-- // 프로필카드 -->

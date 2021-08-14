@@ -303,6 +303,50 @@
 	</update>
  
  
- 
+ 	<!-- 후기 목록  -->
+ 	<!-- 해당 게시글의 댓글 개수 변경 -->
+	<update id="updateMbmCnt">
+		UPDATE tbl_hobby
+		SET mbm_cnt = mbm_cnt + #{count}
+		WHERE hobby_no = #{hobby_no} 
+	</update>
+ 	
+ 	<!-- 페이징을위한 개수구하기 -->
+ 	<select id="getCountMbmList" parameterType="int" resultType="int">
+ 		SELECT count(*)
+		FROM tbl_madebyme MBM 
+		JOIN tbl_memberdetail MD ON MBM.user_id = MD.user_id
+		WHERE hobby_no = #{hobby_no} AND is_del = 'N'
+ 	</select>
+ 	
+ 	
+ 	<select id="selectMbmList" resultType="MadeByMeVo" parameterType="ReviewPaging">
+	 	SELECT * 
+	 	FROM (SELECT ROWNUM rnum, A.*
+	 		  FROM (SELECT MBM.*, MD.user_nick, MD.user_img
+					FROM tbl_madebyme MBM 
+					JOIN tbl_memberdetail MD ON MBM.user_id = MD.user_id
+					WHERE hobby_no = #{hobby_no} AND is_del = 'N'
+					<include refid="paging"></include>) A )
+		WHERE rnum BETWEEN #{startRow} AND #{endRow} 
+ 	</select>
 	
+	<sql id="paging">
+		<if test="review_level != null">
+ 			<choose> 
+				<when test="review_level == 'all'">
+					ORDER BY MBM.mbm_no DESC
+				</when>
+				<when test="review_level == 'new'">
+					ORDER BY MBM.reg_date DESC
+				</when>
+				<when test="review_level == 'asc'">
+					ORDER BY MBM.level_no ASC, MBM.mbm_no DESC
+				</when>
+				<when test="review_level == 'desc'">
+					ORDER BY MBM.level_no DESC, MBM.mbm_no DESC
+				</when>
+			</choose>
+		</if>
+	</sql>
  </mapper>

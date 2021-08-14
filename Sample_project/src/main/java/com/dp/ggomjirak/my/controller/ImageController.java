@@ -27,9 +27,6 @@ public class ImageController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ImageController.class);
 	
-	private static final String MAIN_IMG_UPLOAD_PATH = "test/main_img";
-	private static final String STEP_IMG_UPLOAD_PATH = "test/make_step";
-	private static final String COMPLETE_IMG_UPLOAD_PATH = "test/complete_img";
 	private static final String STORY_IMG_UPLOAD_PATH = "story/story_img";
 	private static final String MBM_IMG_UPLOAD_PATH = "madebyme/mbm_img";
 	
@@ -40,10 +37,7 @@ public class ImageController {
 		FileInputStream fis = new FileInputStream(fullFilePath);
 		HttpHeaders header = new HttpHeaders();
         header.setContentType(MediaType.IMAGE_JPEG);
-        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(
-        		 IOUtils.toByteArray(fis), 
-        		 header,
-        		 HttpStatus.CREATED);
+        ResponseEntity<byte[]> entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(fis), header, HttpStatus.CREATED);
         fis.close();
 		return entity;
 	}
@@ -58,19 +52,6 @@ public class ImageController {
 		System.out.println("orgFileName:" + orgFileName);
 		String filePath = null;
 		switch (sort) {
-		case "mainImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, MAIN_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
-
-		case "stepImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, STEP_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
-		case "complImg":
-			filePath = MyFileUploadUtil.uploadImage(rootPath, COMPLETE_IMG_UPLOAD_PATH, 
-					 orgFileName, file.getBytes());
-			break;
 		case "storyImg":
 			filePath = MyFileUploadUtil.uploadImage(rootPath, STORY_IMG_UPLOAD_PATH, 
 					orgFileName, file.getBytes());

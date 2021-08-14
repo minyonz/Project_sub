@@ -66,7 +66,7 @@ $(document).ready(function() {
 							<a href="/main/mainHobby"
 								class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
 								<svg class="bi me-2" width="30" height="24">
-									<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">카테고리</span>
+									<use xlink:href="#bootstrap" /></svg> <span class="fs-5 fw-semibold">카테고리 전체</span>
 							</a>
 							<c:forEach var="bigSort" items="${bigSort}">
 								<ul class="list-unstyled ps-0">
@@ -140,17 +140,6 @@ $(document).ready(function() {
 							  </ul>
 							</div>
 							</li>
-							<li class="nav-item dropdown">
-								<button type="button"
-									class="btn dropdown-toggle btn-outline-light green_background"
-									data-bs-toggle="dropdown" href="#" role="button"
-									aria-expanded="false">난이도</button>
-								<ul class="dropdown-menu">
-									<li><a class="dropdown-item" href="#">고급</a></li>
-									<li><a class="dropdown-item" href="#">중급</a></li>
-									<li><a class="dropdown-item" href="#">초급</a></li>
-								</ul>
-							</li>
 						</ul>
 						
 						<!-- 취미글 목록 -->
@@ -160,16 +149,11 @@ $(document).ready(function() {
 								<div class="col-lg-3 col-md-4 col-sm-6" style="float: left;">
 									<div class="featured__item">
 										<div class="featured__item__pic set-bg"
-											data-setbg="/displayImage?filePath=${cate.main_img}">
-											<ul class="featured__item__pic__hover">
-												<li><a href="#"><i class="fa fa-heart"></i></a></li>
-												<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-												<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-											</ul>
+											data-setbg="/displayImage?filePath=${cate.main_img}" onclick="location.href='/hobby/content/${cate.hobby_no}';" style="cursor: pointer;">
 										</div>
 										<div class="featured__item__text">
 											<h6>
-												<a class="short" href="/hobby/content/${cate.hobby_no}">${cate.hobby_title}</a>
+												<a class="short col-10" style="margin-left: 25px" href="/hobby/content/${cate.hobby_no}">${cate.hobby_title}</a>
 											</h6>
 											<h5><a class="short" href="/workroom/main/${cate.user_id}">${cate.user_nick}</a></h5>
 										</div>

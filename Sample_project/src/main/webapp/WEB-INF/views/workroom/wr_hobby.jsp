@@ -61,11 +61,6 @@ $(document).ready(function() {
 				<div class="featured__item">
 					<div class="featured__item__pic set-bg"
 						data-setbg="/displayImage?filePath=${hobbyVo.main_img}">
-						<ul class="featured__item__pic__hover">
-							<li><a href="#"><i class="fa fa-heart"></i></a></li>
-							<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-							<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-						</ul>
 					</div>
 					<div class="featured__item__text">
 						<h6>
@@ -105,6 +100,50 @@ $(document).ready(function() {
 		</div>
 	</div>
 </div>
+<c:if test="${msgDelete == 'success'}">
+      <script>
+      Swal.fire({
+         icon : "success",
+         title : "삭제 성공",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+       confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
+<c:if test="${msgDelete == 'fail'}">
+      <script>
+      Swal.fire({
+         icon : "error",
+         title : "삭제 실패",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+       confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
+<c:if test="${msgInsert == 'success'}">
+      <script>
+      Swal.fire({
+         icon : "success",
+         title : "등록 성공",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+       confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
+<c:if test="${msgInsert == 'fail'}">
+      <script>
+      Swal.fire({
+         icon : "error",
+         title : "등록 실패",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+       confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
 <div class="col-md-2"></div>
 </div>
 </div>

@@ -3,6 +3,7 @@ package com.dp.ggomjirak.jh.service;
 import java.util.List;
 
 import com.dp.ggomjirak.vo.CateStrVo;
+import com.dp.ggomjirak.vo.LoginTimeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -21,6 +22,10 @@ public interface ManagerService {
 	public String selectGradeById(String user_id);
 	public MemberActivVo selectMemberActivById(String user_id);
 	public String selectMemberIntroById(String user_id);
+	public LoginTimeVo selectLoginTime(String user_id);
+	public int getCountLoginTime(String user_id);
+	public int getContentCnt(String user_id);
+	public int getQnACnt(String user_id);
 	
 	
 	public void updateMember(MemberVo memberVo, WorkroomVo workroomVo);
@@ -34,8 +39,10 @@ public interface ManagerService {
 	
 	public int getCountManager(PagingDto pagingDto);
 	
+	
 	// 메인
 	public List<MemberVo> selectPopularMemberList();
 	public int getMemberCount();
 	public List<Integer> getAllUserGrade();
+	public List<Integer> getAllLoginTime();
 }

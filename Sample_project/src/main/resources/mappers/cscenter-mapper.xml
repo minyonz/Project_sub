@@ -47,7 +47,7 @@
 		select qna_no, title, to_char(save_time, 'yyyy-mm-dd hh24:mi') as save_time, 
  			   case nvl(to_char(a_no), '0') when '0' then '답변미완료' else '답변완료' end  as "a_state" 
  		  from tbl_QnA 
- 		 where user_id = #{userID} and is_del = 'N'
+ 		 where qna_type='Q' and user_id = #{userID} and is_del = 'N'
  		order by save_time desc
 	</select>
 	
@@ -65,7 +65,7 @@
 		    	left join tbl_memberdetail d on q.user_id = d.user_id
 		    	left join tbl_QnA a on q.a_no = a.qna_no
 		    	left join tbl_manager_member e on a.user_id = e.user_id
-		where q.qna_no= #{qna_no}
+		where q.qna_no= #{qna_no} and q.is_del = 'N'
 	</select>
 
 	

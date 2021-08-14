@@ -54,7 +54,6 @@ public class FollowDaoImpl implements FollowDao{
 	@Override
 	public int countFollower(String user_id) {
 		int count = sqlSession.selectOne(NAMESPACE + "countFollower", user_id);
-		System.out.println("daoCount:" + count);
 		return count;
 	}
 

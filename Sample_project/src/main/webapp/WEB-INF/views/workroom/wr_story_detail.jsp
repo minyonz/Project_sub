@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/header.jsp"%>
 <%@ include file="../include/workroomSide.jsp"%>
 <!-- 스토리 상세 폼 -->
@@ -40,7 +41,13 @@ $(document).ready(function() {
 							commentHtml += "	<div class='col-md-10'>";
 							commentHtml += "		<div class='blog__details__author'>";
 							commentHtml += "			<div class='blog__details__author__pic'>";
-							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'><img src='/displayImage?filePath=" + this.user_img + "' alt=''></a></div>"
+							commentHtml += "				<a href='/workroom/main/" + this.user_id + "'>";
+							if (this.user_img != null) {
+								commentHtml += "<img src='/displayImage?filePath=" + this.user_img + "' alt='profile'>";
+							} else {
+								commentHtml += "<img src='/resources/img/noprofile.png' alt='profile'>";
+							}
+							commentHtml += "</a></div>";
 							commentHtml += "					<div class='blog__details__author__text'>";
 							commentHtml += "						<h6>" + this.user_nick + " " + changeDateString(this.reg_date) + "</h6>";
 							commentHtml += "							<span class='st_c_content'>" + this.st_c_content + "</span></div></div></div>";
@@ -123,15 +130,6 @@ $(document).ready(function() {
 		}
 	});
 	
-	// 답글
-	$("#commentReply").click(function(e) {
-		e.preventDefault();
-// 		console.log("답글클릭함");
-// 		$("#span").html("<div class='row'><div class='col-md-10'>" + 
-// 		"<textarea class='form-control' style='height:50px; resize:none;'></textarea></div>" + 
-// 		"<div class='col-md-2'><button type='button' style='width:50px; height:30px' class='site-btn' id='btnInsert'>입력</button></div></div>");
-	});
-	
 	// 좋아요 유지
 	if ("${likeCheck}" == 1) {
 		$("#like").attr("class", "fa fa-heart");
@@ -156,9 +154,13 @@ $(document).ready(function() {
 		});
 	});
 	
+	// 공백, 띄어쓰기
+	var str = $("#content").text();
+	str = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+	$("#content").html(str);
+	
 });
 </script>
-<!-- 간단 카드 보여주기 -->
 <div class="col-md-9">
 	<div class="checkout__order">
 		<div class="workroom_box row" style="height: 39px;">
@@ -166,9 +168,9 @@ $(document).ready(function() {
 		</div>
 		<hr>
 		<div style="text-align: right">
-			<p>${storyVo.reg_date}</p>
+		<p><fmt:formatDate value="${storyVo.reg_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
 			<c:if test="${storyVo.mod_date != null}">
-				<p style="font-size:13px;">${storyVo.mod_date}(수정 됨)</p>
+			<p style="font-size:13px;"><fmt:formatDate value="${storyVo.mod_date}" pattern="yyyy-MM-dd HH:mm:ss"/>(수정됨)</p>
 			</c:if>
 		</div>
 		<div>
@@ -179,7 +181,7 @@ $(document).ready(function() {
 		</div>
 		<!-- 스토리 전체 내용 -->
 		<div style="margin: 50px">
-			<p>${storyVo.st_content}</p>
+			<p id="content">${storyVo.st_content}</p>
 			<hr>
 			<div class="row">
 				<div class="col-md-9">
@@ -219,10 +221,19 @@ $(document).ready(function() {
 						<div class="col-md-10">
 							<div class="blog__details__author">
 								<div class="blog__details__author__pic">
-									<a href="/workroom/main/${commentVo.user_id}"><img src="/displayImage?filePath=${commentVo.user_img}" alt=""></a>
+									<a href="/workroom/main/${commentVo.user_id}">
+									<c:choose>
+										<c:when test="${commentVo.user_img != null}">
+											<img src="/displayImage?filePath=${commentVo.user_img}" alt="profile">								
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/img/noprofile.png" alt="profile">	
+										</c:otherwise>
+									</c:choose>
+									</a>
 								</div>
 								<div class="blog__details__author__text">
-									<h6>${commentVo.user_nick} ${commentVo.reg_date}</h6>
+									<h6>${commentVo.user_nick}  <fmt:formatDate value="${commentVo.reg_date}" pattern="yyyy-MM-dd HH:mm:ss"/></h6>
 									<span class="st_c_content">${commentVo.st_c_content}</span>
 								</div>
 							</div>
@@ -274,7 +285,8 @@ function changeDateString(timeStamp) {
 	var date = make2digits(d.getDate());
 	var hour = make2digits(d.getHours());
 	var minute = make2digits(d.getMinutes());
-	return year + "-" + month + "-" + date + "  " + hour + ":" + minute;
+	var second = make2digits(d.getSeconds());
+	return year + "-" + month + "-" + date + "  " + hour + ":" + minute + ":" + second;
 }
 
 function doDelete() {

@@ -39,19 +39,7 @@ public class FollowServiceImpl implements FollowService {
 		}
 		return false;
 	}
-
-//	@Transactional
-//	@Override
-//	public boolean unFollow(FollowVo followVo) {
-//		int count = followDao.checkFollow(followVo);
-//		if (count > 0) {
-//			followDao.deleteFollow(followVo);
-//			followDao.updateFollower(followVo.getFollowing(), -1);
-//			return true;
-//		}
-//		return false;
-//	}
-
+	
 	@Override
 	public int countFollower(String user_id) {
 		int countFollow = followDao.countFollower(user_id);

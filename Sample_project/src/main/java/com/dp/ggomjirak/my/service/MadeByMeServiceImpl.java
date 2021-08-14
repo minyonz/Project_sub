@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.dp.ggomjirak.my.dao.MadeByMeDao;
 import com.dp.ggomjirak.vo.HobbyVo;
 import com.dp.ggomjirak.vo.MadeByMeVo;
+import com.dp.ggomjirak.yj.dao.HobbyDao;
 
 @Service
 public class MadeByMeServiceImpl implements MadeByMeService {
@@ -17,9 +18,13 @@ public class MadeByMeServiceImpl implements MadeByMeService {
 	@Inject
 	MadeByMeDao madebymeDao;
 	
+	@Inject
+	HobbyDao hobbyDao;
+	
 	@Override
 	public void mbmWrite(MadeByMeVo madebymeVo) {
 		madebymeDao.insertMbm(madebymeVo);
+		hobbyDao.updateMbmCnt(madebymeVo.getHobby_no(), 1);
 	}
 
 	@Override
@@ -78,6 +83,7 @@ public class MadeByMeServiceImpl implements MadeByMeService {
 	@Override
 	public void deleteMbm(int mbm_no, int hobby_no) {
 		madebymeDao.deleteMbm(mbm_no, hobby_no);
+		hobbyDao.updateMbmCnt(hobby_no, -1);
 	}
 
 

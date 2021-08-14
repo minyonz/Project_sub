@@ -10,10 +10,10 @@
 <!-- </body> -->
 <script>
 $(document).ready(function() {
-// 	var msg = "${msg}";
-// 	if (msg == "success") {
-// 		alert("글 등록 완료");
-// 	}
+	var msg = "${msg}";
+	if (msg == "wirteRun_success") {
+		alert("1:1 문의 접수 완료");
+	}
 	
 // 	var msgDelete = "${msgDelete}";
 // 	if (msgDelete == "success") {
@@ -55,9 +55,9 @@ $(document).ready(function() {
 	<input type="hidden" name="qna_no"/>
 	<input type="hidden" name="user_id"/>
 </form>
-${list}
+<%-- ${list} --%>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -69,15 +69,22 @@ ${list}
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="../mypage/mypage_include/mypage_left.jsp"%>
+						<%@ include file="../include/mypageSide.jsp"%>
 					</div>
 					<div class="col-md-9">
-						<ul class="nav" >
+						
+						<div class="checkout__order">
+							<div class="workroom_box row" style="height: 39px; display:flex;">
+							<h4>1:1 문의 게시판</h4>
+								<a href="/cs_center/consultQs" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+							</div>
+						<!-- <hr> -->
+						<ul class="nav" style="float: right" >
 							<li class="nav-item"><a class="nav-link active" href="/cs_center/consultQs">1:1 문의하기</a></li>
 							<li class="nav-item"><a class="nav-link" href="/cs_center/consultList">나의 질문과 답변보기</a></li>
 						</ul>
-						
-						<table class="table">
+						<table class="table" style="word-break:break-all">
+						<!-- <table class="table" border=0 cellpadding=0 cellspacing=10 style="table-layout:fixed"> -->
 							<thead>
 								<tr>
 									<th>글제목</th>
@@ -87,17 +94,19 @@ ${list}
 								</tr>
 							</thead>
 							<tbody>
+							
 								<c:forEach var="qnAVo" items="${list}">
 									<tr>
 										<td>
 											<a class="a_title" href="#" qna_no="${qnAVo.qna_no}">${qnAVo.title}</a>
 										</td>
-										<td>${qnAVo.save_time}</td>
-										<td>${qnAVo.a_state}</td>
+										<td style="white-space:nowrap">${qnAVo.save_time}</td>
+										<td style="white-space:nowrap">${qnAVo.a_state}</td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
+					</div>
 					</div>
 				</div>
 				<!-- // 데이터 목록 -->

@@ -45,10 +45,16 @@
 								<div class="blog__details__author__pic row"
 									style="width: 100%; height: 100%;">
 									<a href="/workroom/main/${likebmVo.user_id}"
-										style="margin-left: auto; margin-right: auto;"> <img
-										src="/displayImage?filePath=${likebmVo.user_img}"
-										style="height: 30px; width: 30px;" alt=""> <span
-										class="st_c_content"
+										style="margin-left: auto; margin-right: auto;"> 
+										<c:choose>
+										<c:when test="${likebmVo.user_img != null}">
+											<img src="/displayImage?filePath=${likebmVo.user_img}" style="height: 30px; width: 30px;" alt="profile">
+										</c:when>
+										<c:otherwise>
+											<img src="/resources/img/noprofile.png" style="height: 30px; width: 30px;" alt="profile">
+										</c:otherwise>
+									</c:choose>
+										 <span class="st_c_content"
 										style="font-size: 14px; margin-top: 5px; margin-left: 5px;">${likebmVo.user_nick}</span>
 									</a>
 								</div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.dp.ggomjirak.jh.dao.MainDao;
 import com.dp.ggomjirak.vo.CateVo;
 import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.MadeByMeVo;
 import com.dp.ggomjirak.vo.MemberVo;
 import com.dp.ggomjirak.vo.PagingDto;
 
@@ -40,6 +41,12 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public List<HobbyVo> getMonthHobbyList() {
 		List<HobbyVo> list = mainDao.getMonthHobbyList();
+		return list;
+	}
+
+	@Override
+	public List<MadeByMeVo> getBestMadeList() {
+		List<MadeByMeVo> list = mainDao.getBestMadeList();
 		return list;
 	}
 
@@ -86,6 +93,12 @@ public class MainServiceImpl implements MainService {
 	}
 
 	@Override
+	public List<MadeByMeVo> searchMade(PagingDto pagingDto) {
+		List<MadeByMeVo> list = mainDao.searchMade(pagingDto);
+		return list;
+	}
+
+	@Override
 	public int getCountHobbySearch(PagingDto pagingDto) {
 		int count = mainDao.getCountHobbySearch(pagingDto);
 		return count;
@@ -94,6 +107,12 @@ public class MainServiceImpl implements MainService {
 	@Override
 	public int getCountMemberSearch(PagingDto pagingDto) {
 		int count = mainDao.getCountMemberSearch(pagingDto);
+		return count;
+	}
+
+	@Override
+	public int getCountMadeSearch(PagingDto pagingDto) {
+		int count = mainDao.getCountMadeSearch(pagingDto);
 		return count;
 	}
 	
@@ -133,6 +152,8 @@ public class MainServiceImpl implements MainService {
 		int count = mainDao.getCountHobbyCate(pagingDto);
 		return count;
 	}
+
+
 
 
 

@@ -16,4 +16,5 @@ public interface MessageDao {
 	public MessageVo readMessage(int msg_no);
 	public Timestamp getOpendate(int msg_no);
 	public boolean deleteMessage(int msg_no, String user_id);
+	public List<MessageVo> messageListSend(String msg_sender);
 }

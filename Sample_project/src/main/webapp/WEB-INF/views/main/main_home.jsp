@@ -16,32 +16,6 @@
 }
 </style>
 <!-- 배너 -->
-<script>
-$(".bookmark").on(click, function(e) {
-	e.preventDefault();
-	var hobby_no = $(this).attr("href");
-	console.log(hobby_no);
-	if(loginVo == "") {
-		return false;
-	}
-// 	var url = "/hobby/bookmark/" + hobby_no;
-// 	$.get(url, function(rData) {
-// 		console.log(rData);
-// 		if (rData == "bookmark") {
-// 			$(".bookmark > span:first-child").attr({
-// 				class : "fa fa-bookmark",
-// 				style : "color:#FFC300"
-// 			})
-// 		} else {
-// 			$(".bookmark > span:first-child").attr({
-// 				class : "fa fa-bookmark-o",
-// 				style : "color:white"
-// 			});
-// 		}
-// 	});
-
-});
-</script>
 <div class="row">
 	<div class="col-md-12" style="padding-bottom: 20px">
 	
@@ -100,7 +74,7 @@ $(".bookmark").on(click, function(e) {
 				</div>
 				
 				
-				<c:if test="${user_id != null} && ${cateStrVo.cate_no1 != '선택안함'} && ${cateStrVo.cate_no2 != '선택안함'} && ${cateStrVo.cate_no3 != '선택안함'}">
+				<c:if test="${user_id != null}">
 				<!-- 추천취미 -->
 				<div class="row" style="margin-top: 50px">
 					<div class="col-md-2">
@@ -134,14 +108,9 @@ $(".bookmark").on(click, function(e) {
 								<div class="featured__item">
 									<div class="featured__item__pic set-bg hobbyImg" data-setbg="/displayImage?filePath=${suggestHobby.main_img}"
 										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
 									</div>
 										<div class="featured__item__text">
-										<h6><a class="short" href="/hobby/content/${suggestHobby.hobby_no}">${suggestHobby.hobby_title}</a></h6>
+										<h6><a class="short_title col-8" href="/hobby/content/${suggestHobby.hobby_no}">${suggestHobby.hobby_title}</a></h6>
 										<h5><a class="short" href="/workroom/main/${suggestHobby.user_id}">${suggestHobby.user_nick}</a></h5>
 									</div>
 								</div>
@@ -174,13 +143,9 @@ $(".bookmark").on(click, function(e) {
 								<div class="featured__item">
 									<div class="featured__item__pic set-bg" data-setbg="/displayImage?filePath=${popular.main_img}"
 										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart" style="color: red"></i></a></li>
-											<li><a href="${popular.hobby_no}" class="bookmark"><i class="fa fa-bookmark" style="color: orange"></i></a></li>
-										</ul>
 									</div>
 										<div class="featured__item__text">
-										<h6><a class="short" href="/hobby/content/${popular.hobby_no}">${popular.hobby_title}</a></h6>
+										<h6><a class="short_title col-8" href="/hobby/content/${popular.hobby_no}">${popular.hobby_title}</a></h6>
 										<h5><a class="short" href="/workroom/main/${popular.user_id}">${popular.user_nick}</a></h5>
 									</div>
 								</div>
@@ -221,13 +186,19 @@ $(".bookmark").on(click, function(e) {
                 <div class="col-lg-2 col-md-4 col-sm-6 mix grade${member1.user_grade}">
                     <div class="featured__item">
                     
-                        <div class="featured__item__pic set-bg h-50" style="padding: 10px">
-                        <a href="/workroom/main/${member1.user_id}"><img src="/displayImage?fileName=${member1.user_img}" class="rounded-circle" alt="profilImage"/></a>
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
+                        <div class="featured__item__pic set-bg h-50" style="padding: 30px">
+                        <a href="/workroom/main/${member1.user_id}">
+                        <c:choose>
+                        <c:when test="${member1.user_img != null}">
+                        	<img src="/displayImage?filePath=${member1.user_img}" class="rounded-circle" alt="profileImage"/>
+                        </c:when>
+                        <c:otherwise>
+                        	<img src="/resources/img/noprofile.png" class="rounded-circle" alt="profileImage"/>
+                        </c:otherwise>
+                        </c:choose>
+                        
+                        
+                        </a>
                         </div>
                         <div class="featured__item__text">
                             <h6><a class="short" href="/workroom/main/${member1.user_id}">${member1.user_nick}</a></h6>
@@ -240,13 +211,17 @@ $(".bookmark").on(click, function(e) {
                 <div class="col-lg-2 col-md-4 col-sm-6 mix grade${member2.user_grade}">
                     <div class="featured__item">
                     
-                        <div class="featured__item__pic set-bg h-50" style="padding: 10px">
-                        <img src="/mypage/displayImage?fileName=${member2.user_img}" class="rounded-circle" alt="profilImage"/>
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
+                        <div class="featured__item__pic set-bg h-50" style="padding: 30px">
+                        <a href="/workroom/main/${member2.user_id}">
+                        <c:choose>
+                        <c:when test="${member2.user_img != null}">
+                        	<img src="/displayImage?filePath=${member2.user_img}" class="rounded-circle" alt="profileImage"/>
+                        </c:when>
+                        <c:otherwise>
+                        	<img src="/resources/img/noprofile.png" class="rounded-circle" alt="profileImage"/>
+                        </c:otherwise>
+                        </c:choose>
+                        </a>
                         </div>
                         <div class="featured__item__text">
                             <h6><a class="short" href="/workroom/main/${member2.user_id}">${member2.user_nick}</a></h6>
@@ -259,13 +234,17 @@ $(".bookmark").on(click, function(e) {
                 <div class="col-lg-2 col-md-4 col-sm-6 mix grade${member3.user_grade}">
                     <div class="featured__item">
                     
-                        <div class="featured__item__pic set-bg h-50" style="padding: 10px">
-                        <a href="/workroom/main/${member3.user_id}"><img src="/displayImage?fileName=${member3.user_img}" class="rounded-circle" alt="profilImage"/></a>
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
+                        <div class="featured__item__pic set-bg h-50" style="padding: 30px">
+                        <a href="/workroom/main/${member3.user_id}">
+                        <c:choose>
+                        <c:when test="${member3.user_img != null}">
+                        	<img src="/displayImage?filePath=${member3.user_img}" class="rounded-circle" alt="profileImage"/>
+                        </c:when>
+                        <c:otherwise>
+                        	<img src="/resources/img/noprofile.png" class="rounded-circle" alt="profileImage"/>
+                        </c:otherwise>
+                        </c:choose>
+                        </a>
                         </div>
                         <div class="featured__item__text">
                             <h6><a class="short" href="/workroom/main/${member3.user_id}">${member3.user_nick}</a></h6>
@@ -278,13 +257,17 @@ $(".bookmark").on(click, function(e) {
                 <div class="col-lg-2 col-md-4 col-sm-6 mix grade${member4.user_grade}">
                     <div class="featured__item">
                     
-                        <div class="featured__item__pic set-bg h-50" style="padding: 10px">
-                        <a href="/workroom/main/${member4.user_id}"><img src="/mypage/displayImage?fileName=${member4.user_img}" class="rounded-circle" alt="profilImage"/></a>
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
+                        <div class="featured__item__pic set-bg h-50" style="padding: 30px">
+                        <a href="/workroom/main/${member4.user_id}">
+                        <c:choose>
+                        <c:when test="${member4.user_img != null}">
+                        	<img src="/displayImage?filePath=${member4.user_img}" class="rounded-circle" alt="profileImage"/>
+                        </c:when>
+                        <c:otherwise>
+                        	<img src="/resources/img/noprofile.png" class="rounded-circle" alt="profileImage"/>
+                        </c:otherwise>
+                        </c:choose>
+                        </a>
                         </div>
                         <div class="featured__item__text">
                             <h6><a class="short" href="/workroom/main/${member4.user_id}">${member4.user_nick}</a></h6>
@@ -314,55 +297,55 @@ $(".bookmark").on(click, function(e) {
 <!-- 인기 키워드 -->
 
 <div class="row" style="position: relative; top: -400px;">
-		<div class="col-md-12">
-			<div class="row">
-				<div class="col-md-2"> </div>
-				<div class="col-md-8">
-				<div style="display: flex;">
-						<h5>인기 키워드</h5>
-						<a href="/main/mainHobby?qCheck=0" type="button" class="btn-more"
-						style="margin-left: auto; margin-bottom: 20px">더보기</a>
-				</div>
+<!-- 		<div class="col-md-12"> -->
+<!-- 			<div class="row"> -->
+<!-- 				<div class="col-md-2"> </div> -->
+<!-- 				<div class="col-md-8"> -->
+<!-- 				<div style="display: flex;"> -->
+<!-- 						<h5>인기 키워드</h5> -->
+<!-- 						<a href="/main/mainHobby?qCheck=0" type="button" class="btn-more" -->
+<!-- 						style="margin-left: auto; margin-bottom: 20px">더보기</a> -->
+<!-- 				</div> -->
 					
 					
-				</div>
-				<div class="col-md-2"></div>
-			</div>
-			<div class="row green_background">
-				<div class="col-md-12">
-					<div class="row" style="padding: 20px">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
+<!-- 				</div> -->
+<!-- 				<div class="col-md-2"></div> -->
+<!-- 			</div> -->
+<!-- 			<div class="row green_background"> -->
+<!-- 				<div class="col-md-12"> -->
+<!-- 					<div class="row" style="padding: 20px"> -->
+<!-- 						<div class="col-md-2"></div> -->
+<!-- 						<div class="col-md-8"> -->
 						
-						<div>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
+<!-- 						<div> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
 							
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button>
-						</div>
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 							<button type="button" class="rounded-pill btn-light btn green_color" style="margin: 10px">키워드1</button> -->
+<!-- 						</div> -->
 						
-						</div>
-						<div class="col-md-2">
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+<!-- 						</div> -->
+<!-- 						<div class="col-md-2"> -->
+<!-- 						</div> -->
+<!-- 					</div> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
 	</div>
 
 <!-- 인기 키워드 끝 -->
@@ -393,14 +376,9 @@ $(".bookmark").on(click, function(e) {
 								<div class="featured__item">
 									<div class="featured__item__pic set-bg" data-setbg="/displayImage?filePath=${month.main_img}"
 										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
 									</div>
 										<div class="featured__item__text">
-										<h6><a class="short" href="/hobby/content/${month.hobby_no}">${month.hobby_title}</a></h6>
+										<h6><a class="short_title col-8" href="/hobby/content/${month.hobby_no}">${month.hobby_title}</a></h6>
 										<h5><a class="short" href="/workroom/main/${month.user_id}">${month.user_nick}</a></h5>
 									</div>
 								</div>
@@ -426,80 +404,19 @@ $(".bookmark").on(click, function(e) {
 
 							<div class="categories__slider owl-carousel">
 
+								<c:forEach var="made" items="${bestMade}">
 								<div class="featured__item">
-									<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-1.jpg"
+									<div class="featured__item__pic set-bg" data-setbg="/displayImage?filePath=${made.mbm_img}"
 										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
 									</div>
 										<div class="featured__item__text">
-										<h6><a href="#">제목1</a></h6>
-										<h5>작가1</h5>
+										<h6><a class="short_title col-8" href="/mbm/detail/user_id=${made.user_id}?hobby_no=${made.hobby_no}&mbm_no=${made.mbm_no}">${made.mbm_content}</a></h6>
+										<h5><a class="short" href="/workroom/main/${made.user_id}">${made.user_nick}</a></h5>
 									</div>
 								</div>
+								</c:forEach>
 
-								<div class="featured__item">
-									<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-2.jpg"
-										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
-									</div>
-										<div class="featured__item__text">
-										<h6><a href="#">제목2</a></h6>
-										<h5>작가2</h5>
-									</div>
-								</div>
-
-								<div class="featured__item">
-									<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-3.jpg"
-										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
-									</div>
-										<div class="featured__item__text">
-										<h6><a href="#">제목3</a></h6>
-										<h5>작가3</h5>
-									</div>
-								</div>
-
-								<div class="featured__item">
-									<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-4.jpg"
-										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
-									</div>
-										<div class="featured__item__text">
-										<h6><a href="#">제목4</a></h6>
-										<h5>작가4</h5>
-									</div>
-								</div>
-
-								<div class="featured__item">
-									<div class="featured__item__pic set-bg" data-setbg="/resources/img/featured/feature-5.jpg"
-										style="margin-left: 10px; margin-right: 10px">
-										<ul class="featured__item__pic__hover">
-											<li><a href="#"><i class="fa fa-heart"></i></a></li>
-											<li><a href="#"><i class="fa fa-retweet"></i></a></li>
-											<li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
-										</ul>
-									</div>
-										<div class="featured__item__text">
-										<h6><a href="#">제목5</a></h6>
-										<h5>작가5</h5>
-									</div>
-								</div>
+								
 							</div>
 						</div>
 					</div>
@@ -515,78 +432,52 @@ $(".bookmark").on(click, function(e) {
 
 
 </div>			
-	<!-- Footer-->
-	<footer class="py-5 bg-dark"  style="position: relative; top: -350px;">
-		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2021</p>
-		</div>
-	</footer>
 	<!-- Bootstrap core JS-->
 <!-- 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script> -->
 	<!-- Core theme JS-->
 	<script src="/resources/js/scripts.js"></script>
 	    <!-- Footer Section Begin -->
-    <footer class="footer spad" style="position: relative; top: -350px;">
+    <footer class="footer spad bg-dark" style="position: relative; top: -350px;">
         <div class="container" >
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="/resources/img/logo.png" alt=""></a>
+                            <a href="/main/mainHome"><img src="/resources/img/logo_h_w.png" alt="logo"></a>
                         </div>
-                        <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
-                        </ul>
+                        
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6>Useful Links</h6>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="">
+                        <h6 class="text-white font-weight-bold">About Us</h6><br/>
+                        <ul style="list-style:none;">
+                            <li class="text-white">Team Name: 개발자국</li>
+                            <li class="text-white">Project Name: 꼼지락</li>
                         </ul>
-                        <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
-                        </ul>
+                       
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget" >
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
-                        </form>
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
+                <div class="col-lg-5 col-md-12">
+                    <div class="" >
+                        <h6 class="text-white font-weight-bold">Team Member</h6><br/>
+                        <ul style="list-style:none; margin-bottom: 20px">
+                            <li class="text-white">김태연 : kty1788@nate.com</li>
+                            <li class="text-white">서지효 : wlgyjam@gmail.com</li>
+                            <li class="text-white">김민영 : als543413@gmail.com</li>
+                            <li class="text-white">하윤지 : ijnooyah@gmail.com</li>
+                        </ul>
+                        
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <div class="footer__copyright__text text-white"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;2021 Created By Dogprint
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="/resources/img/payment-item.png" alt=""></div>
+                        
                     </div>
                 </div>
             </div>

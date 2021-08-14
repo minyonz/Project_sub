@@ -3,6 +3,7 @@ package com.dp.ggomjirak.my.dao;
 import java.util.List;
 
 import com.dp.ggomjirak.vo.FollowVo;
+import com.dp.ggomjirak.vo.LikeBookmarkVo;
 import com.dp.ggomjirak.vo.WorkroomVo;
 
 public interface WorkroomSetDao {
@@ -14,5 +15,5 @@ public interface WorkroomSetDao {
 	// 팔로잉 목록
 	public List<FollowVo> followingList(String follower);
 	// 좋아요 목록
-	public List<LikeBookmarkDao> likeList(String user_id);
+	public List<LikeBookmarkVo> likeList(String user_id);
 }

@@ -50,6 +50,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var user_id = $(this).attr("data-id");
+		var pCheck = $("#frmPaging").attr("action");
+		$("#frmPaging > input[name=pCheck]").val(pCheck);
 		$("#frmPaging > input[name=user_id]").val(user_id);
 		$("#frmPaging").attr("action", "/manager/managerMemberContent");
 		$("#frmPaging").submit();
@@ -63,6 +65,7 @@ $(document).ready(function() {
 <input type="hidden" name="searchType" value="${pagingDto.searchType}"/>
 <input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
 <input type="hidden" name="user_id" value="${pagingDto.user_id}"/>
+<input type="hidden" name="pCheck" value="${pagingDto.pCheck}"/>
 </form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -77,7 +80,8 @@ $(document).ready(function() {
 		    <div class="col-lg-2 col-md-3 mb-3">	    		  
 				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
 						id="btnSearchType" data-toggle="dropdown">
-							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == ""}'>옵션 선택</c:if>
+							<c:if test='${pagingDto.searchType == null}'>옵션 선택</c:if>
 							<c:if test='${pagingDto.searchType == "i"}'>아이디</c:if>
 							<c:if test='${pagingDto.searchType == "n"}'>닉네임</c:if>
 							<c:if test='${pagingDto.searchType == "m"}'>이름</c:if>
@@ -150,7 +154,7 @@ $(document).ready(function() {
 						<tr>
 							<td>${leaveList.rnum}</td>
 							<td>${leaveList.user_name}</td>
-							<td><a id="a_id" href="/manager/managerMemberContent?user_id=${leaveList.user_id}">${leaveList.user_id}</a></td>
+							<td><a class="a_id" href="#" data-id="${leaveList.user_id}">${leaveList.user_id}</a></td>
 							<td>${leaveList.user_pw}</td>
 							<td>${leaveList.user_email}</td>
 							<td>${leaveList.user_tel}</td>

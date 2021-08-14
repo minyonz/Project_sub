@@ -50,9 +50,23 @@ $(document).ready(function() {
 		e.preventDefault();
 		
 		var user_id = $(this).attr("data-id");
+		var pCheck = $("#frmPaging").attr("action");
+		$("#frmPaging > input[name=pCheck]").val(pCheck);
 		$("#frmPaging > input[name=user_id]").val(user_id);
 		$("#frmPaging").attr("action", "/manager/managerMemberContent");
 		$("#frmPaging").submit();
+	});
+	
+	$(".btnDelete").click(function(e) {
+		e.preventDefault
+		var user_id = $(this).attr("data-id");
+		var result = confirm( user_id + "님을 관리자에서 취소하시겠습니까?");
+		if(result){
+			var user_id = $(this).attr("data-id");
+		    $(this).attr("href", "/manager/managerDeleteManager?user_id=" + user_id);
+		}else{
+		    return false;
+		}
 	});
 });
 </script>
@@ -63,6 +77,7 @@ $(document).ready(function() {
 <input type="hidden" name="searchType" value="${pagingDto.searchType}"/>
 <input type="hidden" name="keyword" value="${pagingDto.keyword}"/>
 <input type="hidden" name="user_id" value="${pagingDto.user_id}"/>
+<input type="hidden" name="pCheck" value="${pagingDto.pCheck}"/>
 </form>
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -79,7 +94,8 @@ $(document).ready(function() {
 		    <div class="col-lg-2 col-md-3 mb-3">	    		  
 				  <button class="form-control btn btn-success green_background dropdown-toggle" type="button"
 						id="btnSearchType" data-toggle="dropdown">
-							<c:if test='${pagingDto.searchType == null}'>옵션선택</c:if>
+							<c:if test='${pagingDto.searchType == null}'>옵션 선택</c:if>
+							<c:if test='${pagingDto.searchType == ""}'>옵션 선택</c:if>
 							<c:if test='${pagingDto.searchType == "i"}'>아이디</c:if>
 							<c:if test='${pagingDto.searchType == "m"}'>이름</c:if>
 							<c:if test='${pagingDto.searchType == "im"}'>아이디 + 이름</c:if>
@@ -141,15 +157,12 @@ $(document).ready(function() {
 						<tr>
 							<td>${manager.m_no}</td>
 							<td>${manager.user_name}</td>
-							<td><a id="a_id" href="/manager/managerMemberContent?user_id=${manager.user_id}">${manager.user_id}</a></td>
+							<td><a class="a_id" href="#" data-id="${manager.user_id}">${manager.user_id}</a></td>
 							<td>${manager.m_autority}</td>
 							<td>${manager.m_nik}</td>
 							<td>${manager.m_reg_date}</td>
 							<td>
-								<form action="/manager/managerDeleteManager" method="post">
-									<button type="submit" class="btn btn-danger orange_background">취소</button>
-									<input type="hidden" id="user_id" name="user_id" value="${manager.user_id}">
-								</form>
+									<a type="submit" class="btnDelete btn btn-danger orange_background" data-id="${manager.user_id}">취소</a>
 							</td>
 						</tr>
 					</c:forEach>

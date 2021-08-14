@@ -17,7 +17,11 @@ public class MyFileUploadUtil {
 //	public static String rootPath;
 //	public static String serverUploadPath_Profile = "profile";
 	
-	public static String serverFilePath = "//192.168.0.217/ggomjirak/";
+
+	//public static String serverFilePath = "//192.168.0.217/ggomjirak/";
+
+	//public static String serverFilePath = "//C:/upload/ggomjirak/";
+	public static String serverFilePath = "D:/ggomjirak/";
 	public static String serverUploadPath_Profile = "profile";
 	
 	public static String uploadFile(String uploadPath, String originalFilename, byte[] fileData) throws Exception {
@@ -27,12 +31,13 @@ public class MyFileUploadUtil {
 		
 		UUID uuid = UUID.randomUUID(); // 중복되지 않는 고유한 값
 		// D:/upload/2021/6/30/uuid_noname.png
-		//String filePath = datePath + "/" + uuid + "_" + originalFilename;
-		String filePath = serverFilePath + datePath + "/" + uuid + "_" + originalFilename;
+		String filePath = datePath + "/" + uuid + "_" + originalFilename;
+		//String filePath = serverFilePath + datePath + "/" + uuid + "_" + originalFilename;
 		System.out.println("fullfilePath:" + filePath);
 		File target = new File(filePath);
+		
 		FileCopyUtils.copy(fileData, target);
-
+		System.out.println("FileCopyUtils.copy(fileData, target); 실행됨...");
 		boolean isImage = isImage(filePath);
 		if (isImage) {
 			// 썸네일 이미지
@@ -53,7 +58,7 @@ public class MyFileUploadUtil {
 		String datePath = uploadPath + "/" + dateString;
 		//String datePath = serverFilePath + uploadPath + "/" + dateString;
 		// -> D:/upload/2021/6/30
-		System.out.println("3 datePath: " + datePath);
+		//System.out.println("datePath: " + datePath);
 
 		File f = new File(datePath);
 		if (!f.exists()) {

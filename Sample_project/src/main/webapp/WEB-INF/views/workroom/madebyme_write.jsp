@@ -57,7 +57,14 @@ $(document).ready(function() {
 		}
 	});
 	
-	
+	$("#btnCancel").click(function() {
+		var result = confirm("작성을 취소하시겠습니까?");
+		if(result){
+			location.href = "/hobby/content/${hobbyVo.hobby_no}";
+		}else{
+		    return false;
+		}
+	});
 
 });
 </script>
@@ -104,7 +111,7 @@ $(document).ready(function() {
 							<label class="mbmImg_label" for="mbm_file"
 								style="border: 1px solid #e1e1e1; width: 200px; height: 200px; overflow: hidden;">
 								<img id="previewImg_mbm" class="previewImg_compl"
-								src="${contextPath}/resources/images/preview_img.jpg"
+								src="${contextPath}/resources/images/preview_img.png"
 								style="width: 100%; height: 100%; cursor: pointer; object-fit: cover;">
 							</label> <input type="file" class="mbm_file" id="mbm_file"
 								accept=".gif, .jpg, .png" onchange="previewMbmImg(this);"
@@ -146,7 +153,7 @@ $(document).ready(function() {
 						<textarea placeholder="후기를 작성해 주세요." name="mbm_content"
 							id="mbm_content"></textarea>
 						<button type="button" onclick="doSubmit();" class="site-btn">등록</button>
-						<a href="/hobby/content/${hobbyVo.hobby_no}" class="btn-cancle">취소</a>
+						<a href="/hobby/content/${hobbyVo.hobby_no}" class="btn-cancle" id="btnCancel">취소</a>
 					</div>
 				</form>
 			</div>
@@ -214,7 +221,7 @@ function delMbmImg() {
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#mbm_img").val("");
-			$("#previewImg_mbm").attr("src", "${contextPath}/resources/images/preview_img.jpg");
+			$("#previewImg_mbm").attr("src", "${contextPath}/resources/images/preview_img.png");
 			$("#btnDelMbmImg").css("display", "none");
 		}
 	})
@@ -224,7 +231,7 @@ function validate() {
 	// 내용 입력 X
 	var mbm_content = $("#mbm_content").val();
 	if (typeof mbm_content == "undefined" || mbm_content.trim() == "" || mbm_content ==  null) {
-		$("#msg").text("스토리 내용을 입력해 주세요.");
+		$("#msg").text("내용을 작성해 주세요.");
 		$("#msg").attr("style", "color:#FF5454; font-weight: bold");
 		$("#mbm_content").focus();
 		return false;

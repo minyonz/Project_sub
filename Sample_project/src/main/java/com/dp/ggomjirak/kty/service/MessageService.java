@@ -13,5 +13,6 @@ public interface MessageService {
 	public List<MessageVo> messageListReceive(String msg_receiver);
 	public MessageVo messageRead(int msg_no, String user_id);
 	public boolean deleteMessage(int msg_no, String user_id);
+	public List<MessageVo> messageListSend(String msg_sender);
 	
 }

@@ -91,6 +91,7 @@ $(document).ready(function(){
 				//이미지인 경우
 				if(isImage(fileName)){
 					//img.attr("src", "http://localhost/mypage/displayImage?fileName=" + receivedData);
+					//img.attr("src", "/mypage/displayImage?fileName=" + receivedData);
 					img.attr("src", "/mypage/displayImage?fileName=" + receivedData);
 					console.log("receivedData: " + receivedData);
 				}
@@ -111,7 +112,7 @@ $(document).ready(function(){
 		console.log("클릭");
 		var fileName = $(this).attr("href");
 		console.log(fileName);
-		var url = "/deleteFile?fileName=" + fileName;
+		var url = "/mypage/deleteFile?fileName=" + fileName;
 		$.get(url, function(rData){
 			if(rData == "success"){
 				that.parent().remove();
@@ -300,40 +301,7 @@ $(document).ready(function(){
 </script>
 <%-- ${memberVo} --%>
 <%-- ${cates} --%>
-<!-- 파일 업로드 안내 모달-->
-<!-- <div class="container-fluid"> -->
-<!-- 	<div class="row"> -->
-<!-- 		<div class="col-md-12"> -->
-<!-- 			<a id="modal-167712" href="#modal-container-167712" role="button" -->
-<!-- 				class="btn" data-toggle="modal" style="">Launch demo modal</a> -->
-
-<!-- 			<div class="modal fade" id="modal-container-167712" role="dialog" -->
-<!-- 				aria-labelledby="myModalLabel" aria-hidden="true"> -->
-<!-- 				<div class="modal-dialog" role="document"> -->
-<!-- 					<div class="modal-content"> -->
-<!-- 						<div class="modal-header"> -->
-<!-- 							<h5 class="modal-title" id="myModalLabel">파일 처리</h5> -->
-<!-- 							<button type="button" class="close" data-dismiss="modal"> -->
-<!-- 								<span aria-hidden="true">×</span> -->
-<!-- 							</button> -->
-<!-- 						</div> -->
-<!-- 						<div class="modal-body">파일을 업로드하는 중입니다...</div> -->
-<!-- 						<div class="modal-footer"> -->
-<!-- 							<button type="button" class="btn btn-primary">Save changes</button> -->
-<!-- 							<button type="button" class="btn btn-secondary"	data-dismiss="modal">닫기</button> -->
-<!-- 						</div> -->
-<!-- 					</div> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
-<!-- </div> -->
-<!-- <head> -->
-<!-- <meta charset="UTF-8"> -->
-<!-- <title>프로필 정보</title> -->
-<!-- </head> -->
-<!-- <body> -->
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -345,67 +313,84 @@ $(document).ready(function(){
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="mypage_include/mypage_left.jsp"%>
+						<%@ include file="../include/mypageSide.jsp"%>
 					</div>
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<!-- 내부 패널 메인 -->
-						<form role="form" id="frmMemberProfile" action="/mypage/modifyProfileRun" method="post" enctype="multipart/form-data">
-							<input type="hidden" id="user_id" name="user_id" value="${memberVo.user_id}"/> 
-							<input type="hidden" id="cate_no1" name="cate_no1" value="${memberVo.cate_no1}"/> 
-							<input type="hidden" id="cate_no2" name="cate_no2" value="${memberVo.cate_no2}"/> 
-							<input type="hidden" id="cate_no3" name="cate_no3" value="${memberVo.cate_no3}"/> 
-							
+					<form role="form" id="frmMemberProfile" action="/mypage/modifyProfileRun" method="post" enctype="multipart/form-data">
+						<input type="hidden" id="user_id" name="user_id" value="${memberVo.user_id}"/> 
+						<input type="hidden" id="cate_no1" name="cate_no1" value="${memberVo.cate_no1}"/> 
+						<input type="hidden" id="cate_no2" name="cate_no2" value="${memberVo.cate_no2}"/> 
+						<input type="hidden" id="cate_no3" name="cate_no3" value="${memberVo.cate_no3}"/> 
+					
+<!-- 				<div class="workroom_box row" style="height: 30px; display:flex;">
+						<h4>프로필 만들기</h4>
+						<a href="/mypage/profileForm" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+					</div> -->
+					<div class="checkout__order">
+					<div class="workroom_box row" style="height: 39px; display:flex;">
+						<h4>프로필 만들기</h4>
+						<a href="/mypage/profileForm" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+					</div>
+					<hr>
+						<!-- 유저 카드 프로필 -->
+<%-- 						<div class="box" style="margin: 12px auto;">
+							<a href="/workroom/main/${page_id}">
+							<img class="profile" src="/displayImage?filePath=${memberInfo.user_img}"
+								alt="profile image" style="width: 100%; text-align: center"></a>
+						</div> --%>
+						<div style="display: flex; justify-content: center;">
+	
+	
+						</div>
+						<div style="text-align: left;">
 							<div class="form-group">
-								<label for="user_nick">닉네임</label> 
-								<input type="text" class="form-control" id="user_nick" name="user_nick" 
-									value="${memberVo.user_nick}"/> 
-								<br/>
-								<button type="button" class="btn btn-small btn-danger"
-									id="btnCheckDupNick">닉네임 중복 확인</button>
-								<span id="checkDupNickResult"></span>
-							</div>
-							
-						<div class="form-group">
-							<label for="exampleInputFile">프로필 이미지</label> 
-							<%-- <img height = "100" id="user_img" name="user_img" 
-							src="http://localhost/mypage/displayImage?fileName=${memberVo.user_img}" class ="img-rounded"/> --%>
-							<img height= "100" id="user_img" name="user_img" 
-							src="/mypage/displayImage?fileName=${memberVo.user_img}" class ="img-rounded"/>
-						</div>
-						<!-- 첨부 파일  -->
-						<div class="form-group">
-							<label for="exampleInputFile">프로필 이미지</label> 
-							<!-- <input type="file"/> -->
-								<label>첨부할 파일을 드래그 &amp; 드롭하세요.</label>
-							<div id="fileDrop"></div>
-						</div>
-<!-- 						<div class="form-group"> -->
-
-						<!-- 상단 폼전송 클릭에서 맞추는 부분 var div = $("#uploadedList .divUploaded");  -->
-						<div style ="display:none" class="divUploaded"> 
-							<img height="100" src="/resources/img/default_image.png" class="img-rounded"/><br>
-							<br>
-								<span>default</span> 
-								<a href = "#" class="a_times">&times;</a>
-						</div>
-						
-						
-						<div id="uploadedList">
-						
-						</div>
-<!-- 						<div class="sc-1xjzf4m-0 bXMjXX"></div> -->
-<!-- 						<div class="sc-1ov8bm8-2 dMXdMC">이미지를 여기로 끌어다 놓거나, 여기를 눌러 파일을 선택하세요.</div> -->
-<!-- 						<input type="file" accept="image/*" multiple="" class="sc-5d51x-0 gSOqCo"/></div> -->
-						<!-- // 첨부 파일  -->
-
-						<div class="form-group">
-							<label for="user_details">부가 정보</label>
-						</div>
-						<div class="form-group">
-							<label for="user_hobbys">관심 취미 선택</label>
-						</div>
-						<table>
+							<label for="user_nick">닉네임<img src="../resources/images/ico_required.gif" alt="필수" /></label>
+							<table>
 							<tr>
+								<td width="60%">
+								<input type="text" class="form-control" id="user_nick" name="user_nick" maxlength="20"
+									value="${memberVo.user_nick}" /> 
+								</td>
+								<td>
+									<button type="button" class="btn btn-sm btn-info"id="btnCheckDupNick">닉네임 중복 확인</button>
+								</td>
+							</tr>
+							</table>
+							<span id="checkDupNickResult"></span>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputFile">프로필 이미지</label> 
+								<%-- <img height = "100" id="user_img" name="user_img" 
+									src="http://localhost/mypage/displayImage?fileName=${memberVo.user_img}" class ="img-rounded"/> --%>
+								<img height= "100" id="user_img" name="user_img" 
+								src="/mypage/displayImage?fileName=${memberVo.user_img}" class ="img-rounded"/>
+							</div>
+							<!-- 첨부 파일  -->
+							<div class="form-group">
+								<!-- <label for="exampleInputFile">프로필 이미지</label>  -->
+								<!-- <input type="file"/> -->
+									<label>첨부할 파일을 드래그 &amp; 드롭하세요.</label>
+									<div id="fileDrop"></div>
+							</div>
+							<br>
+							<!-- <div class="form-group"> -->
+							<!-- 상단 폼전송 클릭에서 맞추는 부분 var div = $("#uploadedList .divUploaded");  -->
+							<div style ="display:none" class="divUploaded"> 
+								<img height="100" src="/resources/img/default_image.png" class="img-rounded"/><br>
+								<br>
+									<span>default</span> 
+									<a href = "#" class="a_times">&times;</a>
+							</div>
+							<div id="uploadedList">
+							
+							</div>
+							<br>
+							<div class="form-group">
+								<label for="user_hobbys">관심 취미 선택</label>
+							</div>
+							<table>
+								<tr>
 								<td>
 									<select	class="category1 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
@@ -418,8 +403,8 @@ $(document).ready(function(){
 									<option value="${memberVo.cate_no1}" >${memberVo.cate_name1}</option>
 								    </select>
 								</td>
-							</tr>
-							<tr>
+								</tr>
+								<tr>
 								<td>
 									<select	class="category3 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example" >
@@ -432,8 +417,8 @@ $(document).ready(function(){
 									<option value="${memberVo.cate_no2}">${memberVo.cate_name2}</option>
 								    </select>
 								</td>
-							</tr>
-							<tr>
+								</tr>
+								<tr>
 								<td>
 									<select	class="category5 form-control btn btn-outline-light green_background shadow bg-body rounded" 
 									        style="margin-right: 10px" aria-label="Default select example">
@@ -446,33 +431,34 @@ $(document).ready(function(){
 									<option value="${memberVo.cate_no3}">${memberVo.cate_name3}</option>
 								    </select>
 								</td>
-							</tr>
-						</table>
-							<br>
-							<br>
+								</tr>
+							</table>
+							<br><br>
 							<div class="form-group">
-								<label for="cate_etc">직접 입력</label>
+								<label for="cate_etc">관심 취미 직접 입력</label>
 								<input type="text" class="form-control" id="cate_etc" name="cate_etc" value="${memberVo.cate_etc}" />
 							</div>
-
-							<br><br>
-							
-						<!-- 상단 폼전송 클릭에서 맞추는 부분 var div = $("#uploadedList .divUploaded");  -->
-						<div style ="display:none" class="divUploaded"> 
+							<!-- <br><br>
+							상단 폼전송 클릭에서 맞추는 부분 var div = $("#uploadedList .divUploaded"); 
+							<div style ="display:none" class="divUploaded"> 
 							<img height = "100" src="/resources/img/default_image.png"
 								class ="img-rounded"/><br>
 								<span>default</span> 
 								<a href = "#" class="a_times">&times;</a>
-						</div>
-						
-						<div id ="uploadedList">
+							</div>
+							<div id ="uploadedList">
 							
+							</div> -->
+							<div style="text-align: center;">
+								<button type="submit" id="btnProfileSave"class="btn btn-primary">프로필 저장</button>
+							</div>
+							<br>
+							<br>
 						</div>
-						<div style="clear:both;">
-							<button type="submit" id="btnProfileSave" class="btn btn-primary">프로필 저장</button>
 						</div>
-						</form>
-						</div> <!-- </div class="row"> --> 
+					</form>
+					</div> <!-- </div class="col-md-6"> -->
+					<div class="col-md-1"></div>
 					</div> <!-- 내부 패널 메인  끝 -->
 				</div> 	<!-- 전체 페이지 메인 패널 끝 -->
 				<div class="col-md-2">

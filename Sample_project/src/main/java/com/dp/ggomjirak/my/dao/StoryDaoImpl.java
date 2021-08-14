@@ -22,7 +22,6 @@ public class StoryDaoImpl implements StoryDao{
 
 	@Override
 	public void insertStory(StoryVo storyVo) {
-		System.out.println("daoStoryVo:" + storyVo);
 		sqlSession.insert(NAMESPACE + "insertStory", storyVo);
 	}
 
@@ -100,7 +99,6 @@ public class StoryDaoImpl implements StoryDao{
 	@Override
 	public int likeAll(int st_no) {
 		int count = sqlSession.selectOne(NAMESPACE + "likeAll", st_no);
-		System.out.println("dao count:" + count);
 		return count;
 	}
 	

@@ -41,12 +41,14 @@
 			</choose>
 		        ) a
 		        left join tbl_main_event c on a.e_no = c.e_no
+		        <include refid="searchEvent"></include>
 		        order by a.e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
 	<!-- 글갯수 -->
 	<select id="getCountEventAll" resultType="int">
-		select count (*) from tbl_event
+		select count (*) from
+		(select * from tbl_event
 		 <choose>
 				<when test="qCheck == 1">
 				where is_del = 'N'
@@ -59,7 +61,8 @@
 				<when test="qCheck == 3">
 				where is_del = 'Y'
 				</when>
-			</choose>
+			</choose>)
+			<include refid="searchEvent"></include>
 	</select>
 
 	<!-- 이벤트 글 목록 (진행중) -->
@@ -173,6 +176,7 @@
 				</when>
 			</choose>
              	) a
+             	<include refid="searchEvent"></include>
                 order by e_no desc)
 		where rnum between #{startRow} and #{endRow}
 	</select>
@@ -189,7 +193,25 @@
 				and sysdate > end_date + 1
 				</when>
 			</choose>)
+			<include refid="searchEvent"></include>
 	</select>
+	
+		<sql id="searchEvent">
+		<if test="searchType != null">
+			<choose>
+				<when test='searchType == "t"'>
+					where e_title like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "u"'>
+					where user_id like '%' || #{keyword} || '%'
+				</when>
+				<when test='searchType == "tu"'>
+					where e_title like '%' || #{keyword} || '%'
+					or user_id like '%' || #{keyword} || '%'
+				</when>
+			</choose>
+		</if>
+	</sql>
 	
 
 </mapper>

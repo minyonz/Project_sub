@@ -94,9 +94,6 @@ public class WorkroomController {
 		storyPagingDto.setUser_id(page_id);
 		List<StoryVo> storyList = storyService.StoryList(storyPagingDto);
 		pagingDto.setUser_id(page_id);
-		
-		System.out.println("session:" + session);
-		
 		// 취미 목록
 		List<HobbyVo> hobbyList = workroomService.listHobby(pagingDto);
 		// 북마크 목록
@@ -122,9 +119,6 @@ public class WorkroomController {
 	// 취미
 	@RequestMapping(value="/hobby/{user_id}", method=RequestMethod.GET)
 	public String wrHobby(@PathVariable("user_id") String page_id, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
-//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-//		String user_id = memberVo.getUser_id();
-		// pagingDto값 받고 sesseion값으로 아이디 설정 후 넘겨줌
 		int count = workroomService.hobbyCount(page_id);
 		pagingDto.setCount(count);
 		pagingDto.setUser_id(page_id);
@@ -168,8 +162,6 @@ public class WorkroomController {
 	// 검색
 	@RequestMapping(value="/search/{user_id}", method=RequestMethod.GET)
 	public String wrSearch(@PathVariable("user_id") String page_id, String keyword, Model model, PagingDto pagingDto, HttpSession session) throws Exception {
-//		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
-//		String user_id = memberVo.getUser_id();
 		pagingDto.setKeyword(keyword);
 		pagingDto.setUser_id(page_id);
 		int hobbyCount = workroomService.searchHobbyCount(pagingDto);
@@ -186,12 +178,13 @@ public class WorkroomController {
 		pagingDto.setCount(count);
 		List<HobbyVo> searchHobbyList = workroomService.searchHobby(pagingDto);
 		List<StoryVo> searchStoryList = workroomService.searchStory(pagingDto);
+		List<MadeByMeVo> searchMbmList = workroomService.searchMbm(pagingDto);
 		profileCommon(page_id, model, session);
-		
 		category(model);
 		model.addAttribute("pagingDto", pagingDto);
 		model.addAttribute("searchHobbyList", searchHobbyList);
 		model.addAttribute("searchStoryList", searchStoryList);
+		model.addAttribute("searchMbmList", searchMbmList);
 		model.addAttribute("keyword", keyword);
 		return "workroom/wr_search";
 	}
@@ -210,10 +203,6 @@ public class WorkroomController {
 		boolean result = followService.follow(followVo);
 		int countFollow = followService.countFollower(page_user);
 		Map<String, Object> map = new HashMap<>();
-//		if (page_user == user_id) {
-//			map.put("same_user", "same_user");
-//		}
-		// 팔로워 수 보냄
 		map.put("countFollow", countFollow);
 		if (result == true) {
 			map.put("follow", "follow");

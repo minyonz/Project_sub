@@ -79,7 +79,7 @@ $(document).ready(function() {
 				    <tr>
 				      <th scope="row">내용</th>
 				      <td style="width: 90%">
-				      		<textarea class="form-control" id="content" name="content" rows="10"></textarea>
+				      		<textarea class="form-control" id="content" name="content" rows="10" required></textarea>
 				      </td>
 				    </tr>
 				  </tbody>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn"  uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,11 +18,10 @@
 <link rel="stylesheet" href="${contextPath}/resources/css/sweetalert2.min.css">
 <script>
 $(document).ready(function() {
+	
 });
 
 </script>
-<title>준비물 조회</title>
-
 <style>
 
 /* 화면 width 1300px부터 이렇게 하겠다.라는 뜻*/
@@ -61,12 +61,13 @@ a {
 .category:hover {
 	text-decoration: none;
 	color: #1f5e43;
+	font-weight: 600;
 }
 
-.active {
+.myPagination .active {
  	background: #1f5e43; 
-     border-color: #1f5e43; 
-     color: #fff; 
+    border-color: #1f5e43; 
+    color: #fff; 
 }
 
 .myPagination a:hover {
@@ -150,13 +151,38 @@ a {
     text-decoration: none;
 }
 
-.m_name {
-    font-size: 30px;
-    font-weight: 800;
+.m_name, .m_cnt {
+	font-family: 'S-CoreDream-4Regular';
+    font-size: 20px;
+	font-weight: 600; 
 }
+
+
 </style>
 </head>
 <body>
+<c:if test="${msgDelete == 'success'}">
+      <script>
+      Swal.fire({
+         icon : "success",
+         title : "삭제 성공",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+		 confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
+<c:if test="${msgDelete == 'fail'}">
+      <script>
+      Swal.fire({
+         icon : "error",
+         title : "삭제 실패",
+         iconColor: "#1f5e43",
+         confirmButtonText: "확인",
+		 confirmButtonColor: "#1f5e43"
+      }).then(function(){close()});
+      </script>
+</c:if>
 <%@ include file="../include/header.jsp" %>
 
 	<c:set var="m_no" value="m_no=${ms.m_no}" />
@@ -173,9 +199,10 @@ a {
 	<c:if test="${not empty ms.sort }">
 		<c:set var="sort" value="&sort=${ms.sort}" />
 	</c:if>
-
-			
-
+	
+	<c:if test="${not empty ms.page }">
+		<c:set var="page" value="&page=${ms.page}" />
+	</c:if>
 <div class="container-fluid">
 	<div class="myContainer">
 		<div class="side side-left">
@@ -242,18 +269,18 @@ a {
             	<div class="row" style="margin-bottom: 20px;">	
 <%-- 					${ms } --%>
 					  <div class="search_found" style="float:left;">
-                          <span class="m_name">${ms.m_name}</span> <span>을 쓰는</span> <span class="m_cnt">${ms.count}</span> <span>개의 취미가 있습니다.</span>
+                          <span class="m_name">${ms.m_name}</span> <span>을(를) 쓰는</span> <span class="m_cnt">${ms.count}</span> <span>개의 취미가 있습니다.</span>
                       </div>
 						<div style="margin-left:auto;">
-							<a class="category sort" id="allSort" ${ms.sort == 'all' ? 'style="color: #1f5e43;"' : '' }
+							<a class="category sort" id="allSort" ${ms.sort == 'all' ? 'style="color: #1f5e43; font-weight: 600;"' : '' }
 								href="search?${m_no}${time}${cost}${level}&sort=all">전체</a> <span> |</span> 
-							<a class="category sort" id="newSort" ${ms.sort == 'new' ? 'style="color: #1f5e43;"' : '' }
+							<a class="category sort" id="newSort" ${ms.sort == 'new' ? 'style="color: #1f5e43; font-weight: 600;"' : '' }
 								 href="search?${m_no}${time}${cost}${level}&sort=new">최신순</a> <span> |</span> 
-							<a class="category sort" id="likeSort" ${ms.sort == 'like' ? 'style="color: #1f5e43;"' : '' }
+							<a class="category sort" id="likeSort" ${ms.sort == 'like' ? 'style="color: #1f5e43; font-weight: 600;"' : '' }
 								href="search?${m_no}${time}${cost}${level}&sort=like">좋아요순</a> <span> |</span> 
-							<a class="category sort" id="viewSort" ${ms.sort == 'view' ? 'style="color: #1f5e43;"' : '' }
+							<a class="category sort" id="viewSort" ${ms.sort == 'view' ? 'style="color: #1f5e43; font-weight: 600;"' : '' }
 								href="search?${m_no}${time}${cost}${level}&sort=view">조회수순</a> <span> |</span> 
-							<a class="category sort" id="cmtSort" ${ms.sort == 'cmt' ? 'style="color: #1f5e43;"' : '' }
+							<a class="category sort" id="cmtSort" ${ms.sort == 'cmt' ? 'style="color: #1f5e43; font-weight: 600;"' : '' }
 								href="search?${m_no}${time}${cost}${level}&sort=cmt">댓글순</a> 
 						</div>
 					</div>
@@ -261,19 +288,31 @@ a {
             	<c:forEach items="${hmList}" var="hobbyVo">
 	                <div class="col-lg-4 col-md-6 col-sm-6">
 	                    <div class="product__item">
-	                        <div class="product__item__pic set-bg" data-setbg="/displayImage?filePath=${hobbyVo.main_img}" 
-	                       	 style="background-image: url(&quot;/displayImage?filePath=${hobbyVo.main_img}&quot;);">
+	                        <div class="product__item__pic set-bg" 
+	                        	data-setbg="/displayImage?filePath=${hobbyVo.main_img}" 
+	                       		 style="background-image: url(&quot;/displayImage?filePath=${hobbyVo.main_img}&quot;);
+	                       		 		border: 1px solid #e1e1e1;
+	                       		 		border-radius: 3px">
 	                            <ul class="product__item__pic__hover">
-	                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-	                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-	                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+	                                <li><a class="like loginNeed" href="/hobby/like/${hobbyVo.hobby_no}">
+	                                	<i class="fa fa-heart" ${not empty hobbyVo.like_hobby ? 'style="color:#C32424"' : ''}></i>
+	                                </a></li>
+	                                <li><a class="bookmark loginNeed" href="/hobby/bookmark/${hobbyVo.hobby_no}">
+	                                	<i class="fa fa-bookmark" ${not empty hobbyVo.bm_hobby ? 'style="color:#FFC300"' : ''}></i>
+	                                </a></li>
+	                                <li><a class="share" href="/hobby/content/${hobbyVo.hobby_no}">
+	                                	<i class="fa fa-retweet"></i>
+	                                </a></li>
 	                            </ul>
 	                        </div>
-	                        <div class="product__item__text">
-	                        	${hobbyVo }
-	                            <h6><a href="/hobby/content/${hobbyVo.hobby_no}">${hobbyVo.hobby_title}</a></h6>
-	                            <h5>${hobbyVo.user_nick}</h5>
-	                        </div>
+	                        <div class="featured__item__text">
+								<h6>
+									<a class="short" style="font-weight: 600;"
+										href="/hobby/content/${hobbyVo.hobby_no}?${m_no}${time}${cost}${level}${sort}${page}">${hobbyVo.hobby_title}</a>
+								</h6>
+								<h5><a class="short" style="font-size: 0.8rem;"
+									href="/workroom/main/${hobbyVo.user_nick}">${hobbyVo.user_nick}</a></h5>
+							</div>
 	                    </div>
 	                </div>
             	</c:forEach>
@@ -281,16 +320,15 @@ a {
             <div class="myPagination" style="text-align: center;">
             <c:set var="prev" value="${ms.endPage - ms.PAGE_BLOCK}"/>
             <c:set var="next" value="${ms.startPage + ms.PAGE_BLOCK}"/>
-            
             	<c:if test="${prev > 0}">
-               		 <a href="search?m_no=${ms.m_no}&sort=${ms.sort}&page=${prev}"><i class="fa fa-long-arrow-left"></i></a>
+               		 <a href="search?${m_no}${time}${cost}${level}${sort}&page=${prev}"><i class="fa fa-long-arrow-left"></i></a>
                 </c:if>
             	<c:forEach var="v" begin="${ms.startPage}" end="${ms.endPage}">
 	                <a class="${v == ms.page ? 'active' : '' }" 
-	                	href="search?m_no=${ms.m_no}&sort=${ms.sort}&page=${v}">${v}</a>
+	                	href="search?${m_no}${time}${cost}${level}${sort}&page=${v}">${v}</a>
 				</c:forEach>
 				<c:if test="${next <= ms.totalPage}">
-               		 <a href="search?m_no=${ms.m_no}&sort=${ms.sort}&page=${next}"><i class="fa fa-long-arrow-right"></i></a>
+               		 <a href="search?${m_no}${time}${cost}${level}${sort}&page=${next}"><i class="fa fa-long-arrow-right"></i></a>
                 </c:if>
             </div>
         </div>
@@ -301,10 +339,88 @@ a {
 </div>
 <%@ include file="../include/footer.jsp" %>
 <script>
-// var loginVo = "${loginVo}";
-// if (loginVo == "") {
-// 	console.log("loginVo 없음:", loginVo);
-// }
+var loginVo = "${loginVo}";
+if (loginVo == "") {
+	console.log("loginVo 없음:", loginVo);
+	$(".loginNeed").on("click", function(e) {
+		Swal.fire({
+			title: '로그인 필수',
+			text: '로그인 하시겠습니까?', 
+			allowOutsideClick: false,
+			iconColor: "#1f5e43",
+			icon: 'info', 
+			confirmButtonText: "확인",
+			confirmButtonColor: "#1f5e43",
+			cancelButtonText: "취소",
+			showCancelButton: true,
+		}).then(function(result) {
+			if(result.isConfirmed) {
+				location.href = "/mypage/login";
+			} 
+		});
+		console.log(e);
+		return false;
+	});
+}
+
+$(".like").click(function(e) {
+	e.preventDefault();
+	console.log("좋아요 누름")
+	if(loginVo == "") {
+		return false;
+	}
+	var url = $(this).attr("href");
+	var target = $(this);
+	console.log("url", url);
+	$.get(url, function(rData) {
+		console.log(rData);
+		if (rData == "like") {
+			console.log("좋아용");
+			$(target).children().css("color", "#C32424");
+		} else {
+			$(target).children().css("color", "#ffffff");
+		}
+	});
+});
+
+$(".bookmark").click(function(e) {
+	e.preventDefault();
+	console.log("북마크 누름")
+	if(loginVo == "") {
+		return false;
+	}
+	var url = $(this).attr("href");
+	var target = $(this);
+	console.log("url", url);
+	$.get(url, function(rData) {
+		console.log(rData);
+		if (rData == "bookmark") {
+			console.log("북마크");
+			$(target).children().css("color", "#FFC300");
+		} else {
+			$(target).children().css("color", "#ffffff");
+		}
+	});
+})
+
+$(".share").click(function(e) {
+	e.preventDefault();
+	var url = $(this).attr("href");
+	var textarea = document.createElement("textarea");
+	document.body.appendChild(textarea);
+	console.log("${contextPath}");
+	textarea.value = "http://localhost${pageContext.request.contextPath}" + url;
+	textarea.select();
+	document.execCommand("copy");
+	document.body.removeChild(textarea);
+	Swal.fire({
+		text: 'url이 복사 되었습니다', 
+		iconColor: "#1f5e43",
+		icon: 'success', 
+		confirmButtonText: "확인",
+		confirmButtonColor: "#1f5e43",
+	}).then(function(){close()});
+})
 </script>
 </body>
 </html>

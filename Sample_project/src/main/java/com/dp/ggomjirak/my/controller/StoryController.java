@@ -83,7 +83,6 @@ public class StoryController {
 	// 스토리 작성
 	@RequestMapping(value="/write_run", method=RequestMethod.POST)
 	public String wrStoryWriteRun(StoryVo storyVo, Model model, HttpSession session) throws Exception {
-		// 세션 아이디값 받기
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
 		String user_id = memberVo.getUser_id();
 		storyVo.setUser_id(user_id);
@@ -97,7 +96,6 @@ public class StoryController {
 	// 스토리 수정폼
 	@RequestMapping(value="/update", method=RequestMethod.GET)
 	public String wrStoryUpdate(int st_no, Model model, HttpSession session) throws Exception {
-		// 세션 아이디값 받기
 		MemberVo memberVo = (MemberVo)session.getAttribute("loginVo");
 		String user_id = memberVo.getUser_id();
 		StoryVo storyVo = storyService.StorySelect(st_no);

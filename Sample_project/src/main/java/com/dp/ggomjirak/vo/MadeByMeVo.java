@@ -17,6 +17,8 @@ public class MadeByMeVo {
 	private String user_nick;
 	private String user_img;
 	
+	private String level_name;
+	
 	public MadeByMeVo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -135,12 +137,21 @@ public class MadeByMeVo {
 		this.user_img = user_img;
 	}
 
+	public String getLevel_name() {
+		return level_name;
+	}
+
+	public void setLevel_name(String level_name) {
+		this.level_name = level_name;
+	}
+
 	@Override
 	public String toString() {
 		return "MadeByMeVo [mbm_no=" + mbm_no + ", user_id=" + user_id + ", hobby_no=" + hobby_no + ", level_no="
 				+ level_no + ", mbm_content=" + mbm_content + ", mbm_img=" + mbm_img + ", like_cnt=" + like_cnt
 				+ ", view_cnt=" + view_cnt + ", reg_date=" + reg_date + ", mod_date=" + mod_date + ", user_nick="
-				+ user_nick + ", user_img=" + user_img + "]";
+				+ user_nick + ", user_img=" + user_img + ", level_name=" + level_name + "]";
 	}
+
 
 }

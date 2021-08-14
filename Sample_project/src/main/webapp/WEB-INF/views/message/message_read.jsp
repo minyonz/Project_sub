@@ -35,7 +35,6 @@ $(document).ready(function() {
 });
 </script>
 <body>
-
 <!-- 쪽지 답장 모달 -->
 <div class="row">
 	<div class="col-md-12">
@@ -63,7 +62,7 @@ $(document).ready(function() {
 	</div>
 </div>
 <!-- // 쪽지 답장 모달 -->
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -73,8 +72,15 @@ $(document).ready(function() {
 				<div class="col-md-8">
 					<!-- 메인 페이지에서 가운데  부분 시작-->
 					<div class="row">
-						<div class="col-md-12">
+					<div class="col-md-2"></div>
+						<div class="col-md-8">
 						<!-- 내부 패널 메인 -->
+						<div class="checkout__order">
+							<div class="workroom_box row" style="height: 39px; display:flex;">
+							<h4>쪽지함</h4>
+								<a href="" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+							</div>
+							<!-- <hr> -->
 							<div class="row">
 								<div class="col-md-12">
 									<table class="table">
@@ -108,11 +114,12 @@ $(document).ready(function() {
 									<a class="btn btn-primary" href="/message/messageListReceive">받은쪽지함</a>
 									<a class="btn btn-danger"
 										href="/message/deleteMessage?msg_no=${messageVo.msg_no}">삭제</a>
-									<a href="#modal-container-552199" class="btn btn-warning"
-										data-toggle="modal">답장하기</a>
 								</div>
 							</div>
-						</div> <!-- </div class="col-md-12"> --> 
+							</div>
+							
+						</div> <!-- </div class="col-md-6"> --> 
+						<div class="col-md-2"></div>
 					</div> <!-- </div class="row"> -->
 					<!-- 메인 페이지에서 가운데 부분 끝 -->
 				</div> 

@@ -1,6 +1,8 @@
 package com.dp.ggomjirak.jh.dao;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -8,6 +10,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
 import com.dp.ggomjirak.vo.CateStrVo;
+import com.dp.ggomjirak.vo.LoginTimeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -90,6 +93,31 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 		return intro;
 	}
 	
+	@Override
+	public LoginTimeVo selectLoginTime(String user_id) {
+		LoginTimeVo loginTimeVo = sqlSession.selectOne(NAMESPACE + "selectLoginTime", user_id);
+		return loginTimeVo;
+	}
+
+	@Override
+	public int getCountLoginTime(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "getCountLoginTime", user_id);
+		return count;
+	}
+
+	@Override
+	public int getContentCnt(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "getContentCnt", user_id);
+		return count;
+	}
+
+
+	@Override
+	public int getQnACnt(String user_id) {
+		int count = sqlSession.selectOne(NAMESPACE + "getQnACnt", user_id);
+		return count;
+	}
+
 	
 
 	@Override
@@ -133,6 +161,26 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 		sqlSession.delete(NAMESPACE + "deleteManager", user_id);
 		
 	}
+	
+
+	@Override
+	public void updateContentCnt(String user_id, int count) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user_id);
+		map.put("count", count);
+		sqlSession.update(NAMESPACE + "updateContentCnt", map);
+		
+	}
+
+	@Override
+	public void updateAskCnt(String user_id, int count) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("user_id", user_id);
+		map.put("count", count);
+		sqlSession.update(NAMESPACE + "updateAskCnt", map);
+		
+	}
+
 			
 
 	// 메인
@@ -153,6 +201,16 @@ private static final String NAMESPACE = "com.dp.ggomjirak.manager.";
 		List<Integer> list = sqlSession.selectList(NAMESPACE + "getAllUserGrade");
 		return list;
 	}
+
+	@Override
+	public List<Integer> getAllLoginTime() {
+		List<Integer> list = sqlSession.selectList(NAMESPACE + "getAllLoginTime");
+		return list;
+	}
+
+
+
+
 
 
 

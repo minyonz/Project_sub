@@ -7,6 +7,10 @@ public class MemberActivVo {
 	private int comment_cnt;
 	private int ask_cnt;
 	private int like_all_cnt;
+	
+	private int count;
+	
+	
 	public MemberActivVo() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -49,6 +53,14 @@ public class MemberActivVo {
 	public void setLike_all_cnt(int like_all_cnt) {
 		this.like_all_cnt = like_all_cnt;
 	}
+	
+	public int getCount() {
+		return count;
+	}
+	public void setCount(int count) {
+		this.count = count;
+	}
+	
 	@Override
 	public String toString() {
 		return "MemberActivVo [user_id=" + user_id + ", content_cnt=" + content_cnt + ", comment_cnt=" + comment_cnt

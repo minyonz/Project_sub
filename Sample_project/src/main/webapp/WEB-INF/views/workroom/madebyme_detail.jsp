@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="../include/header.jsp"%>
 <script src="/resources/js/sweetalert2.min.js"></script>
 <link rel="stylesheet" href="/resources/css/sweetalert2.min.css">
@@ -31,6 +32,11 @@ $(document).ready(function() {
 			$("#like > span").text(rData.likeCount);
 		});
 	});
+	
+	// 공백, 띄어쓰기
+	var str = $("#content").text();
+	str = str.replace(/(?:\r\n|\r|\n)/g, '<br/>');
+	$("#content").html(str);
 })
 </script>
 <div class="container-fluid" style="background: #F5F5F5">
@@ -45,7 +51,9 @@ $(document).ready(function() {
 			</div>
 				<div class="row">
 					<div class="col-md-2"></div>
-					<div class="col-md-8">
+					<c:choose>
+						<c:when test="${hobbyVo.is_del == 'N'}">
+						<div class="col-md-8">
 							<div class="row">
 								<div class="col-md-5" style="height: 167px;">
 									<img src="/displayImage?filePath=${hobbyVo.main_img}"
@@ -60,6 +68,15 @@ $(document).ready(function() {
 								</div>
 							</div>
 						</div>
+						</c:when>
+						<c:otherwise>
+							<div class="col-md-8">
+								<div class="row">
+									<p style="font-size:17px; margin-left:225px;">삭제된 취미입니다.</p>
+								</div>
+							</div>
+						</c:otherwise>
+					</c:choose>
 					<div class="col-md-2"></div>
 				</div>
 				
@@ -70,7 +87,16 @@ $(document).ready(function() {
 			<div class="workroom_box row" style="height: 39px; margin-top: -10px;">
 				<div class="blog__details__author">
 					<div class="blog__details__author__pic">
-						<a href="/workroom/main/${madebymeVo.user_id}"><img src="/displayImage?filePath=${madebymeVo.user_img}" alt=""></a>
+						<a href="/workroom/main/${madebymeVo.user_id}">
+						<c:choose>
+							<c:when test="${madebymeVo.user_img != null}">
+								<img src="/displayImage?filePath=${madebymeVo.user_img}" alt="profile">								
+							</c:when>
+							<c:otherwise>
+								<img src="/resources/img/noprofile.png" alt="profile">
+							</c:otherwise>
+						</c:choose>
+						</a>
 					</div>
 					<div class="blog__details__author__text">
 						<h6 style="margin-top: 10px;">${madebymeVo.user_nick}</h6>
@@ -79,9 +105,9 @@ $(document).ready(function() {
 			</div>
 			<hr>
 				<div style="text-align: right">
-			<p>${madebymeVo.reg_date}</p>
+			<p><fmt:formatDate value="${madebymeVo.reg_date}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
 			<c:if test="${madebymeVo.mod_date != null}">
-				<p style="font-size:13px;">${madebymeVo.mod_date}(수정 됨)</p>
+				<p style="font-size:13px;"><fmt:formatDate value="${madebymeVo.mod_date}" pattern="yyyy-MM-dd HH:mm:ss"/>(수정됨)</p>
 			</c:if>
 			<p>조회수 : ${madebymeVo.view_cnt}</p>
 		</div>
@@ -110,7 +136,7 @@ $(document).ready(function() {
 					<p style="font-weight:bold;">체감 난이도 : 😱crazy</p>
 				</c:when>
 			</c:choose>
-			<p>${madebymeVo.mbm_content}</p>
+			<p id="content">${madebymeVo.mbm_content}</p>
 			<hr>
 			<div class="row">
 				<div class="col-md-9">
@@ -120,7 +146,7 @@ $(document).ready(function() {
 				</div>
 				<div class="col-md-3">
 					<div style="text-align: right">
-					<c:if test="${user_id != null || user_id == page_id}">
+					<c:if test="${user_id == page_id}">
 						<a href="/mbm/update?hobby_no=${hobbyVo.hobby_no}&mbm_no=${madebymeVo.mbm_no}" style="margin-right: 5px">수정</a> 
 						<a href="javascript:doDelete();">삭제</a>
 					</c:if>
@@ -129,9 +155,9 @@ $(document).ready(function() {
 			</div>
 		</div>
 	</div>
-	</div>
-	</div>
-	<div class="col-md-3"></div>
+</div>
+<div class="col-md-3"></div>
+</div>
 </div>
 <%@ include file="../include/footer.jsp"%>
 <script>

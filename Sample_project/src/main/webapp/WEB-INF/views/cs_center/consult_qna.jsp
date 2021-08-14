@@ -14,7 +14,7 @@
 $(document).ready(function(){
 	var msg = "${msg}";
 	if(msg == "success"){
-		alert("수정 완료");
+		alert("1:1 문의 글 수정 완료");
 	}
 	
 	// 수정 버튼 클릭
@@ -61,10 +61,10 @@ $(document).ready(function(){
 	
 });
 </script>
-${qnAVo}
-${memberVo}
+<%-- ${qnAVo} --%>
+<%-- ${memberVo} --%>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -76,18 +76,19 @@ ${memberVo}
 					<div class="row">
 					<div class="col-md-3">
 					<!-- 내부 패널 왼쪽 -->
-						<%@ include file="../mypage/mypage_include/mypage_left.jsp"%>
+						<%@ include file="../include/mypageSide.jsp"%>
 					</div>
 					<!-- 데이터 목록 -->
 					<div class="col-md-9">
-					<ul class="nav" >
-							<li class="nav-item"><a class="nav-link active" href="/cs_center/consultQs">1:1 문의하기</a></li>
-							<li class="nav-item"><a class="nav-link" href="/cs_center/consultList">나의 질문과 답변보기</a></li>
-					</ul>
-					
-						<div class="jumbotron">
-							<h2>내용 확인</h2>
+					<div class="checkout__order">
+					<div class="workroom_box row" style="height: 39px; display:flex;">
+					<h4>1:1 문의 내용 확인</h4>
+						<a href="" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
 					</div>
+					<hr>
+					<!--	<div class="jumbotron">
+							<h2>내용 확인</h2>
+						</div> -->
 <!-- 					<form role="frm" action="/cs_center/consultQnADelete" method="post"> -->
 <%-- 						<input type="hidden" name="qna_no" value="${qnAVo.qna_no}" />  --%>
 <!-- 					</form> -->
@@ -132,17 +133,18 @@ ${memberVo}
 							</div>
 							<div class="form-group">
 								<label for="content"> 내용 </label>
-								<textarea class="form-control" id="content" name="content" readonly>${qnAVo.content}</textarea>
+								<textarea class="form-control" id="content" name="content" rows="5" readonly>${qnAVo.content}</textarea>
 							</div>
 							<div class="form-group">
 								<label for="content"> 답변 </label>
-								<textarea class="form-control" id="a_content" name="a_content" readonly>${qnAVo.a_content}</textarea>
+								<textarea class="form-control" id="a_content" name="a_content" rows="5" readonly>${qnAVo.a_content}</textarea>
 							</div>
 							<button type="button" class="btn btn-primary" id="btnModify">수정</button>
 							<button type="submit" class="btn btn-success" style="display:none" id="btnModifyFinish">수정완료</button>
 							<button type="button" class="btn btn-danger" id="btnDelete">삭제</button>
 							<button type="button" class="btn btn-warning" id="btnList">목록</button>
 						</form>
+					</div>
 					</div>
 				</div>
 				<!-- // 데이터 목록 -->

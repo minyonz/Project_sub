@@ -15,9 +15,10 @@
 					<a class="nav-link" href="/mypage/profileForm">프로필 수정</a>
 					<a class="nav-link" href="/mypage/alarmSetUp">알림 설정</a>
 					<a class="nav-link" href="/cs_center/consultQs">1:1 문의</a>
+					<a class="nav-link" href="/message/messageListReceive">쪽지함 - 임시</a>
 					<a class="nav-link" href="/mypage/logout">로그아웃 - 임시</a>
 				</nav>
 			</nav>
 		</div>
 	</div>
-	<!-- 검색 카테고리 메뉴 끝-->
+	<!-- 검색 카테고리 메뉴 끝 -->

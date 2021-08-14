@@ -40,6 +40,8 @@ public class PagingDto {
 	
 	private Date today;
 	
+	private String pCheck;
+	
 	
 	public PagingDto() {
 		super();
@@ -203,6 +205,14 @@ public class PagingDto {
 
 	public void setToday(Date today) {
 		this.today = today;
+	}
+
+	public String getpCheck() {
+		return pCheck;
+	}
+
+	public void setpCheck(String pCheck) {
+		this.pCheck = pCheck;
 	}
 
 	@Override

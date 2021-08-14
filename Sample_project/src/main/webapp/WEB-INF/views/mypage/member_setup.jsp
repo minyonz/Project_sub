@@ -51,9 +51,9 @@ $(document).ready(function(){
 	
 });
 </script>
-${member}
+<%-- ${member} --%>
 <body>
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -65,26 +65,33 @@ ${member}
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="mypage_include/mypage_left.jsp"%>
+						<%@ include file="../include/mypageSide.jsp"%>
 					</div>
-					<div class="col-md-9">
+					<div class="col-md-6">
 						<!-- 내부 패널 메인 -->
 						<form role="form" id="frmMemberSetUp" action="/mypage/alarmSetUpRun" method="post" enctype="multipart/form-data">
 						<input type="hidden" id="setup_onOff" value="${memberVo.onOff}"/>
-						
+						<div class="checkout__order">
+							<div class="workroom_box row" style="height: 39px; display:flex;">
+								<h4>알림 설정</h4>
+								<a href="/mypage/profileForm" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+							</div>							
+							<hr>
 							<div class="form-group">
-								<label for="onOff">알람 설정</label>
+								<label for="onOff">쪽지 알림 받기</label>
 							</div>
 							<!-- on off 추가하기 -->
 							<input type="radio" id="on" name="onOff" value="on"> on
 							<input type="radio" id="off" name="onOff" value="off"> off
 							<br><br>
-							<div class="form-group">
-								<!-- <button type="submit" class="btn btn-primary">설정완료</button> -->
-								<button type="button" class="btn btn-primary" id="btnSetup">설정 완료</button>
+								<div class="form-group">
+									<!-- <button type="submit" class="btn btn-primary">설정완료</button> -->
+									<button type="button" class="btn btn-primary btn-sm" id="btnSetup">설정 완료</button>
+								</div>
 							</div>
 						</form>
-						</div> <!-- </div class="row"> --> 
+						</div>
+						<div class="col-md-3"></div>
 					</div> <!-- 내부 패널 메인  끝 -->
 				</div> 	<!-- 전체 페이지 메인 패널 끝 -->
 				<div class="col-md-2">

@@ -34,12 +34,12 @@
 											alt="Event Image"
 										</c:when>
 										<c:otherwise>
-											src="../resources/img/eximage.png" 
+											src="/resources/manager/img/noevent.png" 
 											alt="None Image"
 										</c:otherwise>
 									</c:choose>
 								class="rounded mx-auto d-block"
-								width="700px" height="300px">
+								width="700px" height="230px">
 							</a>
 						</div>
 						<div class="featured__item__text">

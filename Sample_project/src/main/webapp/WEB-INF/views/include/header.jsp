@@ -26,7 +26,7 @@
 <link rel="stylesheet" href="/resources/css/style.css" type="text/css">
 
 
-<title>Blog Home - Start Bootstrap Template</title>
+<title>취미 공유 커뮤니티 | 꼼지락</title>
 <!-- Favicon-->
 <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
 <!-- Core theme CSS (includes Bootstrap)-->
@@ -40,8 +40,24 @@
      font-style: normal;
 }
 
+/* 레귤러 */
+@font-face {
+     font-family: 'S-CoreDream-4Regular';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-4Regular.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+
+/* 미디엄 */
+@font-face {
+     font-family: 'S-CoreDream-5Medium';
+     src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff') format('woff');
+     font-weight: normal;
+     font-style: normal;
+}
+
 body {
-	font-family: 'S-CoreDream-3Light';
+	font-family: 'S-CoreDream-4Regular';
 }
 
 
@@ -72,6 +88,13 @@ body {
 	display: -webkit-box;
 	-webkit-line-clamp: 1;
 	-webkit-box-orient: vertical;
+}
+.short_title {
+	overflow: hidden;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	margin-left: 40px;
 }
 
 </style>
@@ -135,6 +158,7 @@ $(document).ready(function() {
 	});
 	$("#keyword").val("${pagingDto.keyword}");
 	
+
 	//* 카테고리 부분
 	var MjsonData = JSON.parse('${managerList}');
 	var mUserIdArr = new Array();
@@ -148,11 +172,31 @@ $(document).ready(function() {
 	var mUserIdLi = $("li.managerP")
 	for(var i = 0; i < mUserIdArr.length; i++) {
 		if("${user_id}" == MjsonData[i].user_id) {
-			console.log(MjsonData[i].user_id);
 			mUserIdLi.append("<a class='nav-link flex-item' href='/manager/managerHome'>관리자</a>"); 
 		}
-		
-	}
+
+ 	}
+	
+	$("#messagesDropdown").click(function() {
+		var url = "/message/messageListNotRead";
+		$.get(url, function(rData) {
+			console.log(rData);
+			$(".list-item").remove();
+			$.each(rData, function() {
+				console.log(this);
+				var cloneItem = $("#msgItem").clone();
+				cloneItem.find(".text-truncate").text(this.msg_content);
+				cloneItem.find(".text-gray-500").text(this.msg_sender);
+				cloneItem.attr("href", "/message/messageRead?msg_no=" + this.msg_no);
+				// 아이디가 여러개 존재하니까 지워줌
+				cloneItem.removeAttr("id");
+				cloneItem.addClass("list-item");
+				// 형제 엘리먼트로 추가
+				cloneItem.insertAfter($("#msgItem"));
+				cloneItem.show();
+			});
+		});
+	});
 	
 	
 });
@@ -205,25 +249,30 @@ $(document).ready(function() {
 										<li class="nav-item dropdown">
 										
 										<div class="dropdown">
-										<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
-											  <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+										<a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"  id="messagesDropdown">
+											<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-envelope-fill" viewBox="0 0 16 16">
+											  <path d="M.05 3.555A2 2 0 0 1 2 2h12a2 2 0 0 1 1.95 1.555L8 8.414.05 3.555zM0 4.697v7.104l5.803-3.558L0 4.697zM6.761 8.83l-6.57 4.027A2 2 0 0 0 2 14h12a2 2 0 0 0 1.808-1.144l-6.57-4.027L8 9.586l-1.239-.757zm3.436-.586L16 11.801V4.697l-5.803 3.546z"/>
 											</svg>
+										<span class="badge badge-counter orange_background">${sessionScope.loginVo.notReadCount}</span>
 										</a>
 									    <div class="dropdown-menu">
-									      <a class="dropdown-item" href="/mypage/infoForm">마이페이지</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
-										    <a class="dropdown-item" href="#">알림내용</a>
+										    <a class="dropdown-item" href="#" style="display:none" id="msgItem">
+										    	<div class="font-weight-bold">
+												<div class="text-truncate"></div>
+												<div class="small text-gray-500"></div>
+											</div>
+										    </a>
+										    <c:if test="${sessionScope.loginVo.notReadCount == 0}">
+										    	<a class="dropdown-item">새로운 쪽지가 없습니다</a>
+										    </c:if>
+										    
 										    <hr class="dropdown-divider">
-										    <a class="dropdown-item" href="#">알림함</a>
+										    <a class="dropdown-item" href="/message/messageListReceive">쪽지함</a>
 									    </div>
 									    </div>
 										
 										</li>
+										
 										
 										<li class="nav-item dropdown ml-md-auto">
 										
@@ -255,7 +304,7 @@ $(document).ready(function() {
 								  
 								    <a href="/main/mainHome" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
 								      <svg class="bi me-2" width="40" height="32"><use xlink:href="#bootstrap"/></svg>
-								      <img src="/resources/img/logo06.png" class="rounded mx-auto" alt="..." >
+								      <img src="/resources/img/logo_v_w.png" class="rounded mx-auto" alt="..." >
 								    </a>
 								  </div>
 								</header>

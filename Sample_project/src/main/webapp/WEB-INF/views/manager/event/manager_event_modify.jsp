@@ -62,7 +62,7 @@ $(document).ready(function() {
 								src="/eventImg/displayImage?filePath=${eventVo.e_img}"
 							</c:when>
 							<c:otherwise>
-								src="${contextPath}/resources/images/main_img_btn.jpg"
+								src="/resources/manager/img/photo.png"
 							</c:otherwise>
 							</c:choose>
 							style="width: 100%; height: 100%; object-fit: cover; cursor: pointer; border: 1px solid #e1e1e1;">
@@ -71,7 +71,7 @@ $(document).ready(function() {
 							id="mainImg_file" accept=".gif, .jpg, .png"
 							onchange="previewMainImg(this);"
 							style="display: none; width: 0px; height: 0px; font-size: 0px;" />
-						<input type="hidden" name="e_img" id="e_img"  required/>
+						<input type="hidden" name="e_img" id="e_img" value="${eventVo.e_img}" required/>
 						<a id="btnDelMainImg" href="javascript:delMainImg()" class="btn_del"
 							style="display: none; position: absolute; top: 0; right: 0.1rem;"></a>
 				</div>
@@ -161,7 +161,7 @@ function delMainImg() {
 	$.get(url, function(rData) {
 		if (rData == "success") {
 			$("#e_img").val("");
-			$("#previewImg_main").attr("src", "${contextPath}/resources/images/main_img_btn.jpg");
+			$("#previewImg_main").attr("src", "/resources/manager/img/photo.png");
 			$("#btnDelMainImg").css("display", "none");
 		}
 	});

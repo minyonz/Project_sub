@@ -11,7 +11,7 @@
 </head>
 <body> -->
 <%-- ${memberVo} --%>
-<div class="container-fluid">
+<div class="container-fluid" style="background: #F5F5F5">
 	<div class="row">
 		<div class="col-md-12">
 			<div class="row">
@@ -23,13 +23,23 @@
 					<div class="row">
 					<div class="col-md-3">
 						<!-- 내부 패널 왼쪽 -->
-						<%@ include file="mypage_include/mypage_left.jsp"%>
+						<%@ include file="../include/mypageSide.jsp"%>
 					</div>
-					<div class="col-md-9">
+					<div class="col-md-8">
 						<!-- 내부 패널 메인 -->
-						<br>
-						<h3>회원 정보 정보 폼</h3>
-						<br>
+						<%-- <div style="text-align: center; margin-top: 12px;">
+						<h2 style="font-weight: 700">회원 정보
+						<a href="/mypage/main/${user_id}" class="fa fa-home" style="font-size:30px; margin-left:10px;"></a></h2>
+						</div> --%>
+						<div class="checkout__order">
+						<div class="workroom_box row" style="height: 39px; display:flex;">
+							<h4>회원 정보</h4>
+						<a href="/mypage/modifyForm" class="fa fa-pencil" style="margin-top: 5px; margin-left: 10px;"></a>
+						</div>
+						<!-- <hr> -->
+						<div class="form-group">
+						
+						</div>
 						<form role="form" id="frmInfo" action="/mypage/modifyForm" method="get" enctype="multipart/form-data">
 							<table class="table">
 								<thead>
@@ -67,9 +77,11 @@
 							</table>
 							<br>
 							<div class="form-group">
-								<button type="submit" class="btn btn-primary">회원정보수정하기</button>
+								<button type="submit" class="btn btn-primary">회원정보수정</button>
 							</div>
 						</form>
+						</div>
+						<div class="col-md-1"></div>
 						</div> <!-- </div class="row"> --> 
 					</div> <!-- 내부 패널 메인  끝 -->
 				</div> 	<!-- 전체 페이지 메인 패널 끝 -->

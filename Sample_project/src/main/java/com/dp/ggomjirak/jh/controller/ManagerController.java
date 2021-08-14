@@ -13,8 +13,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.dp.ggomjirak.jh.service.AskService;
 import com.dp.ggomjirak.jh.service.EventService;
+import com.dp.ggomjirak.jh.service.MainService;
 import com.dp.ggomjirak.jh.service.ManagerService;
 import com.dp.ggomjirak.vo.CateStrVo;
+import com.dp.ggomjirak.vo.HobbyVo;
+import com.dp.ggomjirak.vo.LoginTimeVo;
 import com.dp.ggomjirak.vo.ManagerVo;
 import com.dp.ggomjirak.vo.MemberActivVo;
 import com.dp.ggomjirak.vo.MemberVo;
@@ -31,6 +34,9 @@ public class ManagerController {
 	private ManagerService managerService;
 	
 	@Inject
+	private MainService mainService;
+	
+	@Inject
 	private AskService askService;
 	
 	@Inject
@@ -40,17 +46,22 @@ public class ManagerController {
 	@RequestMapping(value="/managerHome", method=RequestMethod.GET)
 	public String managerHome(Model model, PagingDto pagingDto, HttpSession session) throws Exception {
 		List<MemberVo> popularMemberList = managerService.selectPopularMemberList();
+		List<HobbyVo> popularHobby = mainService.getPopularHobbyList();
 		int memberCount = managerService.getMemberCount();
 		int askCount = askService.getCountQnAMain();
 		int eventCount = eventService.getCountBanner(pagingDto);
+		int eventListCount = eventService.getCountEvent(pagingDto);
 		List<Integer> gradeList = managerService.getAllUserGrade();
+		List<Integer> loginList = managerService.getAllLoginTime();
 		
-		System.out.println(eventCount);
 		model.addAttribute("popularMemberList", popularMemberList);
+		model.addAttribute("popularHobby", popularHobby);
 		model.addAttribute("memberCount", memberCount);
 		model.addAttribute("askCount", askCount);
 		model.addAttribute("eventCount", eventCount);
+		model.addAttribute("eventListCount", eventListCount);
 		model.addAttribute("gradeList", JSONArray.fromObject(gradeList));
+		model.addAttribute("loginList", JSONArray.fromObject(loginList));
 		if (session.getAttribute("loginVo") != null) {
 			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
 			String lo_user_id = lo_memberVo.getUser_id();
@@ -107,11 +118,19 @@ public class ManagerController {
 		String grade = managerService.selectGradeById(user_id);
 		MemberActivVo activVo = managerService.selectMemberActivById(user_id);
 		String intro = managerService.selectMemberIntroById(user_id);
+		LoginTimeVo loginTimeVo = managerService.selectLoginTime(user_id);
+		int countLogin = managerService.getCountLoginTime(user_id);
+		int contentCnt = managerService.getContentCnt(user_id);
+		int QnACnt = managerService.getQnACnt(user_id);
 		model.addAttribute("memberVo", memberVo);
 		model.addAttribute("cateVo", cateVo);
 		model.addAttribute("grade", grade);
 		model.addAttribute("activVo", activVo);
 		model.addAttribute("intro", intro);
+		model.addAttribute("loginTime", loginTimeVo);
+		model.addAttribute("countLogin", countLogin);
+		model.addAttribute("contentCnt", contentCnt);
+		model.addAttribute("QnACnt", QnACnt);
 		model.addAttribute("pagingDto", pagingDto);
 		if (session.getAttribute("loginVo") != null) {
 			MemberVo lo_memberVo = (MemberVo)session.getAttribute("loginVo");
@@ -203,13 +222,13 @@ public class ManagerController {
 		return "manager/manager/manager_manager_permission";
 	}
 	// 관리자 등록
-	@RequestMapping(value="/managerInsertManager", method=RequestMethod.POST)
+	@RequestMapping(value="/managerInsertManager", method=RequestMethod.GET)
 	public String managerInsertManager(ManagerVo managerVo) throws Exception {
 		managerService.insertManager(managerVo);
 		return "redirect:/manager/managerManagerList";
 	}
 	// 관리자 삭제
-	@RequestMapping(value="/managerDeleteManager", method=RequestMethod.POST)
+	@RequestMapping(value="/managerDeleteManager", method=RequestMethod.GET)
 	public String managerDeleteManager(String user_id) throws Exception {
 		managerService.deleteManager(user_id);
 		System.out.println(user_id);

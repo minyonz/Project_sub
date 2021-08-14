@@ -1,78 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 </div>			
-	<!-- Footer-->
-	<footer class="py-5 bg-dark" style="margin-top: 50px">
-		<div class="container">
-			<p class="m-0 text-center text-white">Copyright &copy; Your
-				Website 2021</p>
-		</div>
-	</footer>
 	<!-- Bootstrap core JS-->
-	<!-- 5제거 -->
+	<!-- 5ì ê±° -->
 <!-- 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script> -->
 
 	<!-- Core theme JS-->
 	<script src="/resources/js/scripts.js"></script>
 	    <!-- Footer Section Begin -->
-    <footer class="footer spad">
+    <footer class="row footer spad bg-dark" style="margin-top: 50px">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="/resources/img/logo.png" alt=""></a>
+                            <a href="/main/mainHome"><img src="/resources/img/logo_h_w.png" alt="logo"></a>
                         </div>
-                        <ul>
-                            <li>Address: 60-49 Road 11378 New York</li>
-                            <li>Phone: +65 11.188.888</li>
-                            <li>Email: hello@colorlib.com</li>
-                        </ul>
+                        
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
-                    <div class="footer__widget">
-                        <h6>Useful Links</h6>
-                        <ul>
-                            <li><a href="#">About Us</a></li>
-                            <li><a href="#">About Our Shop</a></li>
-                            <li><a href="#">Secure Shopping</a></li>
-                            <li><a href="#">Delivery infomation</a></li>
-                            <li><a href="#">Privacy Policy</a></li>
-                            <li><a href="#">Our Sitemap</a></li>
+                <div class="col-lg-4 col-md-6 col-sm-6">
+                    <div class="">
+                        <h6 class="text-white font-weight-bold">About Us</h6><br/>
+                        <ul style="list-style:none;">
+                            <li class="text-white">Team Name: Dogprint</li>
+                            <li class="text-white">Project Name: Ggomjirak</li>
                         </ul>
-                        <ul>
-                            <li><a href="#">Who We Are</a></li>
-                            <li><a href="#">Our Services</a></li>
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">Innovation</a></li>
-                            <li><a href="#">Testimonials</a></li>
-                        </ul>
+                       
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-12">
-                    <div class="footer__widget">
-                        <h6>Join Our Newsletter Now</h6>
-                        <p>Get E-mail updates about our latest shop and special offers.</p>
-                        <form action="#">
-                            <input type="text" placeholder="Enter your mail">
-                            <button type="submit" class="site-btn">Subscribe</button>
-                        </form>
-                        <div class="footer__widget__social">
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </div>
+                <div class="col-lg-5 col-md-12">
+                    <div class="" >
+                        <h6 class="text-white font-weight-bold">Team Member</h6><br/>
+                        <ul style="list-style:none; margin-bottom: 20px">
+                            <li class="text-white">김태연 : kty1788@nate.com</li>
+                            <li class="text-white">서지효 : wlgyjam@gmail.com</li>
+                            <li class="text-white">김민영 : als543413@gmail.com</li>
+                            <li class="text-white">하윤지 : ijnooyah@gmail.com</li>
+                        </ul>
+                        
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="footer__copyright">
-                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                        <div class="footer__copyright__text text-white"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;2021 Created By Dogprint
   <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
-                        <div class="footer__copyright__payment"><img src="/resources/img/payment-item.png" alt=""></div>
                     </div>
                 </div>
             </div>
@@ -84,7 +59,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>								
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>	
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" ></script>
-    <script src="/resources/js/jquery-3.3.1.min.js"></script>
+
+	<!-- 윤지 삭제 (제이쿼리 중복 -> 에러 ) -->
+<!--     <script src="/resources/js/jquery-3.3.1.min.js"></script> -->
 <!--     <script src="/resources/js/bootstrap.min.js"></script> -->
     <script src="/resources/js/jquery.nice-select.min.js"></script>
     <script src="/resources/js/jquery-ui.min.js"></script>

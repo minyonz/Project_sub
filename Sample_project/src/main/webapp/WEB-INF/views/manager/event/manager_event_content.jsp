@@ -83,12 +83,12 @@ $(document).ready(function() {
 						<c:if test="${eventVo.e_img != null}">
 				      	<img src="/eventImg/displayImage?filePath=${eventVo.e_img}"
 				      		class="card-img-top rounded mx-auto d-block" alt="EventImage"
-							width="1000px" height="800px">
+							width="1000px" height="600px">
 				      </c:if>
 				      </td>
 					</tr>
 					<tr>
-						<td colspan="2">${eventVo.e_content}</td>
+						<td colspan="2" style="white-space:pre;">${eventVo.e_content}</td>
 					</tr>
 				</tbody>
 			</table>

@@ -32,7 +32,7 @@
 	
 	<!-- 팔로잉 목록 -->
 	<select id="followingList" resultType="FollowVo">
-		select f.following, m.user_nick, m.user_img
+		select f.following, m.user_nick, m.user_img, m.user_id
 			from tbl_follow f, tbl_memberdetail m
 		where f.following = m.user_id
 			and f.follower = #{follower}
