@@ -247,6 +247,10 @@ $(document).ready(function() {
 							</div>
 						</div>
 					</div>
+					<!-- 대댓글 -->
+					<div style="display:none;">
+						
+					</div>
 					<div class="row divCommentMod" style="display:none">
 						<div class="col-md-9">
 							<textarea class="form-control txtCommentMod" style="width: 100%; resize: none;">${commentVo.st_c_content}</textarea>

@@ -138,10 +138,6 @@ $(document).ready(function() {
 								<option value="4">😧hard </option>
 								<option value="5">😱crazy</option>
 							</select>
-<!-- 						      <input style="padding:0px; margin:0px; margin-left:-30px;" class="slider_range"  -->
-<!-- 							  type="range" value="0" min="0" max="5" step="1" value="1" ></input><br> -->
-<!-- 							  <span id="range_text" style="text-align: center; margin-left:60px;">0</span> -->
-<!-- 							  <input type="hidden" id="level_no" name="level_no" value="">	 -->
 						    </div>
 						</div>
 						</div>
