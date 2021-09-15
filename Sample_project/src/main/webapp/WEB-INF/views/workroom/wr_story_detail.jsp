@@ -235,6 +235,9 @@ $(document).ready(function() {
 								<div class="blog__details__author__text">
 									<h6>${commentVo.user_nick}  <fmt:formatDate value="${commentVo.reg_date}" pattern="yyyy-MM-dd HH:mm:ss"/></h6>
 									<span class="st_c_content">${commentVo.st_c_content}</span>
+									<c:if test="${user_id != null}">
+										<a href="#" class="fa fa-hand-o-right" style="font-size:13px;">답글</a>
+									</c:if>
 								</div>
 							</div>
 						</div>
