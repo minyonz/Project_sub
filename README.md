@@ -42,9 +42,9 @@
 - 💾 [DB구조]
 ![ggomjirak_erd](https://user-images.githubusercontent.com/82456220/133445512-f726486b-db6a-4b9a-b5b2-2d01909b6f51.png)
 
-## 👩🏻‍🤝‍👩🏻 Save Earth 팀
+## 👩🏻‍🤝‍👩🏻 꼼지락 팀
 
-- 서지효 : 메인 홈페이지, 관리자 페이지, 회원관리, 이벤트관리, 1:1문의
-- 김태연 : 로그인 및 회원가입, 마이페이지, 1:1문의 요청, 쪽지보내기
-- 김민영 : 작업실 페이지, 스토리 CRUD, MadeByMe CRUD, 팔로우, 좋아요, 북마크
-- 하윤지 : 취미글 CRUD, 재료 검색 페이지 
+- [서지효](https://github.com/JiHyo-Seo) : 메인 홈페이지, 관리자 페이지, 회원관리, 이벤트관리, 1:1문의
+- [김태연](https://github.com/kty1788) : 로그인 및 회원가입, 마이페이지, 1:1문의 요청, 쪽지보내기
+- [김민영](https://github.com/minyonz) : 작업실 페이지, 스토리 CRUD, MadeByMe CRUD, 팔로우, 좋아요, 북마크
+- [하윤지](https://github.com/ijnooyah) : 취미글CRUD, 재료 검색 페이지 
