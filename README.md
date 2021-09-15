@@ -39,7 +39,7 @@
 - 🖥 사이트맵
 ![image](https://user-images.githubusercontent.com/82456220/133180986-fa94c34e-b3ce-4d5d-a2ae-833382f48a57.png)
 
-- 💾 [DB구조]
+- 💾 DB구조
 ![ggomjirak_erd](https://user-images.githubusercontent.com/82456220/133445512-f726486b-db6a-4b9a-b5b2-2d01909b6f51.png)
 
 ## 👩🏻‍🤝‍👩🏻 꼼지락 팀
