@@ -34,12 +34,15 @@
 ## 🛠 기획 및 설계
 
 - 📊 프로젝트 진행 일정
+
 ![image](https://user-images.githubusercontent.com/82456220/133180932-cbfc9073-265c-4e78-8735-505fed348f31.png)
 
 - 🖥 사이트맵
-![image](https://user-images.githubusercontent.com/82456220/133180986-fa94c34e-b3ce-4d5d-a2ae-833382f48a57.png)
+
+![sitemap](https://user-images.githubusercontent.com/82456220/133605281-296c39d9-2426-4357-9015-d438fc8ac503.png)
 
 - 💾 DB구조
+
 ![ggomjirak_erd](https://user-images.githubusercontent.com/82456220/133445512-f726486b-db6a-4b9a-b5b2-2d01909b6f51.png)
 
 ## 👩🏻‍🤝‍👩🏻 꼼지락 팀
